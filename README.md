@@ -2,6 +2,14 @@
 
 A comprehensive e-commerce platform for Liberian pharmacies to sell medications online with integrated payment processing (MTN Mobile Money + Cash on Delivery), prescription verification, order management, and delivery coordination.
 
+## Demo Credentials
+
+**Staff Login:** https://your-domain.vercel.app/staff/login
+
+- **Admin:** admin@pharmacy.com / Admin@123456
+- **Manager:** manager@pharmacy.com / Manager@123456
+- **Staff:** staff@pharmacy.com / Staff@123456
+
 ## Features
 
 - 🛒 Full e-commerce functionality
