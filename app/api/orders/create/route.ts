@@ -113,17 +113,23 @@ export async function POST(request: Request) {
       customer_notes: sanitizedCustomer.customerNotes,
     };
 
-    const { data: order, error: orderError } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const orderResult = await supabase
       .from('orders')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .insert(orderData)
       .select()
-      .single()) as { data: Order | null; error: any };
+      .single();
+
+    const order = orderResult.data as Order | null;
+    const orderError = orderResult.error;
 
     if (orderError) throw orderError;
+    if (!order) throw new Error('Failed to create order');
 
     // Create order items
     const orderItems: OrderItem[] = items.map((item: any) => ({
-      order_id: order!.id,
+      order_id: order.id,
       product_id: item.product_id,
       product_name: item.product_name,
       product_sku: item.product_sku,
@@ -133,18 +139,25 @@ export async function POST(request: Request) {
       requires_prescription: item.requires_prescription,
     }));
 
-    const { error: itemsError } = await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const itemsResult = await supabase
       .from('order_items')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .insert(orderItems);
+
+    const itemsError = itemsResult.error;
 
     if (itemsError) throw itemsError;
 
     // Update product stock quantities
     for (const item of items) {
-      const { error: stockError } = await supabase.rpc('update_product_stock', {
+      // @ts-ignore - Supabase type inference issue with generic Database type
+      const stockResult = await supabase.rpc('update_product_stock', {
         p_product_id: item.product_id,
         p_quantity: item.quantity,
       });
+
+      const stockError = stockResult.error;
 
       if (stockError) {
         console.error('Error updating stock:', stockError);

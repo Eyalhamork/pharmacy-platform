@@ -85,7 +85,7 @@ export function DeliveryStep() {
 
       // Auto-select default address if delivery type is delivery
       if (deliveryType === 'delivery' && !selectedAddressId && data && data.length > 0) {
-        const defaultAddress = data.find((addr) => addr.is_default) || data[0];
+        const defaultAddress = data.find((addr: any) => addr.is_default) || data[0];
         handleAddressSelect(defaultAddress);
       }
     } catch (error: any) {

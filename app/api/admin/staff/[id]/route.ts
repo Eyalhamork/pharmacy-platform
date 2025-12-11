@@ -2,8 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
-type Staff = Database['public']['Tables']['staff']['Row'];
 type StaffUpdate = Database['public']['Tables']['staff']['Update'];
+type StaffRole = Database['public']['Tables']['staff']['Row']['role'];
 
 export async function PUT(
   request: NextRequest,
@@ -19,11 +19,14 @@ export async function PUT(
     }
 
     // Verify admin role
-    const { data: adminStaff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role, id')
       .eq('id', user.id)
-      .single()) as { data: Pick<Staff, 'role' | 'id'> | null; error: any };
+      .single();
+
+    const adminStaff = staffResult.data as { role: StaffRole; id: string } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !adminStaff || adminStaff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
@@ -55,12 +58,17 @@ export async function PUT(
       is_active: is_active !== undefined ? is_active : true,
     };
 
-    const { data: updatedStaff, error: updateError } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const updateResult = await supabase
       .from('staff')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .update(updateData)
       .eq('id', params.id)
       .select()
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const updatedStaff = updateResult.data;
+    const updateError = updateResult.error;
 
     if (updateError) {
       console.error('Error updating staff:', updateError);
@@ -79,7 +87,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -92,22 +100,28 @@ export async function DELETE(
     }
 
     // Verify admin role
-    const { data: adminStaff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role, id')
       .eq('id', user.id)
-      .single()) as { data: Pick<Staff, 'role' | 'id'> | null; error: any };
+      .single();
+
+    const adminStaff = staffResult.data as { role: StaffRole; id: string } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !adminStaff || adminStaff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
     }
 
     // Get the staff member to delete
-    const { data: staffToDelete, error: fetchError } = (await supabase
+    const fetchResult = await supabase
       .from('staff')
       .select('id')
       .eq('id', params.id)
-      .single()) as { data: Pick<Staff, 'id'> | null; error: any };
+      .single();
+
+    const staffToDelete = fetchResult.data as { id: string } | null;
+    const fetchError = fetchResult.error;
 
     if (fetchError || !staffToDelete) {
       return NextResponse.json({ error: 'Staff member not found' }, { status: 404 });
@@ -125,10 +139,14 @@ export async function DELETE(
       is_active: false,
     };
 
-    const { error: deactivateError } = await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const deactivateResult = await supabase
       .from('staff')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .update(updateData)
       .eq('id', params.id);
+
+    const deactivateError = deactivateResult.error;
 
     if (deactivateError) {
       console.error('Error deactivating staff:', deactivateError);

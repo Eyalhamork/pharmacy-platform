@@ -104,7 +104,7 @@ declare global {
  */
 export function trackEvent(
   eventName: string,
-  eventParams?: Record<string, string | number | boolean>
+  eventParams?: Record<string, string | number | boolean | any[]>
 ) {
   if (!isAnalyticsEnabled()) {
     // Log in development for debugging

@@ -2,9 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
-type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
-type DeliveryZone = Database['public']['Tables']['delivery_zones']['Row'];
 type DeliveryZoneInsert = Database['public']['Tables']['delivery_zones']['Insert'];
+type StaffRole = Database['public']['Tables']['staff']['Row']['role'];
 
 export async function GET() {
   try {
@@ -17,21 +16,24 @@ export async function GET() {
     }
 
     // Verify staff role
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
     }
 
     // Get all delivery zones
-    const { data: zones, error } = (await supabase
+    const { data: zones, error } = await supabase
       .from('delivery_zones')
       .select('*')
-      .order('name')) as { data: DeliveryZone[] | null; error: any };
+      .order('name');
 
     if (error) {
       console.error('Error fetching delivery zones:', error);
@@ -57,11 +59,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff || !['manager', 'admin'].includes(staff.role)) {
       return NextResponse.json({ error: 'Unauthorized - Manager/Admin only' }, { status: 403 });
@@ -84,11 +89,16 @@ export async function POST(request: NextRequest) {
       delivery_fee: parseFloat(delivery_fee),
     };
 
-    const { data: zone, error } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const result = await supabase
       .from('delivery_zones')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .insert(insertData)
       .select()
-      .single()) as { data: DeliveryZone | null; error: any };
+      .single();
+
+    const zone = result.data;
+    const error = result.error;
 
     if (error) {
       console.error('Error creating delivery zone:', error);

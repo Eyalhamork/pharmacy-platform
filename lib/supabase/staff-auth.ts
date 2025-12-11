@@ -42,11 +42,14 @@ export async function staffSignIn(data: StaffSignInData) {
   }
 
   // Check if user is staff
-  const { data: staffData, error: staffError } = await supabase
+  const staffResult = await supabase
     .from('staff')
     .select('*')
     .eq('id', authData.user.id)
     .single();
+
+  const staffData = staffResult.data as StaffUser | null;
+  const staffError = staffResult.error;
 
   if (staffError || !staffData) {
     // Not a staff member, sign them out
@@ -61,8 +64,10 @@ export async function staffSignIn(data: StaffSignInData) {
   }
 
   // Update last login time
+  // @ts-ignore - Supabase type inference issue with generic Database type
   await supabase
     .from('staff')
+    // @ts-ignore - Supabase type inference issue with generic Database type
     .update({ last_login_at: new Date().toISOString() })
     .eq('id', authData.user.id);
 
@@ -104,11 +109,14 @@ export async function getCurrentStaff() {
   }
 
   // Get staff data
-  const { data: staffData, error: staffError } = await supabase
+  const staffResult = await supabase
     .from('staff')
     .select('*')
     .eq('id', user.id)
     .single();
+
+  const staffData = staffResult.data as StaffUser | null;
+  const staffError = staffResult.error;
 
   if (staffError || !staffData) {
     return { staff: null, error: 'Staff profile not found' };

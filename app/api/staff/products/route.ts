@@ -169,24 +169,29 @@ export async function POST(request: NextRequest) {
     const insertData: ProductInsert = {
       name,
       generic_name: generic_name || null,
-      brand: brand || null,
+      brand_name: brand || null,
       category_id,
       description: description || null,
       usage_instructions: usage_instructions || null,
       dosage_info: dosage_info || null,
-      warnings: warnings || null,
+      side_effects: warnings || null,
       price: parseFloat(price),
       stock_quantity: parseInt(stock_quantity) || 0,
       requires_prescription: requires_prescription || false,
       image_url: image_url || null,
-      is_active: true
+      is_available: true
     };
 
-    const { data: product, error: insertError } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const insertResult = await supabase
       .from('products')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .insert(insertData)
       .select()
-      .single()) as { data: Product | null; error: any };
+      .single();
+
+    const product = insertResult.data;
+    const insertError = insertResult.error;
 
     if (insertError) {
       console.error('Error creating product:', insertError);

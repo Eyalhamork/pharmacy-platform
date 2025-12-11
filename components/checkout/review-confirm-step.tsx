@@ -58,7 +58,7 @@ export function ReviewConfirmStep() {
   const loadAddress = async () => {
     try {
       const supabase = createClient();
-      const { data } = await supabase
+      const addressResult = await supabase
         .from('addresses')
         .select(`
           *,
@@ -68,10 +68,10 @@ export function ReviewConfirmStep() {
             estimated_delivery_time
           )
         `)
-        .eq('id', selectedAddressId)
+        .eq('id', selectedAddressId!)
         .single();
 
-      setSelectedAddress(data);
+      setSelectedAddress(addressResult.data);
     } catch (error) {
       console.error('Error loading address:', error);
     }
@@ -93,11 +93,18 @@ export function ReviewConfirmStep() {
       }
 
       // Get user profile for customer details
-      const { data: profile } = await supabase
+      const profileResult = await supabase
         .from('user_profiles')
         .select('first_name, last_name, phone, whatsapp_number')
         .eq('id', user.id)
         .single();
+
+      const profile = profileResult.data as {
+        first_name?: string;
+        last_name?: string;
+        phone?: string;
+        whatsapp_number?: string;
+      } | null;
 
       // Prepare order data
       const orderData = {
@@ -207,6 +214,7 @@ export function ReviewConfirmStep() {
         } = supabase.storage.from('prescriptions').getPublicUrl(filePath);
 
         // Create prescription record
+        // @ts-ignore - Supabase type inference issue with generic Database type
         await supabase.from('prescriptions').insert({
           order_id: orderId,
           file_url: publicUrl,

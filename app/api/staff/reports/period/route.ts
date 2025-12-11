@@ -33,12 +33,21 @@ export async function GET(request: NextRequest) {
     }
 
     // Get orders for the period
-    const { data: orders, error: ordersError } = await supabase
+    const ordersResult = await supabase
       .from('orders')
       .select('id, total_amount, payment_method, status, created_at')
       .gte('created_at', startDate)
       .lte('created_at', endDate)
       .order('created_at');
+
+    const orders = ordersResult.data as Array<{
+      id: string;
+      total_amount: number;
+      payment_method: string;
+      status: string;
+      created_at: string;
+    }> | null;
+    const ordersError = ordersResult.error;
 
     if (ordersError) {
       console.error('Error fetching orders:', ordersError);

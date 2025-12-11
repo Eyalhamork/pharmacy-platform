@@ -2,9 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
-type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
-type Category = Database['public']['Tables']['categories']['Row'];
 type CategoryInsert = Database['public']['Tables']['categories']['Insert'];
+type StaffRole = Database['public']['Tables']['staff']['Row']['role'];
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,11 +16,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff || !['manager', 'admin'].includes(staff.role)) {
       return NextResponse.json({ error: 'Unauthorized - Manager/Admin only' }, { status: 403 });
@@ -44,11 +46,16 @@ export async function POST(request: NextRequest) {
       slug,
     };
 
-    const { data: category, error } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const result = await supabase
       .from('categories')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .insert(insertData)
       .select()
-      .single()) as { data: Category | null; error: any };
+      .single();
+
+    const category = result.data;
+    const error = result.error;
 
     if (error) {
       console.error('Error creating category:', error);

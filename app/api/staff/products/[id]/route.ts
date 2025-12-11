@@ -2,17 +2,16 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
-type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
-type Product = Database['public']['Tables']['products']['Row'];
 type ProductUpdate = Database['public']['Tables']['products']['Update'];
+type StaffRole = Database['public']['Tables']['staff']['Row']['role'];
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify staff authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -20,11 +19,14 @@ export async function GET(
     }
 
     // Verify staff role
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
@@ -71,11 +73,14 @@ export async function PUT(
     }
 
     // Verify staff role (only managers and admins can edit products)
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
@@ -105,8 +110,8 @@ export async function PUT(
 
     // Validate required fields
     if (!name || !price || !category_id) {
-      return NextResponse.json({ 
-        error: 'Missing required fields: name, price, category_id' 
+      return NextResponse.json({
+        error: 'Missing required fields: name, price, category_id'
       }, { status: 400 });
     }
 
@@ -114,26 +119,31 @@ export async function PUT(
     const updateData: ProductUpdate = {
       name,
       generic_name: generic_name || null,
-      brand: brand || null,
+      brand_name: brand || null,
       category_id,
       description: description || null,
       usage_instructions: usage_instructions || null,
       dosage_info: dosage_info || null,
-      warnings: warnings || null,
+      side_effects: warnings || null,
       price: parseFloat(price),
       stock_quantity: stock_quantity !== undefined ? parseInt(stock_quantity) : undefined,
       requires_prescription: requires_prescription || false,
       image_url: image_url || null,
-      is_active: is_active !== undefined ? is_active : true,
+      is_available: is_active !== undefined ? is_active : true,
       updated_at: new Date().toISOString()
     };
 
-    const { data: product, error: updateError } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const updateResult = await supabase
       .from('products')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .update(updateData)
       .eq('id', params.id)
       .select()
-      .single()) as { data: Product | null; error: any };
+      .single();
+
+    const product = updateResult.data;
+    const updateError = updateResult.error;
 
     if (updateError) {
       console.error('Error updating product:', updateError);
@@ -149,12 +159,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify staff authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -162,11 +172,14 @@ export async function DELETE(
     }
 
     // Verify staff role (only admins can delete products)
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
@@ -191,25 +204,30 @@ export async function DELETE(
     // If product has been ordered, deactivate instead of delete
     if (orderItems && orderItems.length > 0) {
       const deactivateData: ProductUpdate = {
-        is_active: false,
+        is_available: false,
         updated_at: new Date().toISOString()
       };
 
-      const { data: product, error: deactivateError } = (await supabase
+      // @ts-ignore - Supabase type inference issue with generic Database type
+      const deactivateResult = await supabase
         .from('products')
+        // @ts-ignore - Supabase type inference issue with generic Database type
         .update(deactivateData)
         .eq('id', params.id)
         .select()
-        .single()) as { data: Product | null; error: any };
+        .single();
+
+      const product = deactivateResult.data;
+      const deactivateError = deactivateResult.error;
 
       if (deactivateError) {
         console.error('Error deactivating product:', deactivateError);
         return NextResponse.json({ error: 'Failed to deactivate product' }, { status: 500 });
       }
 
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Product has order history and was deactivated instead of deleted',
-        product 
+        product
       });
     }
 

@@ -68,9 +68,13 @@ export async function signUp(data: SignUpData) {
       whatsapp_number: data.whatsappNumber,
     };
 
-    const { error: profileError } = await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const profileResult = await supabase
       .from('user_profiles')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .insert(profileData);
+
+    const profileError = profileResult.error;
 
     if (profileError) {
       console.error('Error creating user profile:', profileError);
@@ -228,12 +232,17 @@ export async function updateUserProfile(
 ) {
   const supabase = createClient();
 
-  const { data, error } = await supabase
+  // @ts-ignore - Supabase type inference issue with generic Database type
+  const updateResult = await supabase
     .from('user_profiles')
+    // @ts-ignore - Supabase type inference issue with generic Database type
     .update(updates)
     .eq('id', userId)
     .select()
     .single();
+
+  const data = updateResult.data;
+  const error = updateResult.error;
 
   if (error) {
     return { profile: null, error: error.message };

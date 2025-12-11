@@ -66,11 +66,13 @@ export default function StaffDashboardPage() {
         .eq('order_status', 'pending');
 
       // Fetch today's revenue
-      const { data: todayOrdersData } = await supabase
+      const todayOrdersResult = await supabase
         .from('orders')
         .select('total_amount, payment_status')
         .gte('created_at', today.toISOString())
         .eq('payment_status', 'paid');
+
+      const todayOrdersData = todayOrdersResult.data as Array<{ total_amount: number }> | null;
 
       const todayRevenue = todayOrdersData?.reduce(
         (sum, order) => sum + parseFloat(order.total_amount.toString()),

@@ -2,9 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
-type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
-type Category = Database['public']['Tables']['categories']['Row'];
 type CategoryUpdate = Database['public']['Tables']['categories']['Update'];
+type StaffRole = Database['public']['Tables']['staff']['Row']['role'];
 
 export async function PUT(
   request: NextRequest,
@@ -20,11 +19,14 @@ export async function PUT(
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff || !['manager', 'admin'].includes(staff.role)) {
       return NextResponse.json({ error: 'Unauthorized - Manager/Admin only' }, { status: 403 });
@@ -47,12 +49,17 @@ export async function PUT(
       slug,
     };
 
-    const { data: category, error } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const result = await supabase
       .from('categories')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .update(updateData)
       .eq('id', params.id)
       .select()
-      .single()) as { data: Category | null; error: any };
+      .single();
+
+    const category = result.data;
+    const error = result.error;
 
     if (error) {
       console.error('Error updating category:', error);
@@ -76,7 +83,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -89,11 +96,14 @@ export async function DELETE(
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const staff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !staff || staff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });

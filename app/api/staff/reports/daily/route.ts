@@ -31,11 +31,19 @@ export async function GET(request: NextRequest) {
     const endDate = `${date}T23:59:59`;
 
     // Get total orders for the day
-    const { data: orders, error: ordersError } = await supabase
+    const ordersResult = await supabase
       .from('orders')
       .select('id, total_amount, payment_method, status')
       .gte('created_at', startDate)
       .lte('created_at', endDate);
+
+    const orders = ordersResult.data as Array<{
+      id: string;
+      total_amount: number;
+      payment_method: string;
+      status: string;
+    }> | null;
+    const ordersError = ordersResult.error;
 
     if (ordersError) {
       console.error('Error fetching orders:', ordersError);

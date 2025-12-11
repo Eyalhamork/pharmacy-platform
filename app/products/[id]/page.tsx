@@ -21,12 +21,14 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const supabase = await createClient();
-  
-  const { data: product } = await supabase
+
+  const productResult = await supabase
     .from('products')
     .select('name, description, generic_name, price, image_url')
     .eq('id', params.id)
     .single();
+
+  const product = productResult.data as any;
 
   if (!product) {
     return {
@@ -49,7 +51,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const supabase = await createClient();
 
   // Fetch product
-  const { data: product, error } = await supabase
+  const productResult = await supabase
     .from('products')
     .select(`
       *,
@@ -58,18 +60,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .eq('id', params.id)
     .single();
 
+  const product = productResult.data as any;
+  const error = productResult.error;
+
   if (error || !product) {
     notFound();
   }
 
   // Fetch related products (same category, exclude current)
-  const { data: relatedProducts } = await supabase
+  const relatedResult = await supabase
     .from('products')
     .select('*')
     .eq('category_id', product.category_id)
     .eq('is_available', true)
     .neq('id', params.id)
     .limit(4);
+
+  const relatedProducts = relatedResult.data as any;
 
   // Get product URL
   const productUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://mopharma.com'}/products/${product.id}`;
@@ -307,7 +314,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct) => (
+                {relatedProducts.map((relatedProduct: any) => (
                   <ProductCard key={relatedProduct.id} product={relatedProduct} />
                 ))}
               </div>

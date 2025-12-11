@@ -144,7 +144,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         <CardContent className="space-y-4">
           <Slider
             value={priceRange}
-            onValueChange={setPriceRange}
+            onValueChange={(value) => setPriceRange(value as [number, number])}
             max={100}
             step={5}
             className="w-full"

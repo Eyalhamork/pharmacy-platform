@@ -2,8 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
-type Staff = Database['public']['Tables']['staff']['Row'];
 type StaffInsert = Database['public']['Tables']['staff']['Insert'];
+type StaffRole = Database['public']['Tables']['staff']['Row']['role'];
 
 export async function GET() {
   try {
@@ -16,21 +16,24 @@ export async function GET() {
     }
 
     // Verify admin role
-    const { data: adminStaff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Pick<Staff, 'role'> | null; error: any };
+      .single();
+
+    const adminStaff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !adminStaff || adminStaff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
     }
 
     // Get all staff members
-    const { data: staff, error } = (await supabase
+    const { data: staff, error } = await supabase
       .from('staff')
       .select('*')
-      .order('created_at', { ascending: false })) as { data: Staff[] | null; error: any };
+      .order('created_at', { ascending: false });
 
     if (error) {
       console.error('Error fetching staff:', error);
@@ -56,11 +59,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify admin role
-    const { data: adminStaff, error: staffError } = (await supabase
+    const staffResult = await supabase
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single()) as { data: Pick<Staff, 'role'> | null; error: any };
+      .single();
+
+    const adminStaff = staffResult.data as { role: StaffRole } | null;
+    const staffError = staffResult.error;
 
     if (staffError || !adminStaff || adminStaff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
@@ -105,11 +111,16 @@ export async function POST(request: NextRequest) {
       is_active: true,
     };
 
-    const { data: newStaff, error: createStaffError } = (await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const createStaffResult = await supabase
       .from('staff')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .insert(insertData)
       .select()
-      .single()) as { data: Staff | null; error: any };
+      .single();
+
+    const newStaff = createStaffResult.data;
+    const createStaffError = createStaffResult.error;
 
     if (createStaffError) {
       console.error('Error creating staff record:', createStaffError);

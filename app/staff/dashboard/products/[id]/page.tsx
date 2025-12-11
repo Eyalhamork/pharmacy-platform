@@ -20,7 +20,7 @@ interface EditProductPageProps {
 async function getProduct(id: string) {
   const supabase = await createClient();
 
-  const { data: product, error } = await supabase
+  const productResult = await supabase
     .from('products')
     .select(`
       *,
@@ -31,6 +31,9 @@ async function getProduct(id: string) {
     `)
     .eq('id', id)
     .single();
+
+  const product = productResult.data as any;
+  const error = productResult.error;
 
   if (error || !product) {
     return null;
@@ -49,17 +52,17 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
   const initialData = {
     name: product.name,
     generic_name: product.generic_name || '',
-    brand: product.brand || '',
+    brand: product.brand_name || '',
     category_id: product.category_id,
     description: product.description || '',
     usage_instructions: product.usage_instructions || '',
     dosage_info: product.dosage_info || '',
-    warnings: product.warnings || '',
+    warnings: product.side_effects || '',
     price: product.price.toString(),
     stock_quantity: product.stock_quantity.toString(),
     requires_prescription: product.requires_prescription,
     image_url: product.image_url || '',
-    is_active: product.is_active,
+    is_active: product.is_available,
   };
 
   return (

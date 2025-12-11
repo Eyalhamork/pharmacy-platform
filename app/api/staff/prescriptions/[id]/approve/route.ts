@@ -36,7 +36,7 @@ export async function POST(
     }
 
     // Get prescription details
-    const { data: prescription, error: prescriptionError } = await supabase
+    const prescriptionResult = await supabase
       .from('prescriptions')
       .select(`
         *,
@@ -50,6 +50,9 @@ export async function POST(
       `)
       .eq('id', params.id)
       .single();
+
+    const prescription = prescriptionResult.data as any;
+    const prescriptionError = prescriptionResult.error;
 
     if (prescriptionError || !prescription) {
       return NextResponse.json(
@@ -66,15 +69,19 @@ export async function POST(
     }
 
     // Update prescription status to approved
-    const { error: updateError } = await (supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const updateResult = await supabase
       .from('prescriptions')
-      .update as any)({
+      // @ts-ignore - Supabase type inference issue with generic Database type
+      .update({
         verification_status: 'approved',
         verified_by_staff_id: user.id,
         verified_at: new Date().toISOString(),
         staff_notes: staff_notes || null
       })
       .eq('id', params.id);
+
+    const updateError = updateResult.error;
 
     if (updateError) {
       console.error('Error updating prescription:', updateError);
@@ -85,10 +92,14 @@ export async function POST(
     }
 
     // Update order prescription_verified flag
-    const { error: orderUpdateError } = await supabase
+    // @ts-ignore - Supabase type inference issue with generic Database type
+    const orderUpdateResult = await supabase
       .from('orders')
+      // @ts-ignore - Supabase type inference issue with generic Database type
       .update({ prescription_verified: true })
       .eq('id', prescription.order_id);
+
+    const orderUpdateError = orderUpdateResult.error;
 
     if (orderUpdateError) {
       console.error('Error updating order:', orderUpdateError);

@@ -42,8 +42,10 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
       }
 
       // Update user profile
-      const { error } = await supabase
+      // @ts-ignore - Supabase type inference issue with generic Database type
+      const upsertResult = await supabase
         .from('user_profiles')
+        // @ts-ignore - Supabase type inference issue with generic Database type
         .upsert({
           id: user.id,
           email: formData.email,
@@ -53,6 +55,8 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
           whatsapp_number: formData.whatsapp_number,
           updated_at: new Date().toISOString(),
         });
+
+      const error = upsertResult.error;
 
       if (error) throw error;
 

@@ -8,17 +8,21 @@ export async function GET() {
     const supabase = await createClient();
 
     // Get all active products for dynamic URLs
-    const { data: products } = await supabase
+    const productsResult = await supabase
       .from('products')
       .select('id, updated_at')
       .eq('is_available', true)
       .order('updated_at', { ascending: false });
 
+    const products = productsResult.data as Array<{ id: string; updated_at: string }> | null;
+
     // Get all active categories
-    const { data: categories } = await supabase
+    const categoriesResult = await supabase
       .from('categories')
       .select('slug, created_at')
       .eq('is_active', true);
+
+    const categories = categoriesResult.data as Array<{ slug: string; created_at: string }> | null;
 
     // Static pages with their priority and change frequency
     const staticPages = [

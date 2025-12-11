@@ -23,21 +23,24 @@ export async function GET() {
     }
 
     // Get all products with stock info
-    const { data: products, error: productsError } = await supabase
+    const productsResult = await supabase
       .from('products')
       .select(`
         id,
         name,
         generic_name,
-        brand,
+        brand_name,
         stock_quantity,
         price,
-        is_active,
+        is_available,
         categories (
           name
         )
       `)
       .order('stock_quantity', { ascending: true });
+
+    const products = productsResult.data as any;
+    const productsError = productsResult.error;
 
     if (productsError) {
       console.error('Error fetching products:', productsError);
@@ -46,23 +49,23 @@ export async function GET() {
 
     // Calculate inventory metrics
     const totalProducts = products?.length || 0;
-    const activeProducts = products?.filter(p => p.is_active).length || 0;
-    const outOfStock = products?.filter(p => p.stock_quantity === 0).length || 0;
-    const lowStock = products?.filter(p => p.stock_quantity > 0 && p.stock_quantity <= 10).length || 0;
-    const inStock = products?.filter(p => p.stock_quantity > 10).length || 0;
+    const activeProducts = products?.filter((p: any) => p.is_available).length || 0;
+    const outOfStock = products?.filter((p: any) => p.stock_quantity === 0).length || 0;
+    const lowStock = products?.filter((p: any) => p.stock_quantity > 0 && p.stock_quantity <= 10).length || 0;
+    const inStock = products?.filter((p: any) => p.stock_quantity > 10).length || 0;
 
-    const totalStockValue = products?.reduce((sum, p) => 
+    const totalStockValue = products?.reduce((sum: number, p: any) =>
       sum + (p.stock_quantity * p.price), 0
     ) || 0;
 
     // Low stock items (need restocking)
     const lowStockItems = products
-      ?.filter(p => p.stock_quantity <= 10)
-      .map(p => ({
+      ?.filter((p: any) => p.stock_quantity <= 10)
+      .map((p: any) => ({
         id: p.id,
         name: p.name,
         generic_name: p.generic_name,
-        brand: p.brand,
+        brand_name: p.brand_name,
         category: p.categories?.name || 'Uncategorized',
         stock_quantity: p.stock_quantity,
         price: p.price,
@@ -72,12 +75,12 @@ export async function GET() {
 
     // Out of stock items
     const outOfStockItems = products
-      ?.filter(p => p.stock_quantity === 0)
-      .map(p => ({
+      ?.filter((p: any) => p.stock_quantity === 0)
+      .map((p: any) => ({
         id: p.id,
         name: p.name,
         generic_name: p.generic_name,
-        brand: p.brand,
+        brand_name: p.brand_name,
         category: p.categories?.name || 'Uncategorized',
         price: p.price,
       })) || [];
@@ -110,11 +113,11 @@ export async function GET() {
     });
 
     const categoryBreakdown = Array.from(categoryMap.values())
-      .sort((a, b) => b.stockValue - a.stockValue);
+      .sort((a: any, b: any) => b.stockValue - a.stockValue);
 
     // High value inventory (top 20 by value)
     const highValueItems = products
-      ?.map(p => ({
+      ?.map((p: any) => ({
         id: p.id,
         name: p.name,
         category: p.categories?.name || 'Uncategorized',
@@ -122,7 +125,7 @@ export async function GET() {
         price: p.price,
         value: p.stock_quantity * p.price,
       }))
-      .sort((a, b) => b.value - a.value)
+      .sort((a: any, b: any) => b.value - a.value)
       .slice(0, 20) || [];
 
     return NextResponse.json({

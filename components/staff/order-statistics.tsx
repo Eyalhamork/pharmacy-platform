@@ -58,9 +58,19 @@ export function OrderStatistics() {
       setLoading(true);
 
       // Get all orders
-      const { data: allOrders, error: allError } = await supabase
+      const ordersResult = await supabase
         .from('orders')
         .select('order_status, total_amount, created_at, has_prescription_items, prescription_verified, payment_status');
+
+      const allOrders = ordersResult.data as Array<{
+        order_status: string;
+        total_amount: number;
+        created_at: string;
+        has_prescription_items: boolean;
+        prescription_verified: boolean;
+        payment_status: string;
+      }> | null;
+      const allError = ordersResult.error;
 
       if (allError) throw allError;
 

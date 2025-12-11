@@ -47,12 +47,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   // Apply filters
   if (category) {
-    const { data: categoryData } = await supabase
+    const categoryResult = await supabase
       .from('categories')
       .select('id')
       .eq('slug', category)
       .single();
-    
+
+    const categoryData = categoryResult.data as { id: string } | null;
+
     if (categoryData) {
       query = query.eq('category_id', categoryData.id);
     }
@@ -85,7 +87,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const to = from + ITEMS_PER_PAGE - 1;
   query = query.range(from, to);
 
-  const { data: products, count } = await query;
+  const queryResult = await query;
+  const products = queryResult.data as any;
+  const count = queryResult.count;
 
   const totalPages = count ? Math.ceil(count / ITEMS_PER_PAGE) : 0;
 
@@ -150,7 +154,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               ) : (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    {products.map((product) => (
+                    {products.map((product: any) => (
                       <ProductCard key={product.id} product={product} />
                     ))}
                   </div>
