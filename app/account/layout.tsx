@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { User, MapPin, Package, Heart, Settings } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import type { Database } from '@/lib/types/database';
+
+type UserProfile = Pick<Database['public']['Tables']['user_profiles']['Row'], 'first_name' | 'last_name'>;
 
 export default async function AccountLayout({
   children,
@@ -12,7 +15,7 @@ export default async function AccountLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -22,11 +25,11 @@ export default async function AccountLayout({
   }
 
   // Get user profile
-  const { data: profile } = await supabase
+  const { data: profile } = (await supabase
     .from('user_profiles')
     .select('first_name, last_name')
     .eq('id', user.id)
-    .single();
+    .single()) as { data: UserProfile | null };
 
   const displayName = profile?.first_name 
     ? `${profile.first_name} ${profile.last_name || ''}`
