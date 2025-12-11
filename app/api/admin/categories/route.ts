@@ -1,10 +1,15 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
+type Category = Database['public']['Tables']['categories']['Row'];
+type CategoryInsert = Database['public']['Tables']['categories']['Insert'];
 
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -12,11 +17,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff || !['manager', 'admin'].includes(staff.role)) {
       return NextResponse.json({ error: 'Unauthorized - Manager/Admin only' }, { status: 403 });
@@ -28,20 +33,22 @@ export async function POST(request: NextRequest) {
 
     // Validate
     if (!name || !slug) {
-      return NextResponse.json({ 
-        error: 'Missing required fields: name, slug' 
+      return NextResponse.json({
+        error: 'Missing required fields: name, slug'
       }, { status: 400 });
     }
 
     // Create category
-    const { data: category, error } = await supabase
+    const insertData: CategoryInsert = {
+      name,
+      slug,
+    };
+
+    const { data: category, error } = (await supabase
       .from('categories')
-      .insert({
-        name,
-        slug,
-      })
+      .insert(insertData)
       .select()
-      .single();
+      .single()) as { data: Category | null; error: any };
 
     if (error) {
       console.error('Error creating category:', error);

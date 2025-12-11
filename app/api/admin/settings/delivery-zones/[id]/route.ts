@@ -1,5 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
+type DeliveryZone = Database['public']['Tables']['delivery_zones']['Row'];
+type DeliveryZoneUpdate = Database['public']['Tables']['delivery_zones']['Update'];
 
 export async function PUT(
   request: NextRequest,
@@ -7,7 +12,7 @@ export async function PUT(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -15,11 +20,11 @@ export async function PUT(
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff || !['manager', 'admin'].includes(staff.role)) {
       return NextResponse.json({ error: 'Unauthorized - Manager/Admin only' }, { status: 403 });
@@ -31,21 +36,23 @@ export async function PUT(
 
     // Validate
     if (!name || delivery_fee === undefined) {
-      return NextResponse.json({ 
-        error: 'Missing required fields: name, delivery_fee' 
+      return NextResponse.json({
+        error: 'Missing required fields: name, delivery_fee'
       }, { status: 400 });
     }
 
     // Update delivery zone
-    const { data: zone, error } = await supabase
+    const updateData: DeliveryZoneUpdate = {
+      name,
+      delivery_fee: parseFloat(delivery_fee),
+    };
+
+    const { data: zone, error } = (await supabase
       .from('delivery_zones')
-      .update({
-        name,
-        delivery_fee: parseFloat(delivery_fee),
-      })
+      .update(updateData)
       .eq('id', params.id)
       .select()
-      .single();
+      .single()) as { data: DeliveryZone | null; error: any };
 
     if (error) {
       console.error('Error updating delivery zone:', error);
@@ -66,7 +73,7 @@ export async function DELETE(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -74,11 +81,11 @@ export async function DELETE(
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff || staff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
@@ -86,7 +93,7 @@ export async function DELETE(
 
     // Check if zone is being used in any addresses
     const { data: addresses, error: checkError } = await supabase
-      .from('user_addresses')
+      .from('addresses')
       .select('id')
       .eq('delivery_zone_id', params.id)
       .limit(1);

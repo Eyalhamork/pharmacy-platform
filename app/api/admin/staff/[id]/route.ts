@@ -1,5 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Database['public']['Tables']['staff']['Row'];
+type StaffUpdate = Database['public']['Tables']['staff']['Update'];
 
 export async function PUT(
   request: NextRequest,
@@ -7,7 +11,7 @@ export async function PUT(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -15,11 +19,11 @@ export async function PUT(
     }
 
     // Verify admin role
-    const { data: adminStaff, error: staffError } = await supabase
+    const { data: adminStaff, error: staffError } = (await supabase
       .from('staff')
-      .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .select('role, id')
+      .eq('id', user.id)
+      .single()) as { data: Pick<Staff, 'role' | 'id'> | null; error: any };
 
     if (staffError || !adminStaff || adminStaff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
@@ -40,31 +44,32 @@ export async function PUT(
 
     // Prevent admin from deactivating themselves
     if (params.id === adminStaff.id && is_active === false) {
-      return NextResponse.json({ 
-        error: 'You cannot deactivate your own account' 
+      return NextResponse.json({
+        error: 'You cannot deactivate your own account'
       }, { status: 400 });
     }
 
     // Update staff record
-    const { data: updatedStaff, error: updateError } = await supabase
+    const updateData: StaffUpdate = {
+      role,
+      is_active: is_active !== undefined ? is_active : true,
+    };
+
+    const { data: updatedStaff, error: updateError } = (await supabase
       .from('staff')
-      .update({
-        role,
-        is_active: is_active !== undefined ? is_active : true,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq('id', params.id)
       .select()
-      .single();
+      .single()) as { data: Staff | null; error: any };
 
     if (updateError) {
       console.error('Error updating staff:', updateError);
       return NextResponse.json({ error: 'Failed to update staff' }, { status: 500 });
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       staff: updatedStaff,
-      message: 'Staff member updated successfully' 
+      message: 'Staff member updated successfully'
     });
 
   } catch (error) {
@@ -79,7 +84,7 @@ export async function DELETE(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -87,41 +92,42 @@ export async function DELETE(
     }
 
     // Verify admin role
-    const { data: adminStaff, error: staffError } = await supabase
+    const { data: adminStaff, error: staffError } = (await supabase
       .from('staff')
-      .select('role, user_id')
-      .eq('user_id', user.id)
-      .single();
+      .select('role, id')
+      .eq('id', user.id)
+      .single()) as { data: Pick<Staff, 'role' | 'id'> | null; error: any };
 
     if (staffError || !adminStaff || adminStaff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
     }
 
     // Get the staff member to delete
-    const { data: staffToDelete, error: fetchError } = await supabase
+    const { data: staffToDelete, error: fetchError } = (await supabase
       .from('staff')
-      .select('user_id')
+      .select('id')
       .eq('id', params.id)
-      .single();
+      .single()) as { data: Pick<Staff, 'id'> | null; error: any };
 
     if (fetchError || !staffToDelete) {
       return NextResponse.json({ error: 'Staff member not found' }, { status: 404 });
     }
 
     // Prevent admin from deleting themselves
-    if (staffToDelete.user_id === user.id) {
-      return NextResponse.json({ 
-        error: 'You cannot delete your own account' 
+    if (staffToDelete.id === user.id) {
+      return NextResponse.json({
+        error: 'You cannot delete your own account'
       }, { status: 400 });
     }
 
     // Instead of deleting, deactivate the staff member
+    const updateData: StaffUpdate = {
+      is_active: false,
+    };
+
     const { error: deactivateError } = await supabase
       .from('staff')
-      .update({ 
-        is_active: false,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq('id', params.id);
 
     if (deactivateError) {
@@ -129,8 +135,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Failed to deactivate staff' }, { status: 500 });
     }
 
-    return NextResponse.json({ 
-      message: 'Staff member deactivated successfully' 
+    return NextResponse.json({
+      message: 'Staff member deactivated successfully'
     });
 
   } catch (error) {

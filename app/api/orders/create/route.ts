@@ -2,6 +2,11 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 import { withRateLimit, getRateLimitHeaders, validateOrderData } from '@/lib/security';
+import type { Database } from '@/lib/types/database';
+
+type Order = Database['public']['Tables']['orders']['Row'];
+type OrderInsert = Database['public']['Tables']['orders']['Insert'];
+type OrderItem = Database['public']['Tables']['order_items']['Insert'];
 
 export async function POST(request: Request) {
   // Rate limiting
@@ -85,38 +90,40 @@ export async function POST(request: Request) {
     const orderNumber = orderNumberData;
 
     // Create order using sanitized data
-    const { data: order, error: orderError } = await supabase
+    const orderData: OrderInsert = {
+      order_number: orderNumber,
+      user_id: user.id,
+      customer_name: sanitizedCustomer.customerName,
+      customer_phone: sanitizedCustomer.customerPhone,
+      customer_whatsapp: sanitizedCustomer.customerWhatsapp || null,
+      customer_email: sanitizedCustomer.customerEmail,
+      delivery_address_id: delivery.address_id || null,
+      delivery_type: delivery.type,
+      delivery_zone_id: delivery.address_snapshot?.delivery_zones?.id || null,
+      delivery_address_snapshot: delivery.address_snapshot || null,
+      delivery_fee: delivery.fee,
+      subtotal: subtotal,
+      total_amount: total,
+      payment_method: payment.method,
+      payment_status: payment.method === 'mobile_money' ? 'pending' : 'pending',
+      momo_transaction_id: null,
+      order_status: 'pending',
+      has_prescription_items: has_prescription_items,
+      prescription_verified: false,
+      customer_notes: sanitizedCustomer.customerNotes,
+    };
+
+    const { data: order, error: orderError } = (await supabase
       .from('orders')
-      .insert({
-        order_number: orderNumber,
-        user_id: user.id,
-        customer_name: sanitizedCustomer.customerName,
-        customer_phone: sanitizedCustomer.customerPhone,
-        customer_whatsapp: sanitizedCustomer.customerWhatsapp || null,
-        customer_email: sanitizedCustomer.customerEmail,
-        delivery_address_id: delivery.address_id || null,
-        delivery_type: delivery.type,
-        delivery_zone_id: delivery.address_snapshot?.delivery_zones?.id || null,
-        delivery_address_snapshot: delivery.address_snapshot || null,
-        delivery_fee: delivery.fee,
-        subtotal: subtotal,
-        total_amount: total,
-        payment_method: payment.method,
-        payment_status: payment.method === 'mobile_money' ? 'pending' : 'pending',
-        momo_transaction_id: null,
-        order_status: 'pending',
-        has_prescription_items: has_prescription_items,
-        prescription_verified: false,
-        customer_notes: sanitizedCustomer.customerNotes,
-      })
+      .insert(orderData)
       .select()
-      .single();
+      .single()) as { data: Order | null; error: any };
 
     if (orderError) throw orderError;
 
     // Create order items
-    const orderItems = items.map((item: any) => ({
-      order_id: order.id,
+    const orderItems: OrderItem[] = items.map((item: any) => ({
+      order_id: order!.id,
       product_id: item.product_id,
       product_name: item.product_name,
       product_sku: item.product_sku,

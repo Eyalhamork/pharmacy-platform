@@ -4,6 +4,10 @@
 import { createClient } from '@/lib/supabase/client';
 import type { Database } from '@/lib/types/database';
 
+type UserProfile = Database['public']['Tables']['user_profiles']['Row'];
+type UserProfileInsert = Database['public']['Tables']['user_profiles']['Insert'];
+type UserProfileUpdate = Database['public']['Tables']['user_profiles']['Update'];
+
 export type AuthUser = {
   id: string;
   email: string;
@@ -55,16 +59,18 @@ export async function signUp(data: SignUpData) {
 
   // Create user profile in database
   if (authData.user) {
+    const profileData: UserProfileInsert = {
+      id: authData.user.id,
+      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      phone: data.phone,
+      whatsapp_number: data.whatsappNumber,
+    };
+
     const { error: profileError } = await supabase
       .from('user_profiles')
-      .insert({
-        id: authData.user.id,
-        email: data.email,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        phone: data.phone,
-        whatsapp_number: data.whatsappNumber,
-      });
+      .insert(profileData);
 
     if (profileError) {
       console.error('Error creating user profile:', profileError);

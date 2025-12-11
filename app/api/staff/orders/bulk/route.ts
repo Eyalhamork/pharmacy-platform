@@ -1,9 +1,12 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'id' | 'role' | 'is_active'>;
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Verify staff authentication
     const {
@@ -15,11 +18,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify user is staff
-    const { data: staffData, error: staffError } = await supabase
+    const { data: staffData, error: staffError } = (await supabase
       .from('staff')
       .select('id, role, is_active')
       .eq('id', user.id)
-      .single();
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staffData || !staffData.is_active) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

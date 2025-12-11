@@ -1,5 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
+type Category = Database['public']['Tables']['categories']['Row'];
+type CategoryUpdate = Database['public']['Tables']['categories']['Update'];
 
 export async function PUT(
   request: NextRequest,
@@ -7,7 +12,7 @@ export async function PUT(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -15,11 +20,11 @@ export async function PUT(
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff || !['manager', 'admin'].includes(staff.role)) {
       return NextResponse.json({ error: 'Unauthorized - Manager/Admin only' }, { status: 403 });
@@ -31,21 +36,23 @@ export async function PUT(
 
     // Validate
     if (!name || !slug) {
-      return NextResponse.json({ 
-        error: 'Missing required fields: name, slug' 
+      return NextResponse.json({
+        error: 'Missing required fields: name, slug'
       }, { status: 400 });
     }
 
     // Update category
-    const { data: category, error } = await supabase
+    const updateData: CategoryUpdate = {
+      name,
+      slug,
+    };
+
+    const { data: category, error } = (await supabase
       .from('categories')
-      .update({
-        name,
-        slug,
-      })
+      .update(updateData)
       .eq('id', params.id)
       .select()
-      .single();
+      .single()) as { data: Category | null; error: any };
 
     if (error) {
       console.error('Error updating category:', error);
@@ -74,7 +81,7 @@ export async function DELETE(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -82,11 +89,11 @@ export async function DELETE(
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff || staff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });

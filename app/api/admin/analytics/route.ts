@@ -1,10 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
+type Order = Pick<Database['public']['Tables']['orders']['Row'], 'id' | 'total_amount' | 'created_at'> & {
+  status: string;
+  payment_method: string;
+};
 
 export async function GET() {
   try {
     const supabase = await createClient();
-    
+
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
@@ -12,11 +19,11 @@ export async function GET() {
     }
 
     // Verify admin role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
       .eq('user_id', user.id)
-      .single();
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff || staff.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized - Admin only' }, { status: 403 });
@@ -30,11 +37,11 @@ export async function GET() {
     const lastMonthStart = lastMonth.toISOString().split('T')[0];
 
     // Get all orders for the last 30 days
-    const { data: orders, error: ordersError } = await supabase
+    const { data: orders, error: ordersError } = (await supabase
       .from('orders')
       .select('id, total_amount, status, payment_method, created_at')
       .gte('created_at', `${thirtyDaysAgo}T00:00:00`)
-      .order('created_at');
+      .order('created_at')) as { data: Order[] | null; error: any };
 
     if (ordersError) {
       console.error('Error fetching orders:', ordersError);
