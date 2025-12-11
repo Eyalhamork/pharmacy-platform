@@ -4,53 +4,34 @@
 -- This SQL creates staff and admin accounts for the pharmacy platform
 -- Run this in your Supabase SQL Editor
 --
--- IMPORTANT: Change the passwords and email addresses before running!
+-- RECOMMENDED APPROACH:
+-- 1. Create users in Supabase Dashboard > Authentication > Users
+-- 2. Then run the staff table inserts below
 -- =====================================================
 
 -- Enable the required extensions (if not already enabled)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- =====================================================
--- METHOD 1: Create accounts using Supabase Auth Admin API
+-- STEP 1: Create auth users via Supabase Dashboard
 -- =====================================================
--- NOTE: This method creates both the auth user AND staff record
--- You can run this directly in Supabase SQL Editor
+-- Go to: Authentication > Users > Add User (Manual)
+-- Create these accounts:
+--
+-- 1. Admin: admin@pharmacy.com / Admin@123456
+-- 2. Manager: manager@pharmacy.com / Manager@123456
+-- 3. Staff: staff@pharmacy.com / Staff@123456
+--
+-- After creating them in the dashboard, run STEP 2 below
 -- =====================================================
 
--- ADMIN ACCOUNT
--- Email: admin@pharmacy.com (CHANGE THIS!)
--- Password: Admin@123456 (CHANGE THIS!)
--- Role: admin
-INSERT INTO auth.users (
-  id,
-  instance_id,
-  email,
-  encrypted_password,
-  email_confirmed_at,
-  raw_app_meta_data,
-  raw_user_meta_data,
-  created_at,
-  updated_at,
-  role,
-  aud
-) VALUES (
-  gen_random_uuid(),
-  '00000000-0000-0000-0000-000000000000',
-  'admin@pharmacy.com', -- CHANGE THIS EMAIL
-  crypt('Admin@123456', gen_salt('bf')), -- CHANGE THIS PASSWORD
-  now(),
-  '{"provider":"email","providers":["email"]}',
-  '{"full_name":"System Administrator"}',
-  now(),
-  now(),
-  'authenticated',
-  'authenticated'
-)
-ON CONFLICT (email) DO NOTHING
-RETURNING id;
+-- =====================================================
+-- STEP 2: Link auth users to staff table
+-- =====================================================
+-- Run this AFTER creating users in dashboard
 
--- Insert admin into staff table
--- NOTE: Replace the UUID below with the one returned from the above query
+-- Link ADMIN account
 INSERT INTO public.staff (
   id,
   email,
@@ -62,10 +43,10 @@ INSERT INTO public.staff (
 )
 SELECT
   id,
-  'admin@pharmacy.com', -- Must match email above
+  'admin@pharmacy.com',
   'System Administrator',
   'admin',
-  '+231-XXX-XXXX', -- CHANGE THIS PHONE NUMBER
+  '+231-000-0000',
   true,
   now()
 FROM auth.users
@@ -77,40 +58,7 @@ SET
   phone = EXCLUDED.phone,
   is_active = EXCLUDED.is_active;
 
-
--- STAFF ACCOUNT (Regular Staff)
--- Email: staff@pharmacy.com (CHANGE THIS!)
--- Password: Staff@123456 (CHANGE THIS!)
--- Role: staff
-INSERT INTO auth.users (
-  id,
-  instance_id,
-  email,
-  encrypted_password,
-  email_confirmed_at,
-  raw_app_meta_data,
-  raw_user_meta_data,
-  created_at,
-  updated_at,
-  role,
-  aud
-) VALUES (
-  gen_random_uuid(),
-  '00000000-0000-0000-0000-000000000000',
-  'staff@pharmacy.com', -- CHANGE THIS EMAIL
-  crypt('Staff@123456', gen_salt('bf')), -- CHANGE THIS PASSWORD
-  now(),
-  '{"provider":"email","providers":["email"]}',
-  '{"full_name":"Staff Member"}',
-  now(),
-  now(),
-  'authenticated',
-  'authenticated'
-)
-ON CONFLICT (email) DO NOTHING
-RETURNING id;
-
--- Insert staff into staff table
+-- Link MANAGER account
 INSERT INTO public.staff (
   id,
   email,
@@ -122,70 +70,10 @@ INSERT INTO public.staff (
 )
 SELECT
   id,
-  'staff@pharmacy.com', -- Must match email above
-  'Staff Member',
-  'staff',
-  '+231-XXX-XXXX', -- CHANGE THIS PHONE NUMBER
-  true,
-  now()
-FROM auth.users
-WHERE email = 'staff@pharmacy.com'
-ON CONFLICT (email) DO UPDATE
-SET
-  full_name = EXCLUDED.full_name,
-  role = EXCLUDED.role,
-  phone = EXCLUDED.phone,
-  is_active = EXCLUDED.is_active;
-
-
--- MANAGER ACCOUNT (Optional)
--- Email: manager@pharmacy.com (CHANGE THIS!)
--- Password: Manager@123456 (CHANGE THIS!)
--- Role: manager
-INSERT INTO auth.users (
-  id,
-  instance_id,
-  email,
-  encrypted_password,
-  email_confirmed_at,
-  raw_app_meta_data,
-  raw_user_meta_data,
-  created_at,
-  updated_at,
-  role,
-  aud
-) VALUES (
-  gen_random_uuid(),
-  '00000000-0000-0000-0000-000000000000',
-  'manager@pharmacy.com', -- CHANGE THIS EMAIL
-  crypt('Manager@123456', gen_salt('bf')), -- CHANGE THIS PASSWORD
-  now(),
-  '{"provider":"email","providers":["email"]}',
-  '{"full_name":"Pharmacy Manager"}',
-  now(),
-  now(),
-  'authenticated',
-  'authenticated'
-)
-ON CONFLICT (email) DO NOTHING
-RETURNING id;
-
--- Insert manager into staff table
-INSERT INTO public.staff (
-  id,
-  email,
-  full_name,
-  role,
-  phone,
-  is_active,
-  created_at
-)
-SELECT
-  id,
-  'manager@pharmacy.com', -- Must match email above
+  'manager@pharmacy.com',
   'Pharmacy Manager',
   'manager',
-  '+231-XXX-XXXX', -- CHANGE THIS PHONE NUMBER
+  '+231-000-0000',
   true,
   now()
 FROM auth.users
@@ -197,11 +85,37 @@ SET
   phone = EXCLUDED.phone,
   is_active = EXCLUDED.is_active;
 
+-- Link STAFF account
+INSERT INTO public.staff (
+  id,
+  email,
+  full_name,
+  role,
+  phone,
+  is_active,
+  created_at
+)
+SELECT
+  id,
+  'staff@pharmacy.com',
+  'Staff Member',
+  'staff',
+  '+231-000-0000',
+  true,
+  now()
+FROM auth.users
+WHERE email = 'staff@pharmacy.com'
+ON CONFLICT (email) DO UPDATE
+SET
+  full_name = EXCLUDED.full_name,
+  role = EXCLUDED.role,
+  phone = EXCLUDED.phone,
+  is_active = EXCLUDED.is_active;
 
 -- =====================================================
 -- VERIFICATION QUERIES
 -- =====================================================
--- Run these to verify the accounts were created successfully
+-- Run these to verify the accounts were linked successfully
 -- =====================================================
 
 -- Check auth users
@@ -209,8 +123,7 @@ SELECT
   id,
   email,
   email_confirmed_at,
-  created_at,
-  raw_user_meta_data->>'full_name' as full_name
+  created_at
 FROM auth.users
 WHERE email IN ('admin@pharmacy.com', 'staff@pharmacy.com', 'manager@pharmacy.com')
 ORDER BY email;
@@ -232,69 +145,3 @@ ORDER BY
     WHEN 'manager' THEN 2
     WHEN 'staff' THEN 3
   END;
-
-
--- =====================================================
--- ALTERNATIVE METHOD 2: Using Supabase Dashboard
--- =====================================================
--- If the above SQL doesn't work, you can create users via:
--- 1. Supabase Dashboard > Authentication > Users > Add User
--- 2. Enter email and password
--- 3. Then run ONLY the staff table INSERT below:
--- =====================================================
-
--- EXAMPLE: After creating user in dashboard, run this:
-/*
-INSERT INTO public.staff (
-  id,
-  email,
-  full_name,
-  role,
-  phone,
-  is_active,
-  created_at
-)
-SELECT
-  id,
-  'YOUR_EMAIL_HERE',
-  'Full Name Here',
-  'admin', -- or 'staff' or 'manager'
-  '+231-XXX-XXXX',
-  true,
-  now()
-FROM auth.users
-WHERE email = 'YOUR_EMAIL_HERE'
-ON CONFLICT (email) DO UPDATE
-SET
-  full_name = EXCLUDED.full_name,
-  role = EXCLUDED.role,
-  phone = EXCLUDED.phone,
-  is_active = EXCLUDED.is_active;
-*/
-
-
--- =====================================================
--- DEFAULT LOGIN CREDENTIALS (REMEMBER TO CHANGE!)
--- =====================================================
-/*
-ADMIN ACCOUNT:
-Email: admin@pharmacy.com
-Password: Admin@123456
-Role: Full system access
-
-MANAGER ACCOUNT:
-Email: manager@pharmacy.com
-Password: Manager@123456
-Role: Inventory + orders management
-
-STAFF ACCOUNT:
-Email: staff@pharmacy.com
-Password: Staff@123456
-Role: Orders + prescriptions only
-
-⚠️ SECURITY WARNING:
-These are default credentials for initial setup only.
-CHANGE THESE IMMEDIATELY after first login!
-
-Login at: https://your-domain.com/auth/staff-login
-*/

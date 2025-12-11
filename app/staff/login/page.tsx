@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Lock, Mail, AlertCircle, Package } from 'lucide-react';
+import { Lock, Mail, AlertCircle, Package, Info, Copy, CheckCircle } from 'lucide-react';
 
 export default function StaffLoginPage() {
   const router = useRouter();
@@ -20,6 +20,15 @@ export default function StaffLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
+
+  const copyCredentials = async (email: string, password: string) => {
+    await navigator.clipboard.writeText(`${email}`);
+    setEmail(email);
+    setPassword(password);
+    setCopiedEmail(email);
+    setTimeout(() => setCopiedEmail(null), 2000);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,6 +132,97 @@ export default function StaffLoginPage() {
               ← Back to store
             </Link>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Test Credentials */}
+      <Card className="w-full max-w-md mt-4 border-blue-200 bg-blue-50/50">
+        <CardHeader className="pb-3">
+          <div className="flex items-center gap-2">
+            <Info className="h-4 w-4 text-blue-600" />
+            <CardTitle className="text-sm font-semibold text-blue-900">
+              Demo Credentials for Testing
+            </CardTitle>
+          </div>
+          <CardDescription className="text-xs text-blue-700">
+            Click any credential to auto-fill the login form
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {/* Admin Credentials */}
+          <button
+            type="button"
+            onClick={() => copyCredentials('admin@pharmacy.com', 'Admin@123456')}
+            className="w-full text-left p-3 rounded-lg border border-blue-200 bg-white hover:bg-blue-50 hover:border-blue-300 transition-colors group"
+            disabled={loading}
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-semibold text-sm text-gray-900">Admin Account</span>
+                  {copiedEmail === 'admin@pharmacy.com' && (
+                    <CheckCircle className="h-3 w-3 text-green-600" />
+                  )}
+                </div>
+                <div className="text-xs text-gray-600 space-y-0.5">
+                  <div className="font-mono">admin@pharmacy.com</div>
+                  <div className="font-mono">Admin@123456</div>
+                  <div className="text-blue-600 mt-1">Full system access</div>
+                </div>
+              </div>
+              <Copy className="h-4 w-4 text-gray-400 group-hover:text-blue-600 transition-colors mt-1" />
+            </div>
+          </button>
+
+          {/* Manager Credentials */}
+          <button
+            type="button"
+            onClick={() => copyCredentials('manager@pharmacy.com', 'Manager@123456')}
+            className="w-full text-left p-3 rounded-lg border border-blue-200 bg-white hover:bg-blue-50 hover:border-blue-300 transition-colors group"
+            disabled={loading}
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-semibold text-sm text-gray-900">Manager Account</span>
+                  {copiedEmail === 'manager@pharmacy.com' && (
+                    <CheckCircle className="h-3 w-3 text-green-600" />
+                  )}
+                </div>
+                <div className="text-xs text-gray-600 space-y-0.5">
+                  <div className="font-mono">manager@pharmacy.com</div>
+                  <div className="font-mono">Manager@123456</div>
+                  <div className="text-blue-600 mt-1">Inventory + orders management</div>
+                </div>
+              </div>
+              <Copy className="h-4 w-4 text-gray-400 group-hover:text-blue-600 transition-colors mt-1" />
+            </div>
+          </button>
+
+          {/* Staff Credentials */}
+          <button
+            type="button"
+            onClick={() => copyCredentials('staff@pharmacy.com', 'Staff@123456')}
+            className="w-full text-left p-3 rounded-lg border border-blue-200 bg-white hover:bg-blue-50 hover:border-blue-300 transition-colors group"
+            disabled={loading}
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-semibold text-sm text-gray-900">Staff Account</span>
+                  {copiedEmail === 'staff@pharmacy.com' && (
+                    <CheckCircle className="h-3 w-3 text-green-600" />
+                  )}
+                </div>
+                <div className="text-xs text-gray-600 space-y-0.5">
+                  <div className="font-mono">staff@pharmacy.com</div>
+                  <div className="font-mono">Staff@123456</div>
+                  <div className="text-blue-600 mt-1">Orders + prescriptions only</div>
+                </div>
+              </div>
+              <Copy className="h-4 w-4 text-gray-400 group-hover:text-blue-600 transition-colors mt-1" />
+            </div>
+          </button>
         </CardContent>
       </Card>
     </div>
