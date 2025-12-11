@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(
@@ -6,7 +6,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerClient();
+    const supabase = await createClient();
     
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -65,7 +65,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerClient();
+    const supabase = await createClient();
     
     // Verify admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();

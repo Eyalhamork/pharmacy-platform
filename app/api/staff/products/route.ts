@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { withRateLimit, getRateLimitHeaders } from '@/lib/security';
 
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const supabase = createServerClient();
+    const supabase = await createClient();
     
     // Verify staff authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const supabase = createServerClient();
+    const supabase = await createClient();
     
     // Verify staff authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();

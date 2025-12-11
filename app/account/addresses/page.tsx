@@ -6,10 +6,20 @@ import { Button } from '@/components/ui/button';
 import { Plus, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { AddressCard } from '@/components/account/address-card';
+import type { Database } from '@/lib/types/database';
+
+type Address = Database['public']['Tables']['addresses']['Row'] & {
+  delivery_zones: {
+    id: string;
+    name: string;
+    delivery_fee: number;
+    estimated_delivery_time: string | null;
+  } | null;
+};
 
 export default async function AddressesPage() {
   const supabase = await createClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -19,7 +29,7 @@ export default async function AddressesPage() {
   }
 
   // Get user addresses with delivery zone info
-  const { data: addresses } = await supabase
+  const { data: addresses } = (await supabase
     .from('addresses')
     .select(`
       *,
@@ -32,7 +42,7 @@ export default async function AddressesPage() {
     `)
     .eq('user_id', user.id)
     .order('is_default', { ascending: false })
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })) as { data: Address[] | null };
 
   return (
     <div className="space-y-6">

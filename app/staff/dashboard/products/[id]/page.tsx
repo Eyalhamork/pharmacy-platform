@@ -4,7 +4,7 @@ import ProductForm from '@/components/staff/product-form';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { createServerClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Edit Product - Staff Dashboard',
@@ -18,7 +18,7 @@ interface EditProductPageProps {
 }
 
 async function getProduct(id: string) {
-  const supabase = createServerClient();
+  const supabase = await createClient();
 
   const { data: product, error } = await supabase
     .from('products')
