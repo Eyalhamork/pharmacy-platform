@@ -1,6 +1,11 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { withRateLimit, getRateLimitHeaders } from '@/lib/security';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
+type Product = Database['public']['Tables']['products']['Row'];
+type ProductInsert = Database['public']['Tables']['products']['Insert'];
 
 export async function GET(request: NextRequest) {
   // Rate limiting
@@ -22,11 +27,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Verify staff role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
@@ -122,11 +127,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify staff role (only managers and admins can add products)
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
-      .single();
+      .eq('id', user.id)
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
@@ -161,25 +166,27 @@ export async function POST(request: NextRequest) {
     }
 
     // Create product
-    const { data: product, error: insertError } = await supabase
+    const insertData: ProductInsert = {
+      name,
+      generic_name: generic_name || null,
+      brand: brand || null,
+      category_id,
+      description: description || null,
+      usage_instructions: usage_instructions || null,
+      dosage_info: dosage_info || null,
+      warnings: warnings || null,
+      price: parseFloat(price),
+      stock_quantity: parseInt(stock_quantity) || 0,
+      requires_prescription: requires_prescription || false,
+      image_url: image_url || null,
+      is_active: true
+    };
+
+    const { data: product, error: insertError } = (await supabase
       .from('products')
-      .insert({
-        name,
-        generic_name: generic_name || null,
-        brand: brand || null,
-        category_id,
-        description: description || null,
-        usage_instructions: usage_instructions || null,
-        dosage_info: dosage_info || null,
-        warnings: warnings || null,
-        price: parseFloat(price),
-        stock_quantity: parseInt(stock_quantity) || 0,
-        requires_prescription: requires_prescription || false,
-        image_url: image_url || null,
-        is_active: true
-      })
+      .insert(insertData)
       .select()
-      .single();
+      .single()) as { data: Product | null; error: any };
 
     if (insertError) {
       console.error('Error creating product:', insertError);

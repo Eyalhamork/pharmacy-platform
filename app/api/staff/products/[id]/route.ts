@@ -1,5 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import type { Database } from '@/lib/types/database';
+
+type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
+type Product = Database['public']['Tables']['products']['Row'];
+type ProductUpdate = Database['public']['Tables']['products']['Update'];
 
 export async function GET(
   request: NextRequest,
@@ -15,10 +20,10 @@ export async function GET(
     }
 
     // Verify staff role
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
+      .eq('id', user.id)
       .single();
 
     if (staffError || !staff) {
@@ -66,10 +71,10 @@ export async function PUT(
     }
 
     // Verify staff role (only managers and admins can edit products)
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
+      .eq('id', user.id)
       .single();
 
     if (staffError || !staff) {
@@ -106,27 +111,29 @@ export async function PUT(
     }
 
     // Update product
-    const { data: product, error: updateError } = await supabase
+    const updateData: ProductUpdate = {
+      name,
+      generic_name: generic_name || null,
+      brand: brand || null,
+      category_id,
+      description: description || null,
+      usage_instructions: usage_instructions || null,
+      dosage_info: dosage_info || null,
+      warnings: warnings || null,
+      price: parseFloat(price),
+      stock_quantity: stock_quantity !== undefined ? parseInt(stock_quantity) : undefined,
+      requires_prescription: requires_prescription || false,
+      image_url: image_url || null,
+      is_active: is_active !== undefined ? is_active : true,
+      updated_at: new Date().toISOString()
+    };
+
+    const { data: product, error: updateError } = (await supabase
       .from('products')
-      .update({
-        name,
-        generic_name: generic_name || null,
-        brand: brand || null,
-        category_id,
-        description: description || null,
-        usage_instructions: usage_instructions || null,
-        dosage_info: dosage_info || null,
-        warnings: warnings || null,
-        price: parseFloat(price),
-        stock_quantity: stock_quantity !== undefined ? parseInt(stock_quantity) : undefined,
-        requires_prescription: requires_prescription || false,
-        image_url: image_url || null,
-        is_active: is_active !== undefined ? is_active : true,
-        updated_at: new Date().toISOString()
-      })
+      .update(updateData)
       .eq('id', params.id)
       .select()
-      .single();
+      .single()) as { data: Product | null; error: any };
 
     if (updateError) {
       console.error('Error updating product:', updateError);
@@ -155,10 +162,10 @@ export async function DELETE(
     }
 
     // Verify staff role (only admins can delete products)
-    const { data: staff, error: staffError } = await supabase
+    const { data: staff, error: staffError } = (await supabase
       .from('staff')
       .select('role')
-      .eq('user_id', user.id)
+      .eq('id', user.id)
       .single();
 
     if (staffError || !staff) {
@@ -183,15 +190,17 @@ export async function DELETE(
 
     // If product has been ordered, deactivate instead of delete
     if (orderItems && orderItems.length > 0) {
-      const { data: product, error: deactivateError } = await supabase
+      const deactivateData: ProductUpdate = {
+        is_active: false,
+        updated_at: new Date().toISOString()
+      };
+
+      const { data: product, error: deactivateError } = (await supabase
         .from('products')
-        .update({ 
-          is_active: false,
-          updated_at: new Date().toISOString()
-        })
+        .update(deactivateData)
         .eq('id', params.id)
         .select()
-        .single();
+        .single()) as { data: Product | null; error: any };
 
       if (deactivateError) {
         console.error('Error deactivating product:', deactivateError);
