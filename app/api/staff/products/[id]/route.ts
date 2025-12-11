@@ -24,7 +24,7 @@ export async function GET(
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single();
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
@@ -75,7 +75,7 @@ export async function PUT(
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single();
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
@@ -166,7 +166,7 @@ export async function DELETE(
       .from('staff')
       .select('role')
       .eq('id', user.id)
-      .single();
+      .single()) as { data: Staff | null; error: any };
 
     if (staffError || !staff) {
       return NextResponse.json({ error: 'Unauthorized - Staff only' }, { status: 403 });
