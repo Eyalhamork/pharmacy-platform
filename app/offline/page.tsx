@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function OfflinePage() {
-  const [isOnline, setIsOnline] = useState(true);
+  const [isOnline, setIsOnline] = useState(typeof window !== 'undefined' ? navigator.onLine : false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     setIsOnline(navigator.onLine);
 
     const handleOnline = () => setIsOnline(true);
@@ -24,7 +26,9 @@ export default function OfflinePage() {
   }, []);
 
   const handleReload = () => {
-    window.location.reload();
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
   };
 
   if (isOnline) {

@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
+export const dynamic = 'force-dynamic';
+
 type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
 type Order = Pick<Database['public']['Tables']['orders']['Row'], 'id' | 'total_amount' | 'created_at'> & {
   status: string;

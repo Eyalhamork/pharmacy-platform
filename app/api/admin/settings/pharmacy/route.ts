@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import type { Database } from '@/lib/types/database';
 
+export const dynamic = 'force-dynamic';
+
 type Staff = Pick<Database['public']['Tables']['staff']['Row'], 'role'>;
 
 export async function GET() {
