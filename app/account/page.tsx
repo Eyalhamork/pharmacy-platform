@@ -4,10 +4,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Package, MapPin, Clock, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
+import type { Database } from '@/lib/types/database';
+
+type UserProfile = Database['public']['Tables']['user_profiles']['Row'];
+type Order = {
+  id: string;
+  order_number: string;
+  total_amount: number;
+  order_status: string;
+  created_at: string;
+};
 
 export default async function AccountDashboard() {
   const supabase = await createClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -26,19 +36,19 @@ export default async function AccountDashboard() {
     .eq('user_id', user.id);
 
   // Get recent orders
-  const { data: recentOrders } = await supabase
+  const { data: recentOrders } = (await supabase
     .from('orders')
     .select('id, order_number, total_amount, order_status, created_at')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
-    .limit(5);
+    .limit(5)) as { data: Order[] | null };
 
   // Get user profile
-  const { data: profile } = await supabase
+  const { data: profile } = (await supabase
     .from('user_profiles')
     .select('*')
     .eq('id', user.id)
-    .single();
+    .single()) as { data: UserProfile | null };
 
   return (
     <div className="space-y-6">
