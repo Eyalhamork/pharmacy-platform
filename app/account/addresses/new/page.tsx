@@ -6,10 +6,13 @@ import { AddressForm } from '@/components/account/address-form';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import type { Database } from '@/lib/types/database';
+
+type DeliveryZone = Database['public']['Tables']['delivery_zones']['Row'];
 
 export default async function NewAddressPage() {
   const supabase = await createClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -19,11 +22,11 @@ export default async function NewAddressPage() {
   }
 
   // Get delivery zones for dropdown
-  const { data: deliveryZones } = await supabase
+  const { data: deliveryZones } = (await supabase
     .from('delivery_zones')
     .select('*')
     .eq('is_active', true)
-    .order('name');
+    .order('name')) as { data: DeliveryZone[] | null };
 
   return (
     <div className="space-y-6">

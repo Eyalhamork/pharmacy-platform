@@ -6,10 +6,13 @@ import { ProfileForm } from '@/components/account/profile-form';
 import { ChangePasswordForm } from '@/components/account/change-password-form';
 import { DeleteAccountButton } from '@/components/account/delete-account-button';
 import { Separator } from '@/components/ui/separator';
+import type { Database } from '@/lib/types/database';
+
+type UserProfile = Database['public']['Tables']['user_profiles']['Row'];
 
 export default async function ProfilePage() {
   const supabase = await createClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -19,11 +22,11 @@ export default async function ProfilePage() {
   }
 
   // Get user profile
-  const { data: profile } = await supabase
+  const { data: profile } = (await supabase
     .from('user_profiles')
     .select('*')
     .eq('id', user.id)
-    .single();
+    .single()) as { data: UserProfile | null };
 
   return (
     <div className="space-y-6">
