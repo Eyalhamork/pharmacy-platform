@@ -44,19 +44,19 @@ export const themes = {
     name: 'Lucky Pharmacy',
     colors: {
       // Primary color (Deep Dark Green) - From "PHARMACY" text and logo
-      primary: '176 70% 25%',
+      primary: '142 76% 25%',
       primaryForeground: '0 0% 100%',
 
       // Secondary color (Lighter Green)
-      secondary: '176 50% 45%',
+      secondary: '142 70% 45%',
       secondaryForeground: '0 0% 100%',
 
-      // Accent color (Brick Red/Orange) - From "LUCKY" text
-      accent: '10 80% 55%',
+      // Accent color (Red) - From "LUCKY" text
+      accent: '0 85% 60%',
       accentForeground: '0 0% 100%',
 
       // Muted backgrounds
-      muted: '176 30% 96%',
+      muted: '142 30% 96%',
       mutedForeground: '0 0% 45%',
     },
     logo: {
