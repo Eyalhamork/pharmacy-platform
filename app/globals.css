@@ -11,29 +11,29 @@
     --card-foreground: 0 0% 9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
-    
-    /* Lucky Pharmacy Brand Colors - Blue Primary, Gold Accent */
-    --primary: 217 91% 60%;
+
+    /* Lucky Pharmacy Brand Colors - Deep Dark Green Primary, Red Accent */
+    --primary: 142 76% 25%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 217 85% 70%;
+    --secondary: 142 70% 45%;
     --secondary-foreground: 0 0% 100%;
-    --accent: 45 93% 47%;
-    --accent-foreground: 0 0% 9%;
-    
+    --accent: 0 85% 60%;
+    --accent-foreground: 0 0% 100%;
+
     /* UI Colors */
-    --muted: 217 30% 96%;
+    --muted: 142 30% 96%;
     --muted-foreground: 0 0% 45%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 217 91% 60%;
+    --ring: 142 76% 25%;
     --radius: 0.75rem;
-    
+
     /* Additional brand colors */
     --success: 142 76% 36%;
-    --warning: 45 93% 47%;
-    --info: 217 91% 60%;
+    --warning: 0 85% 60%;
+    --info: 142 70% 45%;
   }
 
   .dark {
@@ -63,6 +63,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: 'rlig' 1, 'calt' 1;
