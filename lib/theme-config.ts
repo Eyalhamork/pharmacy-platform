@@ -14,15 +14,15 @@ export const themes = {
       // Primary color (Green) - Used for main buttons, links, and primary actions
       primary: '142 76% 36%',        // hsl format for Tailwind
       primaryForeground: '0 0% 100%',
-      
+
       // Secondary color (Light Green) - Used for hover states and secondary elements
       secondary: '142 71% 45%',
       secondaryForeground: '0 0% 100%',
-      
+
       // Accent color (Orange) - Used for calls-to-action and highlights
       accent: '25 95% 53%',
       accentForeground: '0 0% 100%',
-      
+
       // Muted backgrounds
       muted: '142 30% 96%',
       mutedForeground: '0 0% 45%',
@@ -39,24 +39,24 @@ export const themes = {
       address: 'Tubman Boulevard, Sinkor, Monrovia, Liberia',
     },
   },
-  
+
   luckypharmacy: {
     name: 'Lucky Pharmacy',
     colors: {
-      // Primary color (Blue)
-      primary: '217 91% 60%',
+      // Primary color (Deep Dark Green) - From "PHARMACY" text and logo
+      primary: '176 70% 25%',
       primaryForeground: '0 0% 100%',
-      
-      // Secondary color
-      secondary: '217 85% 70%',
+
+      // Secondary color (Lighter Green)
+      secondary: '176 50% 45%',
       secondaryForeground: '0 0% 100%',
-      
-      // Accent color (Gold)
-      accent: '45 93% 47%',
-      accentForeground: '0 0% 9%',
-      
+
+      // Accent color (Brick Red/Orange) - From "LUCKY" text
+      accent: '10 80% 55%',
+      accentForeground: '0 0% 100%',
+
       // Muted backgrounds
-      muted: '217 30% 96%',
+      muted: '176 30% 96%',
       mutedForeground: '0 0% 45%',
     },
     logo: {
@@ -71,22 +71,22 @@ export const themes = {
       address: 'Monrovia, Liberia',
     },
   },
-  
+
   demo: {
     name: 'PharmacyDemo',
     colors: {
       // Primary color (Blue)
       primary: '221 83% 53%',
       primaryForeground: '0 0% 100%',
-      
+
       // Secondary color (Green)
       secondary: '142 76% 36%',
       secondaryForeground: '0 0% 100%',
-      
+
       // Accent color (Orange)
       accent: '25 95% 53%',
       accentForeground: '0 0% 100%',
-      
+
       // Muted backgrounds
       muted: '210 40% 96%',
       mutedForeground: '0 0% 45%',

@@ -85,12 +85,18 @@ export function StaffSidebar() {
       {/* Logo/Brand */}
       <div className="flex h-16 items-center border-b px-6">
         <Link href="/staff/dashboard" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
-            <Package className="h-5 w-5" />
+          <div className="flex items-center justify-center">
+            {/* Custom Cross in Circle Logo */}
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="4" className="text-primary" fill="none" />
+              <path d="M20 10V30M10 20H30" stroke="currentColor" strokeWidth="6" strokeLinecap="square" className="text-primary" />
+            </svg>
           </div>
           <div>
-            <h1 className="text-lg font-bold text-primary">Lucky Pharmacy</h1>
-            <p className="text-xs text-muted-foreground">Staff Portal</p>
+            <div className="flex flex-col -space-y-1">
+              <span className="text-lg font-bold text-accent tracking-wide uppercase leading-none">LUCKY</span>
+              <span className="text-lg font-bold text-primary tracking-wide uppercase leading-none">PHARMACY</span>
+            </div>
           </div>
         </Link>
       </div>

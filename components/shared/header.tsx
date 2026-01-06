@@ -56,12 +56,18 @@ export function Header() {
           <div className="flex h-16 items-center justify-between gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary">
-                <span className="text-2xl font-bold text-white">L</span>
+              <div className="flex items-center justify-center">
+                {/* Custom Cross in Circle Logo */}
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="4" className="text-primary" fill="none" />
+                  <path d="M20 10V30M10 20H30" stroke="currentColor" strokeWidth="6" strokeLinecap="square" className="text-primary" />
+                </svg>
               </div>
               <div className="hidden sm:block">
-                <span className="text-xl font-bold text-primary">Lucky Pharmacy</span>
-                <p className="text-xs text-muted-foreground">Online Pharmacy</p>
+                <div className="flex flex-col -space-y-1">
+                  <span className="text-xl font-bold text-accent tracking-wide uppercase leading-none">LUCKY</span>
+                  <span className="text-xl font-bold text-primary tracking-wide uppercase leading-none">PHARMACY</span>
+                </div>
               </div>
             </Link>
 
