@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mopharma.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://luckypharmacy.com';
 
 export async function GET() {
   try {
@@ -53,42 +53,40 @@ export async function GET() {
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   ${staticPages
-    .map(
-      (page) => `
+        .map(
+          (page) => `
   <url>
     <loc>${BASE_URL}${page.url}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`
-    )
-    .join('')}
-  ${
-    categories
-      ?.map(
-        (category) => `
+        )
+        .join('')}
+  ${categories
+        ?.map(
+          (category) => `
   <url>
     <loc>${BASE_URL}/products?category=${category.slug}</loc>
     <lastmod>${new Date(category.created_at).toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`
-      )
-      .join('') || ''
-  }
-  ${
-    products
-      ?.map(
-        (product) => `
+        )
+        .join('') || ''
+      }
+  ${products
+        ?.map(
+          (product) => `
   <url>
     <loc>${BASE_URL}/products/${product.id}</loc>
     <lastmod>${new Date(product.updated_at).toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>`
-      )
-      .join('') || ''
-  }
+        )
+        .join('') || ''
+      }
 </urlset>`;
 
     return new NextResponse(sitemap, {

@@ -57,25 +57,24 @@ export function PrescriptionVerification({
     try {
       setProcessing(true);
       await onVerify(isApproving, reason || undefined);
-      
+
       // The parent component will handle WhatsApp sending based on the sendWhatsApp state
       // This is passed through a callback or event
       if (sendWhatsApp) {
         // Generate WhatsApp link based on approval/rejection
         const phone = order.customer_whatsapp || order.customer_phone;
         const formattedPhone = phone.replace(/[^0-9]/g, '');
-        
+
         let message = '';
         if (isApproving) {
           message = `Hello ${order.customer_name},
 
 Good news! Your prescription for order #${order.order_number} has been verified and approved. ✅
 
-We're now processing your order and will notify you when it's ready for ${
-            order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
-          }.
+We're now processing your order and will notify you when it's ready for ${order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
+            }.
 
-Thank you for choosing MoPharma!`;
+Thank you for choosing Lucky Pharmacy!`;
         } else {
           message = `Hello ${order.customer_name},
 
@@ -89,16 +88,16 @@ Please upload a new, valid prescription or contact us for assistance.
 
 We apologize for any inconvenience.`;
         }
-        
+
         const encodedMessage = encodeURIComponent(message);
         const url = `https://wa.me/${formattedPhone}?text=${encodedMessage}`;
-        
+
         // Small delay to ensure verification is complete
         setTimeout(() => {
           window.open(url, '_blank');
         }, 500);
       }
-      
+
       setShowDialog(false);
     } catch (error) {
       console.error('Error verifying prescription:', error);
@@ -243,8 +242,8 @@ We apologize for any inconvenience.`;
               {processing
                 ? 'Processing...'
                 : isApproving
-                ? 'Approve & Notify'
-                : 'Reject & Notify'}
+                  ? 'Approve & Notify'
+                  : 'Reject & Notify'}
             </Button>
           </DialogFooter>
         </DialogContent>

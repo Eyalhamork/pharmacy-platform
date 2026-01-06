@@ -109,10 +109,10 @@ export default function ForgotPasswordPage() {
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center mb-8">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary mr-3">
-            <span className="text-2xl font-bold text-white">M</span>
+            <span className="text-2xl font-bold text-white">L</span>
           </div>
           <div>
-            <span className="text-2xl font-bold text-primary">MoPharma</span>
+            <span className="text-2xl font-bold text-primary">Lucky Pharmacy</span>
             <p className="text-xs text-muted-foreground">Online Pharmacy</p>
           </div>
         </Link>

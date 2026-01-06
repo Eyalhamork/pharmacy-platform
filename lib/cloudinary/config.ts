@@ -1,5 +1,5 @@
 // lib/cloudinary/config.ts
-// Cloudinary configuration for MoPharma product images
+// Cloudinary configuration for Lucky Pharmacy product images
 
 export const cloudinaryConfig = {
   cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '',
@@ -66,7 +66,7 @@ export function getOptimizedImageUrl(
     // Already a Cloudinary URL - add transformations
     const transformConfig = imageTransforms[transform];
     const transformString = `c_${transformConfig.crop},w_${transformConfig.width},h_${transformConfig.height},q_${transformConfig.quality},f_${transformConfig.format}`;
-    
+
     // Insert transformations into URL
     return publicId.replace(
       '/upload/',
@@ -78,7 +78,7 @@ export function getOptimizedImageUrl(
   if (cloudinaryConfig.cloudName) {
     const transformConfig = imageTransforms[transform];
     const transformString = `c_${transformConfig.crop},w_${transformConfig.width},h_${transformConfig.height},q_${transformConfig.quality},f_${transformConfig.format}`;
-    
+
     return `https://res.cloudinary.com/${cloudinaryConfig.cloudName}/image/upload/${transformString}/${publicId}`;
   }
 

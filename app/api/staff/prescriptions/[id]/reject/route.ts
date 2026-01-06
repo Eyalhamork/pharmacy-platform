@@ -19,7 +19,7 @@ export async function POST(
 
     // Verify staff authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -103,7 +103,7 @@ export async function POST(
     const order = prescription.orders as any;
     if (order?.customer_whatsapp) {
       try {
-        const whatsappMessage = `❌ *Prescription Issue - MoPharma*
+        const whatsappMessage = `❌ *Prescription Issue - Lucky Pharmacy*
 
 Hello ${order.customer_name},
 
@@ -114,7 +114,7 @@ We've reviewed your prescription for order *${order.order_number}*.
 Please upload a new, clear prescription or contact us for assistance.
 
 📞 Call: ${process.env.NEXT_PUBLIC_PHARMACY_PHONE || '0770123456'}
-🏥 MoPharma - Your Health Partner`;
+🏥 Lucky Pharmacy - Your Health Partner`;
 
         // Call WhatsApp API (implement based on your provider)
         await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/whatsapp/send`, {

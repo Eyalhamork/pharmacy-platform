@@ -106,7 +106,7 @@ export const themes = {
 };
 
 // Active theme - change this to switch pharmacy branding
-export const activeTheme = themes.mopharma;
+export const activeTheme = themes.luckypharmacy;
 
 /**
  * HOW TO REBRAND FOR A NEW PHARMACY:

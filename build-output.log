@@ -1,0 +1,132 @@
+
+> pharmacy-platform@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.33
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+> [PWA] Compile server
+> [PWA] Compile server
+> [PWA] Compile client (static)
+> [PWA] Auto register service worker with: C:\Users\Layee Kromah\Documents\pharmacy-platform\node_modules\next-pwa\register.js
+> [PWA] Service worker: C:\Users\Layee Kromah\Documents\pharmacy-platform\public\sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (128kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings
+
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+A Node.js API is used (process.versions at line: 39) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+./node_modules/@supabase/realtime-js/dist/module/index.js
+./node_modules/@supabase/supabase-js/dist/module/index.js
+./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+
+./node_modules/@supabase/supabase-js/dist/module/index.js
+A Node.js API is used (process.version at line: 32) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/supabase-js/dist/module/index.js
+./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/53) ...
+   Generating static pages (13/53) 
+   Generating static pages (26/53) 
+   Generating static pages (39/53) 
+ ✓ Generating static pages (53/53)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                  Size     First Load JS
+┌ ○ /                                        196 B           314 kB
+├ ○ /_not-found                              143 B           304 kB
+├ ○ /about                                   223 B           314 kB
+├ ƒ /account                                 174 B           304 kB
+├ ƒ /account/addresses                       3.9 kB          307 kB
+├ ƒ /account/addresses/[id]                  134 B           308 kB
+├ ƒ /account/addresses/new                   134 B           308 kB
+├ ƒ /account/orders                          4.75 kB         308 kB
+├ ƒ /account/profile                         4.49 kB         308 kB
+├ ƒ /account/wishlist                        143 B           304 kB
+├ ○ /admin/dashboard                         2.87 kB         306 kB
+├ ○ /admin/dashboard/settings                5.63 kB         309 kB
+├ ○ /admin/dashboard/staff                   5.42 kB         309 kB
+├ ƒ /api/admin/analytics                     0 B                0 B
+├ ƒ /api/admin/categories                    0 B                0 B
+├ ƒ /api/admin/categories/[id]               0 B                0 B
+├ ƒ /api/admin/settings/delivery-zones       0 B                0 B
+├ ƒ /api/admin/settings/delivery-zones/[id]  0 B                0 B
+├ ƒ /api/admin/settings/pharmacy             0 B                0 B
+├ ƒ /api/admin/staff                         0 B                0 B
+├ ƒ /api/admin/staff/[id]                    0 B                0 B
+├ ƒ /api/auth/callback                       0 B                0 B
+├ ƒ /api/auth/signout                        0 B                0 B
+├ ƒ /api/categories                          0 B                0 B
+├ ƒ /api/orders/create                       0 B                0 B
+├ ƒ /api/orders/track                        0 B                0 B
+├ ƒ /api/payment/initiate                    0 B                0 B
+├ ƒ /api/payment/status/[referenceId]        0 B                0 B
+├ ƒ /api/search                              0 B                0 B
+├ ƒ /api/search/suggestions                  0 B                0 B
+├ ƒ /api/staff/orders/bulk                   0 B                0 B
+├ ƒ /api/staff/prescriptions/[id]/approve    0 B                0 B
+├ ƒ /api/staff/prescriptions/[id]/reject     0 B                0 B
+├ ƒ /api/staff/prescriptions/pending         0 B                0 B
+├ ƒ /api/staff/products                      0 B                0 B
+├ ƒ /api/staff/products/[id]                 0 B                0 B
+├ ƒ /api/staff/reports/daily                 0 B                0 B
+├ ƒ /api/staff/reports/inventory             0 B                0 B
+├ ƒ /api/staff/reports/period                0 B                0 B
+├ ƒ /api/webhooks/mtn-momo                   0 B                0 B
+├ ○ /cart                                    4.44 kB         318 kB
+├ ○ /checkout                                9.98 kB         323 kB
+├ ƒ /cloudinary/delete                       0 B                0 B
+├ ƒ /cloudinary/signature                    0 B                0 B
+├ ○ /contact                                 192 B           314 kB
+├ ○ /faq                                     677 B           314 kB
+├ ○ /forgot-password                         4.05 kB         308 kB
+├ ○ /how-it-works                            223 B           314 kB
+├ ○ /login                                   2.95 kB         310 kB
+├ ○ /offline                                 2.02 kB         305 kB
+├ ƒ /orders/[id]                             5.73 kB         319 kB
+├ ƒ /orders/[id]/confirmation                4.83 kB         318 kB
+├ ○ /privacy                                 223 B           314 kB
+├ ƒ /products                                3.72 kB         320 kB
+├ ƒ /products/[id]                           3.11 kB         320 kB
+├ ○ /reset-password                          4.14 kB         308 kB
+├ ○ /returns                                 223 B           314 kB
+├ ○ /robots.txt                              0 B                0 B
+├ ƒ /search                                  1.45 kB         318 kB
+├ ○ /shipping                                223 B           314 kB
+├ ○ /signup                                  3.27 kB         310 kB
+├ ƒ /sitemap                                 0 B                0 B
+├ ○ /staff/dashboard                         4.36 kB         308 kB
+├ ○ /staff/dashboard/prescriptions           6.93 kB         310 kB
+├ ○ /staff/dashboard/products                7.34 kB         311 kB
+├ ƒ /staff/dashboard/products/[id]           139 B           314 kB
+├ ○ /staff/dashboard/products/new            139 B           314 kB
+├ ○ /staff/dashboard/reports                 6.75 kB         310 kB
+├ ○ /staff/login                             3.67 kB         307 kB
+├ ○ /staff/orders                            4.62 kB         308 kB
+├ ƒ /staff/orders/[id]                       8.74 kB         312 kB
+├ ○ /terms                                   223 B           314 kB
+└ ○ /track-order                             4.41 kB         318 kB
++ First Load JS shared by all                303 kB
+  └ chunks/vendors-2e50d9f53ee040f1.js       302 kB
+  └ other shared chunks (total)              1.96 kB
+
+
+ƒ Middleware                                 74.5 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

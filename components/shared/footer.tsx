@@ -11,10 +11,10 @@ export function Footer() {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary">
-                <span className="text-2xl font-bold text-white">M</span>
+                <span className="text-2xl font-bold text-white">L</span>
               </div>
               <div>
-                <span className="text-xl font-bold text-white">MoPharma</span>
+                <span className="text-xl font-bold text-white">Lucky Pharmacy</span>
               </div>
             </div>
             <p className="text-sm mb-4">
@@ -119,8 +119,8 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                <a href="mailto:info@mopharma.com" className="hover:text-primary transition-colors">
-                  info@mopharma.com
+                <a href="mailto:info@luckypharmacy.com" className="hover:text-primary transition-colors">
+                  info@luckypharmacy.com
                 </a>
               </li>
             </ul>
@@ -132,7 +132,7 @@ export function Footer() {
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <p>&copy; {new Date().getFullYear()} MoPharma. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Lucky Pharmacy. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <span className="text-xs">Licensed by LMHRA</span>
               <span className="text-xs">•</span>

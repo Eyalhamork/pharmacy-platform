@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://mopharma.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://luckypharmacy.com';
 
 export async function GET() {
-  const robots = `# MoPharma Robots.txt
+  const robots = `# Lucky Pharmacy Robots.txt
 # Allow all search engines to crawl the site
 
 User-agent: *

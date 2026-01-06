@@ -50,7 +50,7 @@ export function DeliveryStep() {
   const loadAddresses = async () => {
     try {
       const supabase = createClient();
-      
+
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -148,11 +148,10 @@ export function DeliveryStep() {
             <div className="space-y-4">
               {/* Delivery Option */}
               <div
-                className={`flex items-start space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                  deliveryType === 'delivery'
+                className={`flex items-start space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${deliveryType === 'delivery'
                     ? 'border-primary bg-primary/5'
                     : 'border-gray-200 hover:border-gray-300'
-                }`}
+                  }`}
                 onClick={() => setDeliveryType('delivery')}
               >
                 <RadioGroupItem value="delivery" id="delivery" className="mt-1" />
@@ -172,11 +171,10 @@ export function DeliveryStep() {
 
               {/* Pickup Option */}
               <div
-                className={`flex items-start space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                  deliveryType === 'pickup'
+                className={`flex items-start space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${deliveryType === 'pickup'
                     ? 'border-primary bg-primary/5'
                     : 'border-gray-200 hover:border-gray-300'
-                }`}
+                  }`}
                 onClick={() => setDeliveryType('pickup')}
               >
                 <RadioGroupItem value="pickup" id="pickup" className="mt-1" />
@@ -238,11 +236,10 @@ export function DeliveryStep() {
                   {addresses.map((address) => (
                     <div
                       key={address.id}
-                      className={`flex items-start space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                        selectedAddressId === address.id
+                      className={`flex items-start space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${selectedAddressId === address.id
                           ? 'border-primary bg-primary/5'
                           : 'border-gray-200 hover:border-gray-300'
-                      }`}
+                        }`}
                       onClick={() => handleAddressSelect(address)}
                     >
                       <RadioGroupItem
@@ -264,7 +261,7 @@ export function DeliveryStep() {
                             </Badge>
                           )}
                         </div>
-                        
+
                         <p className="text-sm text-gray-700 mt-1">
                           {address.street_address}
                         </p>
@@ -310,7 +307,7 @@ export function DeliveryStep() {
             <div className="flex items-start gap-3">
               <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
               <div>
-                <h4 className="font-semibold mb-1">MoPharma</h4>
+                <h4 className="font-semibold mb-1">Lucky Pharmacy</h4>
                 <p className="text-sm text-muted-foreground mb-2">
                   Tubman Boulevard, Sinkor<br />
                   Monrovia, Liberia
@@ -340,7 +337,7 @@ export function DeliveryStep() {
                 </p>
                 {selectedAddress.delivery_zones && (
                   <p className="text-xs text-green-800 mt-1">
-                    {selectedAddress.delivery_zones.estimated_delivery_time && 
+                    {selectedAddress.delivery_zones.estimated_delivery_time &&
                       `Estimated delivery: ${selectedAddress.delivery_zones.estimated_delivery_time}`
                     }
                   </p>

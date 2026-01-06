@@ -89,7 +89,7 @@ export function StaffSidebar() {
             <Package className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-primary">MoPharma</h1>
+            <h1 className="text-lg font-bold text-primary">Lucky Pharmacy</h1>
             <p className="text-xs text-muted-foreground">Staff Portal</p>
           </div>
         </Link>

@@ -30,10 +30,10 @@ export async function GET() {
     // Get pharmacy settings (we'll store in a settings table)
     // For now, return default settings - you can create a settings table later
     const settings = {
-      pharmacy_name: 'MoPharma',
+      pharmacy_name: 'Lucky Pharmacy',
       logo_url: null,
       phone: '+231-XXX-XXXX',
-      email: 'info@mopharma.com',
+      email: 'info@luckypharmacy.com',
       whatsapp: '+231-XXX-XXXX',
       address: 'Monrovia, Liberia',
       operating_hours: {
@@ -81,9 +81,9 @@ export async function PUT(request: NextRequest) {
 
     // TODO: Save to settings table
     // For now, just return success
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: 'Settings updated successfully',
-      settings: body 
+      settings: body
     });
 
   } catch (error) {

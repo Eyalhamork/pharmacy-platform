@@ -31,13 +31,12 @@ export function getOrderConfirmationTemplate(order: Order): WhatsAppTemplate {
 
 Your order #${order.order_number} has been confirmed! 🎉
 
-We're preparing your items and will notify you when they're ready for ${
-    order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
-  }.
+We're preparing your items and will notify you when they're ready for ${order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
+    }.
 
 Order Total: LD ${order.total_amount.toFixed(2)}
 
-Thank you for choosing MoPharma!`;
+Thank you for choosing Lucky Pharmacy!`;
 
   return {
     message,
@@ -68,7 +67,7 @@ Thank you for your patience!`
 
 Great news! Your order #${order.order_number} is ready for pickup! 📦
 
-You can collect your order at MoPharma during our business hours.
+You can collect your order at Lucky Pharmacy during our business hours.
 Please bring your order number: ${order.order_number}
 
 Order Total: LD ${order.total_amount.toFixed(2)}
@@ -94,13 +93,11 @@ Your order #${order.order_number} is now out for delivery! 🚚
 
 Our delivery driver is on the way to your location. Please ensure someone is available to receive the order.
 
-Delivery Address: ${
-    order.delivery_address_snapshot
-      ? `${(order.delivery_address_snapshot as any).street_address}, ${
-          (order.delivery_address_snapshot as any).city
-        }`
+Delivery Address: ${order.delivery_address_snapshot
+      ? `${(order.delivery_address_snapshot as any).street_address}, ${(order.delivery_address_snapshot as any).city
+      }`
       : 'See order details'
-  }
+    }
 
 Order Total: LD ${order.total_amount.toFixed(2)}
 
@@ -123,9 +120,8 @@ export function getOrderCompletedTemplate(order: Order): WhatsAppTemplate {
 
 Thank you for your order! 🙏
 
-Your order #${order.order_number} has been ${
-    order.delivery_type === 'delivery' ? 'delivered' : 'collected'
-  }.
+Your order #${order.order_number} has been ${order.delivery_type === 'delivery' ? 'delivered' : 'collected'
+    }.
 
 We hope you're satisfied with our service. If you have any questions or concerns, please don't hesitate to reach out.
 
@@ -209,11 +205,10 @@ export function getPrescriptionApprovedTemplate(order: Order): WhatsAppTemplate 
 
 Good news! Your prescription for order #${order.order_number} has been verified and approved. ✅
 
-We're now processing your order and will notify you when it's ready for ${
-    order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
-  }.
+We're now processing your order and will notify you when it's ready for ${order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
+    }.
 
-Thank you for choosing MoPharma!`;
+Thank you for choosing Lucky Pharmacy!`;
 
   return {
     message,
@@ -263,11 +258,10 @@ This is a friendly reminder about your order #${order.order_number}.
 Payment Status: Pending
 Amount Due: LD ${order.total_amount.toFixed(2)}
 
-${
-  order.payment_method === 'mobile_money'
-    ? 'Please complete your Mobile Money payment to proceed.'
-    : 'Payment will be collected upon delivery/pickup.'
-}
+${order.payment_method === 'mobile_money'
+      ? 'Please complete your Mobile Money payment to proceed.'
+      : 'Payment will be collected upon delivery/pickup.'
+    }
 
 If you've already made the payment, please disregard this message.
 

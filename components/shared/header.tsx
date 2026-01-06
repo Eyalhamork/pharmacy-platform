@@ -57,10 +57,10 @@ export function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary">
-                <span className="text-2xl font-bold text-white">M</span>
+                <span className="text-2xl font-bold text-white">L</span>
               </div>
               <div className="hidden sm:block">
-                <span className="text-xl font-bold text-primary">MoPharma</span>
+                <span className="text-xl font-bold text-primary">Lucky Pharmacy</span>
                 <p className="text-xs text-muted-foreground">Online Pharmacy</p>
               </div>
             </Link>
@@ -81,15 +81,15 @@ export function Header() {
               <UserMenu />
 
               {/* Cart */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="relative"
                 onClick={() => setCartOpen(true)}
               >
                 <ShoppingCart className="h-5 w-5" />
                 {mounted && itemCount > 0 && (
-                  <Badge 
+                  <Badge
                     className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
                     variant="destructive"
                   >
@@ -140,51 +140,51 @@ export function Header() {
         {mobileMenuOpen && (
           <div className="border-t lg:hidden">
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-3">
-              <Link 
-                href="/products" 
+              <Link
+                href="/products"
                 className="text-sm font-medium hover:text-primary transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 All Products
               </Link>
-              <Link 
-                href="/products?category=pain-relief" 
+              <Link
+                href="/products?category=pain-relief"
                 className="text-sm font-medium hover:text-primary transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Pain Relief
               </Link>
-              <Link 
-                href="/products?category=antibiotics" 
+              <Link
+                href="/products?category=antibiotics"
                 className="text-sm font-medium hover:text-primary transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Antibiotics
               </Link>
-              <Link 
-                href="/products?category=vitamins-supplements" 
+              <Link
+                href="/products?category=vitamins-supplements"
                 className="text-sm font-medium hover:text-primary transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Vitamins & Supplements
               </Link>
-              <Link 
-                href="/products?category=prescription" 
+              <Link
+                href="/products?category=prescription"
                 className="text-sm font-medium text-accent py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Prescription Medications
               </Link>
               <div className="border-t pt-3 mt-3">
-                <Link 
-                  href="/track-order" 
+                <Link
+                  href="/track-order"
                   className="text-sm font-medium hover:text-primary transition-colors py-2 block"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Track Order
                 </Link>
-                <Link 
-                  href="/help" 
+                <Link
+                  href="/help"
                   className="text-sm font-medium hover:text-primary transition-colors py-2 block"
                   onClick={() => setMobileMenuOpen(false)}
                 >

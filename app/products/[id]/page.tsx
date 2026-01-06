@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 
   return {
-    title: `${product.name} | MoPharma`,
+    title: `${product.name} | Lucky Pharmacy`,
     description: product.description || `Buy ${product.name} online. ${product.generic_name ? `Generic: ${product.generic_name}.` : ''} Fast delivery across Monrovia.`,
     openGraph: {
       title: product.name,
@@ -79,7 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const relatedProducts = relatedResult.data as any;
 
   // Get product URL
-  const productUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://mopharma.com'}/products/${product.id}`;
+  const productUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://luckypharmacy.com'}/products/${product.id}`;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -147,7 +147,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 priority
                 className="rounded-lg"
               />
-              
+
               {/* Trust Badges */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-white rounded-lg border">
@@ -170,7 +170,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 {product.name}
               </h1>
-              
+
               <AddToCartSection product={product} />
             </div>
           </div>
@@ -211,14 +211,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       </p>
                     )}
                   </div>
-                  
+
                   {product.generic_name && (
                     <div>
                       <h4 className="font-medium mb-2">Generic Name</h4>
                       <p className="text-muted-foreground">{product.generic_name}</p>
                     </div>
                   )}
-                  
+
                   {product.brand_name && (
                     <div>
                       <h4 className="font-medium mb-2">Brand</h4>
@@ -259,7 +259,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       </p>
                     )}
                   </div>
-                  
+
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <p className="text-sm text-blue-800">
                       <strong>Important:</strong> Always follow the dosage prescribed by your healthcare provider. Do not exceed the recommended dose.
@@ -312,7 +312,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </Link>
                 )}
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {relatedProducts.map((relatedProduct: any) => (
                   <ProductCard key={relatedProduct.id} product={relatedProduct} />

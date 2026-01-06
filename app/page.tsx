@@ -21,7 +21,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5">
@@ -36,7 +36,7 @@ export default function HomePage() {
                   <span className="block text-primary mt-2">Delivered Fast</span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-600 max-w-xl">
-                  Order your medications online and get them delivered to your doorstep in 2-3 hours. 
+                  Order your medications online and get them delivered to your doorstep in 2-3 hours.
                   Pay with MTN Mobile Money or Cash on Delivery.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -53,7 +53,7 @@ export default function HomePage() {
                     </Link>
                   </Button>
                 </div>
-                
+
                 {/* Quick Stats */}
                 <div className="grid grid-cols-3 gap-6 pt-8">
                   <div>
@@ -76,7 +76,7 @@ export default function HomePage() {
                 <div className="relative h-[500px] w-full rounded-3xl overflow-hidden">
                   <Image
                     src="/images/hero-2.png"
-                    alt="MoPharma Hero"
+                    alt="Lucky Pharmacy Hero"
                     fill
                     className="object-cover"
                     priority
@@ -111,7 +111,7 @@ export default function HomePage() {
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Choose MoPharma?
+                Why Choose Lucky Pharmacy?
               </h2>
               <p className="text-lg text-gray-600">
                 Experience the convenience of online pharmacy shopping with our reliable service
@@ -313,7 +313,7 @@ export default function HomePage() {
                 Ready to Order Your Medications?
               </h2>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                Browse our full catalog of quality medicines and health products. 
+                Browse our full catalog of quality medicines and health products.
                 Get fast delivery across Monrovia today!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

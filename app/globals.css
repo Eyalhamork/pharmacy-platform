@@ -12,27 +12,27 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
     
-    /* MoPharma Brand Colors - Green Primary, Orange Accent */
-    --primary: 142 76% 36%;
+    /* Lucky Pharmacy Brand Colors - Blue Primary, Gold Accent */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 142 71% 45%;
+    --secondary: 217 85% 70%;
     --secondary-foreground: 0 0% 100%;
-    --accent: 25 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 0 0% 9%;
     
     /* UI Colors */
-    --muted: 142 30% 96%;
+    --muted: 217 30% 96%;
     --muted-foreground: 0 0% 45%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 142 76% 36%;
+    --ring: 217 91% 60%;
     --radius: 0.75rem;
     
     /* Additional brand colors */
     --success: 142 76% 36%;
-    --warning: 25 95% 53%;
+    --warning: 45 93% 47%;
     --info: 217 91% 60%;
   }
 

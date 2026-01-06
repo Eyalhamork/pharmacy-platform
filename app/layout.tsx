@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   creator: activeTheme.name,
   publisher: activeTheme.name,
   applicationName: activeTheme.name,
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://mopharma.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://luckypharmacy.com'),
   alternates: {
     canonical: '/',
   },
