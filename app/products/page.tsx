@@ -42,7 +42,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   // Build product query
   let query = supabase
     .from('products')
-    .select('*', { count: 'exact' })
+    .select(`
+      *,
+      category:categories(id, name, slug)
+    `, { count: 'exact' })
     .eq('is_available', true);
 
   // Apply filters

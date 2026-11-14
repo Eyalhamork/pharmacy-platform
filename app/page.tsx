@@ -110,9 +110,9 @@ export default function HomePage() {
         </section>
 
         {/* Features / Why Choose Us Section */}
-        <section className="py-20 md:py-28 bg-gradient-to-b from-white to-gray-50/60">
+        <section className="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50/60">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-10">
               <Badge variant="outline" className="mb-4 border-primary/30 text-primary bg-primary/5 px-4 py-1 text-sm font-medium">
                 Why Patients Trust Us
               </Badge>
@@ -185,9 +185,9 @@ export default function HomePage() {
         </section>
 
         {/* Categories Section */}
-        <section className="py-16 md:py-24 bg-gray-50">
+        <section className="py-12 md:py-16 bg-gray-50">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="text-center max-w-3xl mx-auto mb-8">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Shop by Category
               </h2>
@@ -218,7 +218,7 @@ export default function HomePage() {
               ))}
             </div>
 
-            <div className="text-center mt-8">
+            <div className="text-center mt-6">
               <Button asChild size="lg" variant="outline">
                 <Link href="/products">
                   View All Products
@@ -230,9 +230,9 @@ export default function HomePage() {
         </section>
 
         {/* How It Works */}
-        <section className="py-20 md:py-28 bg-white border-y border-gray-100">
+        <section className="py-12 md:py-16 bg-white border-y border-gray-100">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-10">
               <Badge variant="outline" className="mb-4 border-primary/30 text-primary bg-primary/5 px-4 py-1 text-sm font-medium">
                 Simple 3-Step Process
               </Badge>
@@ -312,7 +312,7 @@ export default function HomePage() {
         </section>
 
         {/* Trust Badges */}
-        <section className="py-16 bg-gradient-to-br from-primary to-secondary text-white">
+        <section className="py-12 md:py-14 bg-gradient-to-br from-primary to-secondary text-white">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-4 gap-8 text-center">
               <div>
@@ -340,7 +340,7 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-white">
+        <section className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto bg-gradient-to-br from-primary/10 via-accent/5 to-primary/10 rounded-3xl p-8 md:p-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">

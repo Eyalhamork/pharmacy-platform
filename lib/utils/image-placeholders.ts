@@ -373,66 +373,211 @@ export function getCategoryGradientStyle(category: string | null | undefined): R
 }
 
 /**
- * Curated demo stock photography for categories/products when no custom image is uploaded
+ * Curated demo stock photography pools for categories/products when no custom image is uploaded.
+ * Pools provide diverse, authentic photography so multiple items in the same category don't share identical imagery.
  */
-export const categoryDemoImages: Record<string, string> = {
-  'pain-relief': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
-  'analgesics': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
-  'antibiotics': 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80',
-  'anti-infectives': 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80',
-  'vitamins': 'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
-  'vitamins-supplements': 'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
-  'supplements': 'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
-  'cold-flu': 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
-  'respiratory': 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
-  'first-aid': 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80',
-  'wound-care': 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80',
-  'baby-care': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80',
-  'pediatric': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80',
-  'personal-care': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
-  'hygiene': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
-  'diabetes': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80',
-  'diabetes-care': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80',
-  'cardiovascular': 'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
-  'heart-health': 'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
-  'eye-care': 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80',
-  'skin-care': 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80',
-  'immunity': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
-  'bone-joint': 'https://images.unsplash.com/photo-1550572017-ed21f64f895c?auto=format&fit=crop&w=600&q=80',
-  'default': 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=600&q=80',
+export const categoryImagePools: Record<string, string[]> = {
+  'pain-relief': [
+    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1576073719676-aa955ecfa149?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=600&q=80',
+  ],
+  'analgesics': [
+    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=600&q=80',
+  ],
+  'antibiotics': [
+    'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1550572017-ed21f64f895c?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=600&q=80',
+  ],
+  'anti-infectives': [
+    'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1550572017-ed21f64f895c?auto=format&fit=crop&w=600&q=80',
+  ],
+  'vitamins': [
+    'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
+  ],
+  'vitamins-supplements': [
+    'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
+  ],
+  'supplements': [
+    'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
+  ],
+  'cold-flu': [
+    'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1563213126-a4273aed2016?auto=format&fit=crop&w=600&q=80',
+  ],
+  'respiratory': [
+    'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80',
+  ],
+  'first-aid': [
+    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=600&q=80',
+  ],
+  'wound-care': [
+    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80',
+  ],
+  'baby-care': [
+    'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80',
+  ],
+  'pediatric': [
+    'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=600&q=80',
+  ],
+  'personal-care': [
+    'https://images.unsplash.com/photo-1584744982491-665216d95f8b?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1608248597359-597561f5b6ca?auto=format&fit=crop&w=600&q=80',
+  ],
+  'hygiene': [
+    'https://images.unsplash.com/photo-1584744982491-665216d95f8b?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+  ],
+  'diabetes': [
+    'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
+  ],
+  'diabetes-care': [
+    'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
+  ],
+  'cardiovascular': [
+    'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+  ],
+  'heart-health': [
+    'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
+  ],
+  'eye-care': [
+    'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80',
+  ],
+  'skin-care': [
+    'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+  ],
+  'immunity': [
+    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
+  ],
+  'bone-joint': [
+    'https://images.unsplash.com/photo-1550572017-ed21f64f895c?auto=format&fit=crop&w=600&q=80',
+  ],
+  'default': [
+    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+  ],
 };
 
+// Backward compatibility map
+export const categoryDemoImages: Record<string, string> = Object.fromEntries(
+  Object.entries(categoryImagePools).map(([key, pool]) => [key, pool[0]])
+);
+
+/**
+ * Deterministic string hash to select a stable image index for each product
+ */
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+/**
+ * Returns a high-resolution, relevant demo stock photo based on product name and category.
+ * If multiple products belong to the same category, uses deterministic hashing to give each
+ * product a distinct, realistic photo from that category's pool.
+ */
 export function getCategoryDemoImage(category: string | null | undefined, productName?: string): string {
   if (productName) {
-    const lowerName = productName.toLowerCase();
-    if (lowerName.includes('paracetamol') || lowerName.includes('panadol') || lowerName.includes('ibuprofen') || lowerName.includes('aspirin') || lowerName.includes('pain')) {
-      return categoryDemoImages['pain-relief'];
+    const lower = productName.toLowerCase();
+
+    // Specific product-type exact matches
+    if (lower.includes('sanitizer') || lower.includes('purell') || lower.includes('alcohol') || lower.includes('disinfectant')) {
+      return 'https://images.unsplash.com/photo-1584744982491-665216d95f8b?auto=format&fit=crop&w=600&q=80';
     }
-    if (lowerName.includes('amoxicillin') || lowerName.includes('cipro') || lowerName.includes('antibiotic') || lowerName.includes('capsule')) {
-      return categoryDemoImages['antibiotics'];
+    if (lower.includes('bandage') || lower.includes('plaster') || lower.includes('band-aid') || lower.includes('adhesive')) {
+      return 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80';
     }
-    if (lowerName.includes('vitamin') || lowerName.includes('zinc') || lowerName.includes('calcium') || lowerName.includes('multivitamin') || lowerName.includes('supplement')) {
-      return categoryDemoImages['vitamins'];
+    if (lower.includes('gauze') || lower.includes('cotton') || lower.includes('dressing')) {
+      return 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80';
     }
-    if (lowerName.includes('syrup') || lowerName.includes('cough') || lowerName.includes('cold') || lowerName.includes('flu')) {
-      return categoryDemoImages['cold-flu'];
+    if (lower.includes('amoxicillin') || lower.includes('cipro') || lower.includes('ampicillin') || lower.includes('doxycycline')) {
+      return 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80';
     }
-    if (lowerName.includes('bandage') || lowerName.includes('plaster') || lowerName.includes('gauze') || lowerName.includes('antiseptic') || lowerName.includes('first aid')) {
-      return categoryDemoImages['first-aid'];
+    if (lower.includes('paracetamol') || lower.includes('panadol') || lower.includes('acetaminophen')) {
+      return 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80';
     }
-    if (lowerName.includes('baby') || lowerName.includes('diaper') || lowerName.includes('infant')) {
-      return categoryDemoImages['baby-care'];
+    if (lower.includes('ibuprofen') || lower.includes('advil') || lower.includes('motrin')) {
+      return 'https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=600&q=80';
     }
-    if (lowerName.includes('soap') || lowerName.includes('shampoo') || lowerName.includes('lotion') || lowerName.includes('hygiene')) {
-      return categoryDemoImages['personal-care'];
+    if (lower.includes('aspirin') || lower.includes('bayer')) {
+      return 'https://images.unsplash.com/photo-1576073719676-aa955ecfa149?auto=format&fit=crop&w=600&q=80';
+    }
+    if (lower.includes('syrup') || lower.includes('cough') || lower.includes('cold') || lower.includes('bronchial')) {
+      return 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80';
+    }
+    if (lower.includes('drops') || lower.includes('eye drop') || lower.includes('ophthalmic') || lower.includes('ear drop')) {
+      return 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80';
+    }
+    if (lower.includes('vitamin') || lower.includes('zinc') || lower.includes('calcium') || lower.includes('supplement') || lower.includes('omega')) {
+      const vitPool = categoryImagePools['vitamins'];
+      return vitPool[hashString(productName) % vitPool.length];
+    }
+    if (lower.includes('diaper') || lower.includes('pampers') || lower.includes('wipes') || lower.includes('baby')) {
+      const babyPool = categoryImagePools['baby-care'];
+      return babyPool[hashString(productName) % babyPool.length];
+    }
+    if (lower.includes('soap') || lower.includes('shampoo') || lower.includes('lotion') || lower.includes('wash')) {
+      const hygienePool = categoryImagePools['personal-care'];
+      return hygienePool[hashString(productName) % hygienePool.length];
+    }
+    if (lower.includes('cream') || lower.includes('ointment') || lower.includes('gel')) {
+      return 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80';
+    }
+    if (lower.includes('glucose') || lower.includes('diabetes') || lower.includes('insulin')) {
+      const diabPool = categoryImagePools['diabetes'];
+      return diabPool[hashString(productName) % diabPool.length];
     }
   }
 
-  if (!category) return categoryDemoImages['default'];
-  const normalized = category.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-  if (categoryDemoImages[normalized]) return categoryDemoImages[normalized];
-  for (const [key, img] of Object.entries(categoryDemoImages)) {
-    if (normalized.includes(key) || key.includes(normalized)) return img;
+  // If a category is available, select a stable image from its pool
+  if (category) {
+    const normalized = category.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    let pool = categoryImagePools[normalized];
+    if (!pool) {
+      for (const [key, p] of Object.entries(categoryImagePools)) {
+        if (normalized.includes(key) || key.includes(normalized)) {
+          pool = p;
+          break;
+        }
+      }
+    }
+    if (pool && pool.length > 0) {
+      const index = productName ? hashString(productName) % pool.length : 0;
+      return pool[index];
+    }
   }
-  return categoryDemoImages['default'];
+
+  // Global default pool with stable selection
+  const defaultPool = categoryImagePools['default'];
+  const defaultIndex = productName ? hashString(productName) % defaultPool.length : 0;
+  return defaultPool[defaultIndex];
 }

@@ -40,7 +40,10 @@ export default async function SearchPage(props: SearchPageProps) {
   // Fetch search results
   const { data: products, error } = await supabase
     .from('products')
-    .select('*')
+    .select(`
+      *,
+      category:categories(id, name, slug)
+    `)
     .eq('is_available', true)
     .or(`name.ilike.*${query}*,generic_name.ilike.*${query}*,brand_name.ilike.*${query}*,description.ilike.*${query}*`)
     .order('name')
@@ -57,7 +60,10 @@ export default async function SearchPage(props: SearchPageProps) {
   // Get some featured products for suggestions
   const { data: featuredProducts } = await supabase
     .from('products')
-    .select('*')
+    .select(`
+      *,
+      category:categories(id, name, slug)
+    `)
     .eq('is_available', true)
     .limit(4);
 
