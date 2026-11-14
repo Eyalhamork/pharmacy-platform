@@ -9,12 +9,15 @@ import {
   ShoppingBag,
   Truck,
   Shield,
+  ShieldCheck,
   CreditCard,
   Heart,
   Zap,
   CheckCircle2,
   ArrowRight,
-  Phone
+  Phone,
+  Clock,
+  FileCheck
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -106,66 +109,77 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-16 md:py-24 bg-white">
+        {/* Features / Why Choose Us Section */}
+        <section className="py-20 md:py-28 bg-gradient-to-b from-white to-gray-50/60">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Choose PharmaCare?
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <Badge variant="outline" className="mb-4 border-primary/30 text-primary bg-primary/5 px-4 py-1 text-sm font-medium">
+                Why Patients Trust Us
+              </Badge>
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">
+                Healthcare Reimagined for Your Convenience
               </h2>
-              <p className="text-lg text-gray-600">
-                Experience the convenience of online pharmacy shopping with our reliable service
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Combining genuine pharmaceutical care with modern digital technology. Safe, certified, and delivered right to your door.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="border-2 hover:border-primary transition-colors hover:shadow-lg">
-                <CardHeader>
-                  <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-3xl">
-                    🚚
-                  </div>
-                  <CardTitle className="text-xl">Fast Delivery</CardTitle>
-                  <CardDescription className="text-base">
-                    Get your medications delivered in 2-3 hours across Monrovia
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              {/* Card 1: Fast Delivery */}
+              <div className="group relative bg-white rounded-2xl p-6 border border-gray-200/80 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div className="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Truck className="h-7 w-7" />
+                </div>
+                <div className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 text-teal-700 mb-3">
+                  Same-Day Delivery
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Fast 2-3h Delivery</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Fast, temperature-conscious delivery across Monrovia so you never have to wait for vital medicine.
+                </p>
+              </div>
 
-              <Card className="border-2 hover:border-primary transition-colors hover:shadow-lg">
-                <CardHeader>
-                  <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-3xl">
-                    🛡️
-                  </div>
-                  <CardTitle className="text-xl">Quality Assured</CardTitle>
-                  <CardDescription className="text-base">
-                    All products verified, licensed by LMHRA, and properly stored
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              {/* Card 2: Quality Assured */}
+              <div className="group relative bg-white rounded-2xl p-6 border border-gray-200/80 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <ShieldCheck className="h-7 w-7" />
+                </div>
+                <div className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 mb-3">
+                  LMHRA Certified
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">100% Genuine Care</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  All medications are verified by licensed pharmacists, compliant with regulations, and stored properly.
+                </p>
+              </div>
 
-              <Card className="border-2 hover:border-accent transition-colors hover:shadow-lg">
-                <CardHeader>
-                  <div className="h-12 w-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4 text-3xl">
-                    💳
-                  </div>
-                  <CardTitle className="text-xl">Easy Payment</CardTitle>
-                  <CardDescription className="text-base">
-                    Pay with MTN Mobile Money or Cash on Delivery
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              {/* Card 3: Easy Payments */}
+              <div className="group relative bg-white rounded-2xl p-6 border border-gray-200/80 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <CreditCard className="h-7 w-7" />
+                </div>
+                <div className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 mb-3">
+                  MoMo & Cash
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Flexible Payments</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Pay seamlessly using MTN Mobile Money with instant confirmation, or pay with cash upon arrival.
+                </p>
+              </div>
 
-              <Card className="border-2 hover:border-primary transition-colors hover:shadow-lg">
-                <CardHeader>
-                  <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-3xl">
-                    ⏰
-                  </div>
-                  <CardTitle className="text-xl">24/7 Ordering</CardTitle>
-                  <CardDescription className="text-base">
-                    Order anytime online, even when our physical store is closed
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              {/* Card 4: 24/7 Digital Care */}
+              <div className="group relative bg-white rounded-2xl p-6 border border-gray-200/80 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Clock className="h-7 w-7" />
+                </div>
+                <div className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 mb-3">
+                  Always Open
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">24/7 Easy Ordering</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Order anytime from your phone or computer, upload prescriptions easily, and track progress live.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -216,62 +230,82 @@ export default function HomePage() {
         </section>
 
         {/* How It Works */}
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-20 md:py-28 bg-white border-y border-gray-100">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <Badge variant="outline" className="mb-4 border-primary/30 text-primary bg-primary/5 px-4 py-1 text-sm font-medium">
+                Simple 3-Step Process
+              </Badge>
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">
                 How It Works
               </h2>
-              <p className="text-lg text-gray-600">
-                Get your medications in three simple steps
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Ordering genuine medications and wellness essentials is quick, secure, and hassle-free.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="relative">
-                <div className="text-center">
-                  <div className="h-20 w-20 bg-gradient-to-br from-primary to-secondary text-white rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">
-                    1
+              {/* Step 1 */}
+              <div className="relative bg-gradient-to-b from-gray-50/50 to-white rounded-3xl p-8 border border-gray-200/80 hover:border-primary/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1.5 rounded-full">
+                      Step 01
+                    </span>
+                    <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shadow-sm">
+                      <ShoppingBag className="h-6 w-6" />
+                    </div>
                   </div>
-                  <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <ShoppingBag className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-xl mb-3">Browse & Select</h3>
-                  <p className="text-gray-600">
-                    Search for medications or browse by category. Add items to your cart.
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Browse & Select</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                    Search 500+ verified medicines, wellness supplements, or first aid essentials. Upload a doctor's prescription with one tap if required.
                   </p>
                 </div>
-                {/* Connecting Line - Hidden on mobile */}
-                <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary to-secondary"></div>
+                <div className="pt-4 border-t border-gray-100 text-xs font-medium text-gray-500 flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary" /> Instant Rx upload & search
+                </div>
               </div>
 
-              <div className="relative">
-                <div className="text-center">
-                  <div className="h-20 w-20 bg-gradient-to-br from-primary to-secondary text-white rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">
-                    2
+              {/* Step 2 */}
+              <div className="relative bg-gradient-to-b from-gray-50/50 to-white rounded-3xl p-8 border border-gray-200/80 hover:border-primary/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-xs font-bold uppercase tracking-wider text-accent-foreground bg-accent/20 px-3 py-1.5 rounded-full">
+                      Step 02
+                    </span>
+                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm">
+                      <CreditCard className="h-6 w-6" />
+                    </div>
                   </div>
-                  <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CreditCard className="h-6 w-6 text-accent" />
-                  </div>
-                  <h3 className="font-bold text-xl mb-3">Order & Pay</h3>
-                  <p className="text-gray-600">
-                    Complete checkout and choose your payment method - Mobile Money or Cash.
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Order & Pay Securely</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                    Provide your delivery address and choose your payment method: seamless MTN Mobile Money or Cash on Delivery upon inspection.
                   </p>
                 </div>
-                <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary to-secondary"></div>
+                <div className="pt-4 border-t border-gray-100 text-xs font-medium text-gray-500 flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary" /> MoMo or Cash on Delivery
+                </div>
               </div>
 
-              <div className="text-center">
-                <div className="h-20 w-20 bg-gradient-to-br from-primary to-secondary text-white rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">
-                  3
+              {/* Step 3 */}
+              <div className="relative bg-gradient-to-b from-gray-50/50 to-white rounded-3xl p-8 border border-gray-200/80 hover:border-primary/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-100/60 px-3 py-1.5 rounded-full">
+                      Step 03
+                    </span>
+                    <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shadow-sm">
+                      <Truck className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Fast Doorstep Delivery</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                    Follow your delivery driver in real-time. Receive your climate-protected, tamper-sealed medication parcel within 2–3 hours.
+                  </p>
                 </div>
-                <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Truck className="h-6 w-6 text-primary" />
+                <div className="pt-4 border-t border-gray-100 text-xs font-medium text-gray-500 flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary" /> Live tracking & sealed parcel
                 </div>
-                <h3 className="font-bold text-xl mb-3">Get Delivered</h3>
-                <p className="text-gray-600">
-                  Receive your order at your doorstep in 2-3 hours. Fast and reliable!
-                </p>
               </div>
             </div>
           </div>

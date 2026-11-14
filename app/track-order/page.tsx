@@ -186,8 +186,8 @@ export default function TrackOrderPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                <Search className="h-8 w-8 text-green-600" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <Search className="h-8 w-8 text-primary" />
               </div>
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-3">
@@ -242,7 +242,7 @@ export default function TrackOrderPage() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full bg-green-600 hover:bg-green-700"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                   disabled={loading}
                 >
                   {loading ? (
@@ -311,7 +311,7 @@ export default function TrackOrderPage() {
                               {index < getStatusSteps(order.order_status).length - 1 && (
                                 <div
                                   className={`w-0.5 h-12 ${
-                                    step.isCompleted ? 'bg-green-500' : 'bg-gray-200'
+                                    step.isCompleted ? 'bg-primary' : 'bg-gray-200'
                                   }`}
                                 />
                               )}
@@ -464,24 +464,24 @@ export default function TrackOrderPage() {
               </Card>
 
               {/* Contact Support */}
-              <Card className="bg-gradient-to-r from-green-600 to-green-700 text-white">
+              <Card className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground">
                 <CardContent className="p-8 text-center">
                   <h2 className="text-2xl font-bold mb-3">Need Help?</h2>
-                  <p className="text-green-50 mb-6">
+                  <p className="text-primary-foreground/90 mb-6">
                     If you have questions about your order, our team is here to help.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link href="/contact">
                       <Button
                         variant="outline"
-                        className="bg-white text-green-600 hover:bg-green-50"
+                        className="bg-white text-primary hover:bg-gray-100"
                       >
                         <Phone className="mr-2 h-5 w-5" />
                         Contact Us
                       </Button>
                     </Link>
                     <Link href="/faq">
-                      <Button variant="outline" className="text-white border-white hover:bg-green-600">
+                      <Button variant="outline" className="text-white border-white hover:bg-white/10">
                         View FAQs
                       </Button>
                     </Link>

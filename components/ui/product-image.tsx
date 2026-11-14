@@ -10,6 +10,7 @@ import { getOptimizedImageUrl, type ImageTransformType } from '@/lib/cloudinary/
 import {
   getCategoryStyle,
   getCategoryGradientStyle,
+  getCategoryDemoImage,
   type CategoryStyle,
 } from '@/lib/utils/image-placeholders';
 
@@ -124,8 +125,11 @@ export const ProductImage = memo(function ProductImage({
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Use provided image or fallback to high-quality curated demo stock photo
+  const effectiveImageUrl = imageUrl || getCategoryDemoImage(category, productName);
+
   // Get optimized image URL
-  const optimizedUrl = getOptimizedImageUrl(imageUrl, transform);
+  const optimizedUrl = getOptimizedImageUrl(effectiveImageUrl, transform);
   const shouldShowImage = optimizedUrl && !hasError;
 
   const handleError = useCallback(() => {

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { X, Download, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { activeTheme } from '@/lib/theme-config';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -78,15 +79,15 @@ export function PWAInstallPrompt() {
 
   return (
     <div className="fixed top-9 left-4 right-4 z-50 animate-in slide-in-from-top-5 md:left-auto md:right-4 md:max-w-sm">
-      <Card className="shadow-lg border-2 border-green-600">
+      <Card className="shadow-lg border border-primary/20 bg-card">
         <div className="p-4">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                <Smartphone className="h-6 w-6 text-white" />
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                <Smartphone className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="font-semibold text-sm">Install PharmacyDemo</h3>
+                <h3 className="font-semibold text-sm">Install {activeTheme.name}</h3>
                 <p className="text-xs text-muted-foreground">Quick access anytime</p>
               </div>
             </div>
@@ -115,7 +116,7 @@ export function PWAInstallPrompt() {
           ) : (
             // Android/Desktop installation
             <p className="text-sm text-muted-foreground mb-3">
-              Add PharmacyDemo to your home screen for quick access and offline browsing.
+              Add {activeTheme.name} to your home screen for quick access and offline browsing.
             </p>
           )}
 
@@ -124,7 +125,7 @@ export function PWAInstallPrompt() {
               <Button
                 onClick={handleInstall}
                 size="sm"
-                className="flex-1 bg-green-600 hover:bg-green-700"
+                className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Install App

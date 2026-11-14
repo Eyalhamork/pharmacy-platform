@@ -371,3 +371,68 @@ export function getCategoryGradientStyle(category: string | null | undefined): R
     background: `linear-gradient(135deg, ${fromColor} 0%, ${toColor} 100%)`,
   };
 }
+
+/**
+ * Curated demo stock photography for categories/products when no custom image is uploaded
+ */
+export const categoryDemoImages: Record<string, string> = {
+  'pain-relief': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+  'analgesics': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+  'antibiotics': 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80',
+  'anti-infectives': 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80',
+  'vitamins': 'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
+  'vitamins-supplements': 'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
+  'supplements': 'https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=600&q=80',
+  'cold-flu': 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
+  'respiratory': 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80',
+  'first-aid': 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80',
+  'wound-care': 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80',
+  'baby-care': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80',
+  'pediatric': 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=600&q=80',
+  'personal-care': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+  'hygiene': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+  'diabetes': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80',
+  'diabetes-care': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80',
+  'cardiovascular': 'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
+  'heart-health': 'https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=600&q=80',
+  'eye-care': 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80',
+  'skin-care': 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80',
+  'immunity': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80',
+  'bone-joint': 'https://images.unsplash.com/photo-1550572017-ed21f64f895c?auto=format&fit=crop&w=600&q=80',
+  'default': 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=600&q=80',
+};
+
+export function getCategoryDemoImage(category: string | null | undefined, productName?: string): string {
+  if (productName) {
+    const lowerName = productName.toLowerCase();
+    if (lowerName.includes('paracetamol') || lowerName.includes('panadol') || lowerName.includes('ibuprofen') || lowerName.includes('aspirin') || lowerName.includes('pain')) {
+      return categoryDemoImages['pain-relief'];
+    }
+    if (lowerName.includes('amoxicillin') || lowerName.includes('cipro') || lowerName.includes('antibiotic') || lowerName.includes('capsule')) {
+      return categoryDemoImages['antibiotics'];
+    }
+    if (lowerName.includes('vitamin') || lowerName.includes('zinc') || lowerName.includes('calcium') || lowerName.includes('multivitamin') || lowerName.includes('supplement')) {
+      return categoryDemoImages['vitamins'];
+    }
+    if (lowerName.includes('syrup') || lowerName.includes('cough') || lowerName.includes('cold') || lowerName.includes('flu')) {
+      return categoryDemoImages['cold-flu'];
+    }
+    if (lowerName.includes('bandage') || lowerName.includes('plaster') || lowerName.includes('gauze') || lowerName.includes('antiseptic') || lowerName.includes('first aid')) {
+      return categoryDemoImages['first-aid'];
+    }
+    if (lowerName.includes('baby') || lowerName.includes('diaper') || lowerName.includes('infant')) {
+      return categoryDemoImages['baby-care'];
+    }
+    if (lowerName.includes('soap') || lowerName.includes('shampoo') || lowerName.includes('lotion') || lowerName.includes('hygiene')) {
+      return categoryDemoImages['personal-care'];
+    }
+  }
+
+  if (!category) return categoryDemoImages['default'];
+  const normalized = category.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  if (categoryDemoImages[normalized]) return categoryDemoImages[normalized];
+  for (const [key, img] of Object.entries(categoryDemoImages)) {
+    if (normalized.includes(key) || key.includes(normalized)) return img;
+  }
+  return categoryDemoImages['default'];
+}
