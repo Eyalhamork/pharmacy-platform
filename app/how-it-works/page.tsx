@@ -17,8 +17,8 @@ import { Header } from '@/components/shared/header';
 import { Footer } from '@/components/shared/footer';
 
 export const metadata: Metadata = {
-  title: 'How It Works | Lucky Pharmacy',
-  description: 'Learn how to order medications online from Lucky Pharmacy. Simple steps from browsing to delivery at your doorstep.',
+  title: 'How It Works | PharmaCare',
+  description: 'Learn how to order medications online from PharmaCare. Simple steps from browsing to delivery at your doorstep.',
 };
 
 export default function HowItWorksPage() {
@@ -27,13 +27,13 @@ export default function HowItWorksPage() {
       <Header />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                How Lucky Pharmacy Works
+                How PharmaCare Works
               </h1>
-              <p className="text-xl text-green-50">
+              <p className="text-xl text-primary-foreground/90">
                 Getting your medications delivered is as easy as 1-2-3.
                 Follow our simple process for a seamless experience.
               </p>
@@ -47,15 +47,15 @@ export default function HowItWorksPage() {
             {/* Step 1 */}
             <Card>
               <CardContent className="p-8">
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-col md:row gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                      <Search className="h-8 w-8 text-green-600" />
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Search className="h-8 w-8 text-primary" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-3xl font-bold text-green-600">01</span>
+                      <span className="text-3xl font-bold text-primary">01</span>
                       <h2 className="text-2xl font-bold text-gray-900">Browse & Search</h2>
                     </div>
                     <p className="text-gray-600 mb-4">
@@ -66,15 +66,15 @@ export default function HowItWorksPage() {
                     </p>
                     <ul className="space-y-2 text-gray-600">
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Search by medication name or condition</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Filter by category, price, or prescription requirement</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>View detailed product information and instructions</span>
                       </li>
                     </ul>
@@ -88,13 +88,13 @@ export default function HowItWorksPage() {
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
-                      <ShoppingCart className="h-8 w-8 text-orange-600" />
+                    <div className="w-16 h-16 bg-accent/15 rounded-full flex items-center justify-center">
+                      <ShoppingCart className="h-8 w-8 text-accent" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-3xl font-bold text-orange-600">02</span>
+                      <span className="text-3xl font-bold text-accent">02</span>
                       <h2 className="text-2xl font-bold text-gray-900">Add to Cart</h2>
                     </div>
                     <p className="text-gray-600 mb-4">
@@ -104,15 +104,15 @@ export default function HowItWorksPage() {
                     </p>
                     <ul className="space-y-2 text-gray-600">
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
                         <span>Select quantity (check stock availability)</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
                         <span>View cart summary with total cost</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
                         <span>Update quantities or remove items anytime</span>
                       </li>
                     </ul>
@@ -126,13 +126,13 @@ export default function HowItWorksPage() {
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                      <FileText className="h-8 w-8 text-green-600" />
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                      <FileText className="h-8 w-8 text-primary" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-3xl font-bold text-green-600">03</span>
+                      <span className="text-3xl font-bold text-primary">03</span>
                       <h2 className="text-2xl font-bold text-gray-900">Upload Prescription (If Required)</h2>
                     </div>
                     <p className="text-gray-600 mb-4">
@@ -142,15 +142,15 @@ export default function HowItWorksPage() {
                     </p>
                     <ul className="space-y-2 text-gray-600">
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Upload clear photo or scan of prescription</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Prescription verified by licensed pharmacist</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Get notified once prescription is approved</span>
                       </li>
                     </ul>
@@ -164,13 +164,13 @@ export default function HowItWorksPage() {
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
-                      <CreditCard className="h-8 w-8 text-orange-600" />
+                    <div className="w-16 h-16 bg-accent/15 rounded-full flex items-center justify-center">
+                      <CreditCard className="h-8 w-8 text-accent" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-3xl font-bold text-orange-600">04</span>
+                      <span className="text-3xl font-bold text-accent">04</span>
                       <h2 className="text-2xl font-bold text-gray-900">Choose Payment Method</h2>
                     </div>
                     <p className="text-gray-600 mb-4">
@@ -180,15 +180,15 @@ export default function HowItWorksPage() {
                     </p>
                     <ul className="space-y-2 text-gray-600">
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
                         <span>MTN Mobile Money - Pay instantly via MoMo</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
                         <span>Cash on Delivery - Pay when order arrives</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
                         <span>All transactions are secure and encrypted</span>
                       </li>
                     </ul>
@@ -202,13 +202,13 @@ export default function HowItWorksPage() {
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                      <Truck className="h-8 w-8 text-green-600" />
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Truck className="h-8 w-8 text-primary" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-3xl font-bold text-green-600">05</span>
+                      <span className="text-3xl font-bold text-primary">05</span>
                       <h2 className="text-2xl font-bold text-gray-900">Delivery or Pickup</h2>
                     </div>
                     <p className="text-gray-600 mb-4">
@@ -218,15 +218,15 @@ export default function HowItWorksPage() {
                     </p>
                     <ul className="space-y-2 text-gray-600">
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span>Same-day delivery available in Monrovia</span>
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Same-day delivery available across Monrovia</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Pickup option available at our pharmacy</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Get WhatsApp updates on your order status</span>
                       </li>
                     </ul>
@@ -242,14 +242,14 @@ export default function HowItWorksPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-                Why Choose Lucky Pharmacy?
+                Why Choose PharmaCare?
               </h2>
 
               <div className="grid md:grid-cols-3 gap-6">
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Shield className="h-6 w-6 text-green-600" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Shield className="h-6 w-6 text-primary" />
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">100% Genuine</h3>
                     <p className="text-sm text-gray-600">
@@ -261,8 +261,8 @@ export default function HowItWorksPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Clock className="h-6 w-6 text-orange-600" />
+                    <div className="w-12 h-12 bg-accent/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Clock className="h-6 w-6 text-accent" />
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">Fast Delivery</h3>
                     <p className="text-sm text-gray-600">
@@ -274,8 +274,8 @@ export default function HowItWorksPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Phone className="h-6 w-6 text-green-600" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Phone className="h-6 w-6 text-primary" />
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">Expert Support</h3>
                     <p className="text-sm text-gray-600">
@@ -290,23 +290,23 @@ export default function HowItWorksPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 py-12">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground py-12">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-3xl font-bold mb-4">
               Ready to Get Started?
             </h2>
-            <p className="text-xl text-green-50 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
               Browse our catalog and experience the convenience of online pharmacy
               shopping today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-white text-green-600 hover:bg-green-50">
+              <Button asChild size="lg" className="bg-white text-primary hover:bg-gray-100">
                 <Link href="/products">
                   <Search className="mr-2 h-5 w-5" />
                   Browse Products
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="text-green-600 border-white hover:bg-green-600 hover:text-white">
+              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
                 <Link href="/contact">
                   Contact Us
                 </Link>

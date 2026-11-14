@@ -1,11 +1,11 @@
 {
-  "name": "Lucky Pharmacy - Online Pharmacy",
-  "short_name": "LuckyPharmacy",
+  "name": "PharmaCare - Online Pharmacy Platform",
+  "short_name": "PharmaCare",
   "description": "Order medications online with fast delivery across Monrovia. Quality medicines, prescription verification, and MTN Mobile Money payment.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#16a34a",
+  "theme_color": "#145967",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [

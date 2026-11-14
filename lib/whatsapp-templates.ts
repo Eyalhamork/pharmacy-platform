@@ -36,7 +36,7 @@ We're preparing your items and will notify you when they're ready for ${order.de
 
 Order Total: LD ${order.total_amount.toFixed(2)}
 
-Thank you for choosing Lucky Pharmacy!`;
+Thank you for choosing PharmaCare!`;
 
   return {
     message,
@@ -67,7 +67,7 @@ Thank you for your patience!`
 
 Great news! Your order #${order.order_number} is ready for pickup! 📦
 
-You can collect your order at Lucky Pharmacy during our business hours.
+You can collect your order at PharmaCare during our business hours.
 Please bring your order number: ${order.order_number}
 
 Order Total: LD ${order.total_amount.toFixed(2)}
@@ -208,7 +208,7 @@ Good news! Your prescription for order #${order.order_number} has been verified 
 We're now processing your order and will notify you when it's ready for ${order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
     }.
 
-Thank you for choosing Lucky Pharmacy!`;
+Thank you for choosing PharmaCare!`;
 
   return {
     message,

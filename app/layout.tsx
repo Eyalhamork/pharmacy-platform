@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   creator: activeTheme.name,
   publisher: activeTheme.name,
   applicationName: activeTheme.name,
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://luckypharmacy.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://pharmacy-platform-rho.vercel.app'),
   alternates: {
     canonical: '/',
   },
@@ -170,6 +170,26 @@ export default function RootLayout({
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* Dynamic theme colors from activeTheme configuration */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              :root {
+                --primary: ${activeTheme.colors.primary};
+                --primary-foreground: ${activeTheme.colors.primaryForeground};
+                --secondary: ${activeTheme.colors.secondary};
+                --secondary-foreground: ${activeTheme.colors.secondaryForeground};
+                --accent: ${activeTheme.colors.accent};
+                --accent-foreground: ${activeTheme.colors.accentForeground};
+                --muted: ${activeTheme.colors.muted};
+                --muted-foreground: ${activeTheme.colors.mutedForeground};
+                --ring: ${activeTheme.colors.primary};
+                --info: ${activeTheme.colors.primary};
+              }
+            `,
+          }}
+        />
       </head>
       <body
         className={cn(

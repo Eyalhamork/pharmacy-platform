@@ -109,7 +109,7 @@ export async function POST(
     const order = prescription.orders as any;
     if (order?.customer_whatsapp) {
       try {
-        const whatsappMessage = `✅ *Prescription Approved - Lucky Pharmacy*
+        const whatsappMessage = `✅ *Prescription Approved - PharmaCare*
 
 Hello ${order.customer_name}!
 
@@ -117,7 +117,7 @@ Your prescription for order *${order.order_number}* has been approved by our pha
 
 Your order is now being processed and will be delivered soon.
 
-Thank you for choosing Lucky Pharmacy! 🏥`;
+Thank you for choosing PharmaCare! 🏥`;
 
         // Call WhatsApp API (implement based on your provider)
         await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/whatsapp/send`, {

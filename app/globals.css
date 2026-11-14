@@ -12,28 +12,28 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
 
-    /* Lucky Pharmacy Brand Colors - Deep Dark Green Primary, Red Accent */
-    --primary: 142 76% 25%;
+    /* PharmaCare Brand Colors - Distinct Deep Ocean Teal Primary, Medical Mint Accent & Pastel Backgrounds */
+    --primary: 188 72% 28%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 142 70% 45%;
+    --secondary: 188 45% 45%;
     --secondary-foreground: 0 0% 100%;
-    --accent: 0 85% 60%;
+    --accent: 168 60% 40%;
     --accent-foreground: 0 0% 100%;
 
     /* UI Colors */
-    --muted: 142 30% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 188 35% 96%;
+    --muted-foreground: 188 25% 40%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 142 76% 25%;
+    --border: 188 20% 90%;
+    --input: 188 20% 90%;
+    --ring: 188 72% 28%;
     --radius: 0.75rem;
 
     /* Additional brand colors */
     --success: 142 76% 36%;
-    --warning: 0 85% 60%;
-    --info: 142 70% 45%;
+    --warning: 38 92% 50%;
+    --info: 188 72% 28%;
   }
 
   .dark {

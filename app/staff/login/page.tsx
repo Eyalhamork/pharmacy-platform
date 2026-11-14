@@ -86,7 +86,7 @@ export default function StaffLoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="staff@luckypharmacy.com"
+                  placeholder="staff@pharmacy.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"

@@ -1,5 +1,5 @@
 // lib/cloudinary/config.ts
-// Cloudinary configuration for Lucky Pharmacy product images
+// Cloudinary configuration for PharmaCare product images
 
 export const cloudinaryConfig = {
   cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '',

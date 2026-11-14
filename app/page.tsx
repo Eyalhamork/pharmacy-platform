@@ -24,8 +24,8 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5">
-          <div className="container mx-auto px-4 py-16 md:py-24">
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5 pb-6 md:pb-12">
+          <div className="container mx-auto px-4 pt-10 md:pt-16 pb-16 md:pb-24">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <Badge className="bg-accent text-accent-foreground">
@@ -76,7 +76,7 @@ export default function HomePage() {
                 <div className="relative h-[500px] w-full rounded-3xl overflow-hidden">
                   <Image
                     src="/images/hero-2.png"
-                    alt="Lucky Pharmacy Hero"
+                    alt="PharmaCare Hero"
                     fill
                     className="object-cover"
                     priority
@@ -111,7 +111,7 @@ export default function HomePage() {
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Choose Lucky Pharmacy?
+                Why Choose PharmaCare?
               </h2>
               <p className="text-lg text-gray-600">
                 Experience the convenience of online pharmacy shopping with our reliable service

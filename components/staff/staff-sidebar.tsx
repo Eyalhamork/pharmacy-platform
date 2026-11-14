@@ -94,8 +94,8 @@ export function StaffSidebar() {
           </div>
           <div>
             <div className="flex flex-col -space-y-1">
-              <span className="text-lg font-bold text-accent tracking-wide uppercase leading-none">LUCKY</span>
-              <span className="text-lg font-bold text-primary tracking-wide uppercase leading-none">PHARMACY</span>
+              <span className="text-lg font-bold text-accent tracking-wide uppercase leading-none">PHARMA</span>
+              <span className="text-lg font-bold text-primary tracking-wide uppercase leading-none">CARE</span>
             </div>
           </div>
         </Link>

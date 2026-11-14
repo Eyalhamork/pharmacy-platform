@@ -5,8 +5,8 @@ import { Header } from '@/components/shared/header';
 import { Footer } from '@/components/shared/footer';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Lucky Pharmacy',
-  description: 'Learn how Lucky Pharmacy collects, uses, and protects your personal information. Your privacy and data security are our priorities.',
+  title: 'Privacy Policy | PharmaCare',
+  description: 'Learn how PharmaCare collects, uses, and protects your personal information. Your privacy and data security are our priorities.',
 };
 
 export default function PrivacyPolicyPage() {
@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
       <Header />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-white py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <div className="flex justify-center mb-6">
@@ -26,10 +26,10 @@ export default function PrivacyPolicyPage() {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Privacy Policy
               </h1>
-              <p className="text-xl text-green-50">
+              <p className="text-xl text-primary-foreground/90">
                 Your privacy and data security are our top priorities
               </p>
-              <p className="text-sm text-green-100 mt-4">
+              <p className="text-sm text-primary-foreground/80 mt-4">
                 Last Updated: November 26, 2025
               </p>
             </div>
@@ -43,10 +43,10 @@ export default function PrivacyPolicyPage() {
               <Card>
                 <CardContent className="p-8">
                   <p className="text-gray-600 leading-relaxed">
-                    Lucky Pharmacy ("we," "our," or "us") is committed to protecting your privacy and
+                    PharmaCare ("we," "our," or "us") is committed to protecting your privacy and
                     personal information. This Privacy Policy explains how we collect, use, disclose,
                     and safeguard your information when you use our online pharmacy platform and
-                    services. By using Lucky Pharmacy, you agree to the collection and use of information
+                    services. By using PharmaCare, you agree to the collection and use of information
                     in accordance with this policy.
                   </p>
                 </CardContent>
@@ -56,7 +56,7 @@ export default function PrivacyPolicyPage() {
             {/* Information We Collect */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Database className="h-8 w-8 text-green-600" />
+                <Database className="h-8 w-8 text-primary" />
                 Information We Collect
               </h2>
 
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
                       <li className="list-disc">Medication history (your orders with us)</li>
                       <li className="list-disc">Allergies or medical notes (if voluntarily provided)</li>
                     </ul>
-                    <p className="text-sm text-green-600 mt-3">
+                    <p className="text-sm text-primary mt-3">
                       Note: Your health information is treated with the highest level of
                       confidentiality and is only accessible to authorized pharmacy staff.
                     </p>
@@ -125,7 +125,7 @@ export default function PrivacyPolicyPage() {
             {/* How We Use Your Information */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <UserCheck className="h-8 w-8 text-green-600" />
+                <UserCheck className="h-8 w-8 text-primary" />
                 How We Use Your Information
               </h2>
 
@@ -187,7 +187,7 @@ export default function PrivacyPolicyPage() {
             {/* Information Sharing */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Eye className="h-8 w-8 text-green-600" />
+                <Eye className="h-8 w-8 text-primary" />
                 Information Sharing & Disclosure
               </h2>
 
@@ -234,7 +234,7 @@ export default function PrivacyPolicyPage() {
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-2">Business Transfers</h3>
                       <p className="text-gray-600">
-                        If Lucky Pharmacy is acquired or merged, your information may be transferred to
+                        If PharmaCare is acquired or merged, your information may be transferred to
                         the new owner, subject to this Privacy Policy.
                       </p>
                     </div>
@@ -246,7 +246,7 @@ export default function PrivacyPolicyPage() {
             {/* Data Security */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Lock className="h-8 w-8 text-green-600" />
+                <Lock className="h-8 w-8 text-primary" />
                 Data Security
               </h2>
 
@@ -259,35 +259,35 @@ export default function PrivacyPolicyPage() {
 
                   <ul className="space-y-3 text-gray-600">
                     <li className="flex items-start gap-3">
-                      <Shield className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <span>
                         <strong>Encryption:</strong> All data transmitted between your device and
                         our servers is encrypted using SSL/TLS technology
                       </span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <Shield className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <span>
                         <strong>Access Controls:</strong> Only authorized pharmacy staff and
                         administrators can access sensitive information
                       </span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <Shield className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <span>
                         <strong>Secure Storage:</strong> Prescription images and health records
                         are stored in secure, encrypted databases
                       </span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <Shield className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <span>
                         <strong>Regular Security Audits:</strong> We conduct regular security
                         assessments to identify and address vulnerabilities
                       </span>
                     </li>
                     <li className="flex items-start gap-3">
-                      <Shield className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       <span>
                         <strong>Staff Training:</strong> All staff members are trained on data
                         privacy and security protocols
@@ -301,7 +301,7 @@ export default function PrivacyPolicyPage() {
             {/* Your Rights */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Bell className="h-8 w-8 text-green-600" />
+                <Bell className="h-8 w-8 text-primary" />
                 Your Privacy Rights
               </h2>
 
@@ -358,8 +358,8 @@ export default function PrivacyPolicyPage() {
                   </div>
 
                   <p className="text-sm text-gray-500 mt-6">
-                    To exercise any of these rights, contact us at info@luckypharmacy.com or through
-                    our <a href="/contact" className="text-green-600 hover:underline">Contact page</a>.
+                    To exercise any of these rights, contact us at info@pharmacare.com or through
+                    our <a href="/contact" className="text-primary hover:underline">Contact page</a>.
                   </p>
                 </CardContent>
               </Card>
@@ -454,7 +454,7 @@ export default function PrivacyPolicyPage() {
               <Card>
                 <CardContent className="p-8">
                   <p className="text-gray-600">
-                    Lucky Pharmacy is not intended for use by individuals under 18 years of age. We do
+                    PharmaCare is not intended for use by individuals under 18 years of age. We do
                     not knowingly collect personal information from children. If you believe we
                     have inadvertently collected information from a minor, please contact us
                     immediately so we can delete it.
@@ -476,29 +476,29 @@ export default function PrivacyPolicyPage() {
                     practices or legal requirements. We will notify you of significant changes by
                     posting a notice on our website or sending an email. The "Last Updated" date
                     at the top indicates when the policy was last revised. Your continued use of
-                    Lucky Pharmacy after changes constitutes acceptance of the updated policy.
+                    PharmaCare after changes constitutes acceptance of the updated policy.
                   </p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Contact */}
-            <Card className="bg-gradient-to-r from-green-600 to-green-700 text-white">
+            <Card className="bg-gradient-to-r from-primary to-primary/90 text-white">
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold mb-4">Questions About Privacy?</h2>
-                <p className="text-green-50 mb-6">
+                <p className="text-primary-foreground/90 mb-6">
                   If you have any questions, concerns, or requests regarding this Privacy Policy
                   or how we handle your personal information, please contact us:
                 </p>
-                <div className="space-y-2 text-green-50">
-                  <p><strong>Email:</strong> privacy@luckypharmacy.com</p>
+                <div className="space-y-2 text-primary-foreground/90">
+                  <p><strong>Email:</strong> privacy@pharmacare.com</p>
                   <p><strong>Phone:</strong> +231-XXX-XXX-XXX</p>
                   <p><strong>Address:</strong> Monrovia, Montserrado County, Liberia</p>
                 </div>
                 <div className="mt-6">
                   <a
                     href="/contact"
-                    className="inline-flex items-center justify-center px-6 py-3 bg-white text-green-600 rounded-lg font-medium hover:bg-green-50 transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors"
                   >
                     Contact Us
                   </a>

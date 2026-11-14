@@ -1,144 +1,90 @@
-# 🎨 Branding Customization Guide
+# 🎨 White-Label Branding & Dynamic Theming Guide
 
-This application is designed to be easily rebranded for different pharmacies. Follow this guide to customize the branding.
+This pharmacy e-commerce platform is built from the ground up to be **fully white-label and dynamic**. Rebranding the platform for any pharmacy client or deployment takes less than 60 seconds.
 
-## Quick Start
+---
 
-### Option 1: Use Pre-configured Theme
+## ⚡ Dynamic Color & Brand Architecture
 
-We have pre-configured themes ready to use:
+The platform uses a **unified dynamic theming engine**:
 
-1. Open `lib/theme-config.ts`
-2. Change the `activeTheme` to your pharmacy:
-   ```typescript
-   export const activeTheme = themes.mopharma;  // or themes.luckypharmacy
-   ```
-3. Update `app/globals.css` with the new theme colors (see below)
+1. **Central Brand Config (`lib/theme-config.ts`)**: Defines brand names, contact info, logo text, and HSL colors.
+2. **Dynamic Root Injection (`app/layout.tsx`)**: Injects the active theme's colors directly into CSS custom properties (`--primary`, `--secondary`, `--accent`, `--muted`, etc.) in `<head>`.
+3. **Tailwind Semantic Tokens (`tailwind.config.js`)**: All components and pages utilize semantic classes (`bg-primary`, `text-primary`, `bg-accent`, `bg-primary/10`, etc.) rather than hardcoded hex or color utilities.
 
-### Option 2: Create New Theme
+Changing a color in `lib/theme-config.ts` **instantly propagates across the entire application** (buttons, header, hero sections, badges, links, cards, borders, and footer).
 
-1. Open `lib/theme-config.ts`
-2. Add your pharmacy theme:
-   ```typescript
-   yourpharmacy: {
-     name: 'Your Pharmacy Name',
-     colors: {
-       primary: '142 76% 36%',     // Your main brand color
-       accent: '25 95% 53%',       // Your accent color
-       // ... other colors
-     },
-     logo: {
-       initial: 'Y',
-       text: 'Your Pharmacy',
-       tagline: 'Your Tagline',
-     },
-     contact: {
-       phone: '+231 XXX XXX XXX',
-       // ... other contact info
-     },
-   }
-   ```
+---
 
-3. Set as active theme:
-   ```typescript
-   export const activeTheme = themes.yourpharmacy;
-   ```
+## 🚀 How to Rebrand in 2 Steps
 
-## Updating CSS Variables
+### Step 1: Open `lib/theme-config.ts`
 
-After changing the theme in `theme-config.ts`, update `app/globals.css`:
-
-```css
-:root {
-  --primary: 142 76% 36%;        /* Copy from theme-config.ts */
-  --accent: 25 95% 53%;          /* Copy from theme-config.ts */
-  /* ... other variables */
-}
-```
-
-## Converting Colors to HSL
-
-Your designer probably gave you HEX colors (#10B981). Here's how to convert:
-
-1. Go to: https://www.cssportal.com/css-color-converter/
-2. Input your HEX color (e.g., `#10B981`)
-3. Copy the HSL values (e.g., `142, 76%, 36%`)
-4. Format as: `142 76% 36%` (remove commas, no hsl() wrapper)
-
-## Color Usage Guide
-
-- **Primary**: Main brand color
-  - Used for: Buttons, links, navigation highlights
-  - Example: MoPharma green (#10B981)
-
-- **Secondary**: Lighter version of primary
-  - Used for: Hover states, backgrounds
-  - Usually 10% lighter than primary
-
-- **Accent**: Contrasting highlight color
-  - Used for: Call-to-action buttons, badges, important alerts
-  - Example: MoPharma orange (#FF6B35)
-
-## Updating Brand Text
-
-### 1. Header Component
-Update: `components/shared/header.tsx`
-- Logo initial (line 35)
-- Pharmacy name (line 38)
-
-### 2. Footer Component
-Update: `components/shared/footer.tsx`
-- Logo initial (line 13)
-- Pharmacy name (line 16)
-- Contact information (lines 80-100)
-
-### 3. Homepage
-Update: `app/page.tsx`
-- All mentions of "MoPharma"
-
-### 4. Layout (SEO)
-Update: `app/layout.tsx`
-- Page title
-- Meta description
-
-## Testing Your Changes
-
-1. Save all files
-2. Run: `npm run dev`
-3. Open: http://localhost:3000
-4. Check:
-   - ✅ Logo and name updated
-   - ✅ Colors match your brand
-   - ✅ Contact info correct
-   - ✅ All buttons use correct colors
-
-## Example: Rebranding for Lucky Pharmacy
+Select one of the pre-configured themes or add your own:
 
 ```typescript
-// 1. In lib/theme-config.ts
-export const activeTheme = themes.luckypharmacy;
-
-// 2. In app/globals.css
-:root {
-  --primary: 217 91% 60%;
-  --accent: 45 93% 47%;
-}
-
-// 3. In components/shared/header.tsx
-<span className="text-2xl font-bold text-white">L</span>
-<span className="text-xl font-bold text-primary">Lucky Pharmacy</span>
-
-// 4. Done! Run npm run dev
+// Choose your active theme:
+export const activeTheme = themes.pharmacare; // or themes.nordic, themes.sapphire
 ```
 
-## Need Help?
+To create a new theme for a client, add a new theme object:
 
-- Check the color picker: https://www.cssportal.com/css-color-converter/
-- Test HSL colors: https://hslpicker.com/
-- Questions? Contact: [your email]
+```typescript
+yourpharmacy: {
+  name: 'Apex Health Pharmacy',
+  colors: {
+    primary: '188 72% 28%',       // Distinct Deep Teal (#146D7B)
+    primaryForeground: '0 0% 100%',
+    secondary: '188 45% 45%',
+    secondaryForeground: '0 0% 100%',
+    accent: '168 60% 40%',        // Clinical Mint
+    accentForeground: '0 0% 100%',
+    muted: '188 35% 96%',         // Soothing pastel background
+    mutedForeground: '188 25% 40%',
+  },
+  logo: {
+    initial: 'A',
+    text: 'Apex Health',
+    tagline: 'Healthcare & Pharmacy Platform',
+  },
+  contact: {
+    phone: '+231 777 000 000',
+    whatsapp: '+231 777 000 000',
+    email: 'info@apexhealth.com',
+    address: 'Monrovia, Liberia',
+  },
+}
+```
 
-## Current Theme: MoPharma
+### Step 2: Set as Active Theme
 
-- **Primary Color**: Green (#10B981)
-- **Accent Color**: Orange (#FF6B35)
-- **Theme**: Modern, trustworthy, health-focused
+```typescript
+export const activeTheme = themes.yourpharmacy;
+```
+
+**That's it!** The entire UI, SEO metadata, openGraph tags, and theme variables will immediately use your brand.
+
+---
+
+## 🎨 Color System Guide
+
+- **Primary (`--primary`)**: Main brand color used for primary buttons, active nav elements, brand accents, and prominent icons.
+  - *Default (PharmaCare)*: Distinct Deep Ocean Teal (`#146D7B` / `188 72% 28%`).
+- **Secondary (`--secondary`)**: Complementary secondary tone for softer badges, gradient endpoints, and secondary controls.
+- **Accent (`--accent`)**: Highlight tone for calls-to-action, alerts, and pill tags (e.g. Clinical Mint `#29A384` or Coral).
+- **Muted (`--muted`)**: Soft, soothing pastel background tone matching the category card aesthetic (`#F0F9FA`).
+
+### Converting Hex to HSL for `theme-config.ts`
+
+Tailwind CSS variables expect HSL format without commas or the `hsl()` wrapper (e.g., `188 72% 28%`):
+1. Pick your HEX color (e.g., `#146D7B`).
+2. Convert using any color tool or calculator to HSL values (`H: 188, S: 72%, L: 28%`).
+3. Enter as `'188 72% 28%'`.
+
+---
+
+## 📱 PWA & Favicon Branding
+
+To customize the mobile app icon and install prompt:
+- Update `public/manifest.json` (`name`, `short_name`, and `theme_color`).
+- Place your 192x192 and 512x512 app icons in `public/icons/`.

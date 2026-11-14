@@ -19,8 +19,8 @@ export function Footer() {
               </div>
               <div>
                 <div className="flex flex-col -space-y-1">
-                  <span className="text-xl font-bold text-accent tracking-wide uppercase leading-none">LUCKY</span>
-                  <span className="text-xl font-bold text-white tracking-wide uppercase leading-none">PHARMACY</span>
+                  <span className="text-xl font-bold text-accent tracking-wide uppercase leading-none">PHARMA</span>
+                  <span className="text-xl font-bold text-white tracking-wide uppercase leading-none">CARE</span>
                 </div>
               </div>
             </div>
@@ -126,8 +126,8 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                <a href="mailto:info@luckypharmacy.com" className="hover:text-primary transition-colors">
-                  info@luckypharmacy.com
+                <a href="mailto:info@pharmacare.com" className="hover:text-primary transition-colors">
+                  info@pharmacare.com
                 </a>
               </li>
             </ul>
@@ -139,7 +139,7 @@ export function Footer() {
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <p>&copy; {new Date().getFullYear()} Lucky Pharmacy. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} PharmaCare. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <span className="text-xs">Licensed by LMHRA</span>
               <span className="text-xs">•</span>

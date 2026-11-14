@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 
   return {
-    title: `${product.name} | Lucky Pharmacy`,
+    title: `${product.name} | PharmaCare`,
     description: product.description || `Buy ${product.name} online. ${product.generic_name ? `Generic: ${product.generic_name}.` : ''} Fast delivery across Monrovia.`,
     openGraph: {
       title: product.name,
@@ -79,7 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const relatedProducts = relatedResult.data as any;
 
   // Get product URL
-  const productUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://luckypharmacy.com'}/products/${product.id}`;
+  const productUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://pharmacy-platform-rho.vercel.app'}/products/${product.id}`;
 
   return (
     <div className="min-h-screen flex flex-col">

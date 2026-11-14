@@ -103,7 +103,7 @@ export async function POST(
     const order = prescription.orders as any;
     if (order?.customer_whatsapp) {
       try {
-        const whatsappMessage = `❌ *Prescription Issue - Lucky Pharmacy*
+        const whatsappMessage = `❌ *Prescription Issue - PharmaCare*
 
 Hello ${order.customer_name},
 
@@ -113,8 +113,8 @@ We've reviewed your prescription for order *${order.order_number}*.
 
 Please upload a new, clear prescription or contact us for assistance.
 
-📞 Call: ${process.env.NEXT_PUBLIC_PHARMACY_PHONE || '0770123456'}
-🏥 Lucky Pharmacy - Your Health Partner`;
+📞 Call: ${process.env.NEXT_PUBLIC_PHARMACY_PHONE || '+231 777 000 000'}
+🏥 PharmaCare - Your Health Partner`;
 
         // Call WhatsApp API (implement based on your provider)
         await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/whatsapp/send`, {

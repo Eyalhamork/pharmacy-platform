@@ -117,10 +117,10 @@ export function PrintReceipt({ order }: PrintReceiptProps) {
       `}</style>
 
       <div className="receipt-header">
-        <div className="receipt-title">Lucky Pharmacy</div>
+        <div className="receipt-title">PharmaCare</div>
         <div className="receipt-subtitle">Your Trusted Online Pharmacy</div>
         <div className="receipt-subtitle">Monrovia, Liberia</div>
-        <div className="receipt-subtitle">Phone: +231-XXX-XXXX</div>
+        <div className="receipt-subtitle">Phone: +231-777-000-000</div>
       </div>
 
       <div className="receipt-section">
@@ -264,9 +264,9 @@ export function PrintReceipt({ order }: PrintReceiptProps) {
       )}
 
       <div className="receipt-footer">
-        <div>Thank you for choosing Lucky Pharmacy!</div>
+        <div>Thank you for choosing PharmaCare!</div>
         <div style={{ marginTop: '5px' }}>
-          For support, contact us at support@luckypharmacy.com
+          For support, contact us at support@pharmacare.com
         </div>
         <div style={{ marginTop: '10px' }}>
           This is a computer-generated receipt and requires no signature.

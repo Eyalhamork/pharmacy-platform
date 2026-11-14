@@ -30,11 +30,11 @@ export async function GET() {
     // Get pharmacy settings (we'll store in a settings table)
     // For now, return default settings - you can create a settings table later
     const settings = {
-      pharmacy_name: 'Lucky Pharmacy',
+      pharmacy_name: 'PharmaCare',
       logo_url: null,
-      phone: '+231-XXX-XXXX',
-      email: 'info@luckypharmacy.com',
-      whatsapp: '+231-XXX-XXXX',
+      phone: '+231-777-000-000',
+      email: 'info@pharmacare.com',
+      whatsapp: '+231-777-000-000',
       address: 'Monrovia, Liberia',
       operating_hours: {
         monday: '8:00 AM - 8:00 PM',

@@ -5,8 +5,8 @@ import { Header } from '@/components/shared/header';
 import { Footer } from '@/components/shared/footer';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Lucky Pharmacy',
-  description: 'Read Lucky Pharmacy\'s Terms of Service. Understand your rights and responsibilities when using our online pharmacy platform.',
+  title: 'Terms of Service | PharmaCare',
+  description: 'Read PharmaCare\'s Terms of Service. Understand your rights and responsibilities when using our online pharmacy platform.',
 };
 
 export default function TermsOfServicePage() {
@@ -15,7 +15,7 @@ export default function TermsOfServicePage() {
       <Header />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-white py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <div className="flex justify-center mb-6">
@@ -26,10 +26,10 @@ export default function TermsOfServicePage() {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Terms of Service
               </h1>
-              <p className="text-xl text-green-50">
-                Please read these terms carefully before using Lucky Pharmacy
+              <p className="text-xl text-primary-foreground/90">
+                Please read these terms carefully before using PharmaCare
               </p>
-              <p className="text-sm text-green-100 mt-4">
+              <p className="text-sm text-primary-foreground/80 mt-4">
                 Last Updated: November 26, 2025
               </p>
             </div>
@@ -43,7 +43,7 @@ export default function TermsOfServicePage() {
               <Card>
                 <CardContent className="p-8">
                   <p className="text-gray-600 leading-relaxed">
-                    Welcome to Lucky Pharmacy! These Terms of Service ("Terms") govern your access to and
+                    Welcome to PharmaCare! These Terms of Service ("Terms") govern your access to and
                     use of our website, mobile applications, and services (collectively, the "Service").
                     By accessing or using the Service, you agree to be bound by these Terms. If you do
                     not agree to these Terms, please do not use our Service.
@@ -60,7 +60,7 @@ export default function TermsOfServicePage() {
                   <div>
                     <h3 className="font-bold text-gray-900 mb-2">Important Notice</h3>
                     <p className="text-gray-700">
-                      Lucky Pharmacy is a licensed pharmacy operating under the regulations of the Liberia
+                      PharmaCare is a licensed pharmacy operating under the regulations of the Liberia
                       Medicines & Health Products Regulatory Authority (LMHRA). These Terms are
                       governed by the laws of the Republic of Liberia.
                     </p>
@@ -127,7 +127,7 @@ export default function TermsOfServicePage() {
                       <div>
                         <h3 className="font-semibold text-gray-900 mb-2">Placing Orders</h3>
                         <ul className="space-y-2 ml-6">
-                          <li className="list-disc">All orders are subject to acceptance by Lucky Pharmacy</li>
+                          <li className="list-disc">All orders are subject to acceptance by PharmaCare</li>
                           <li className="list-disc">We reserve the right to refuse or cancel any order</li>
                           <li className="list-disc">Product availability and prices are subject to change</li>
                           <li className="list-disc">You must provide accurate delivery information</li>
@@ -181,7 +181,7 @@ export default function TermsOfServicePage() {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3 text-gray-600">
-                      <p><strong>Delivery Areas:</strong> We deliver to specified zones within Monrovia and surrounding areas. See our <a href="/shipping-delivery" className="text-green-600 hover:underline">Shipping & Delivery</a> page for details.</p>
+                      <p><strong>Delivery Areas:</strong> We deliver to specified zones within Monrovia and surrounding areas. See our <a href="/shipping-delivery" className="text-primary hover:underline">Shipping & Delivery</a> page for details.</p>
                       <p><strong>Delivery Times:</strong> Estimated delivery times are not guaranteed and may vary based on factors beyond our control.</p>
                       <p><strong>Failed Delivery:</strong> If delivery fails due to incorrect address, unavailability, or refusal to accept, additional fees may apply for redelivery.</p>
                       <p><strong>Risk of Loss:</strong> Title and risk of loss pass to you upon delivery to the specified address.</p>
@@ -199,7 +199,7 @@ export default function TermsOfServicePage() {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3 text-gray-600">
-                      <p>Our returns policy is governed by pharmaceutical regulations. Please review our complete <a href="/returns-policy" className="text-green-600 hover:underline">Returns Policy</a> for details.</p>
+                      <p>Our returns policy is governed by pharmaceutical regulations. Please review our complete <a href="/returns-policy" className="text-primary hover:underline">Returns Policy</a> for details.</p>
                       <p><strong>Key Points:</strong></p>
                       <ul className="space-y-2 ml-6">
                         <li className="list-disc">Opened medications cannot be returned</li>
@@ -246,7 +246,7 @@ export default function TermsOfServicePage() {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3 text-gray-600">
-                      <p>All content on the Service, including text, graphics, logos, images, and software, is the property of Lucky Pharmacy or its licensors and is protected by copyright, trademark, and other intellectual property laws.</p>
+                      <p>All content on the Service, including text, graphics, logos, images, and software, is the property of PharmaCare or its licensors and is protected by copyright, trademark, and other intellectual property laws.</p>
                       <p>You may not copy, reproduce, distribute, or create derivative works without our prior written permission.</p>
                     </div>
                   </CardContent>
@@ -262,7 +262,7 @@ export default function TermsOfServicePage() {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3 text-gray-600">
-                      <p>Your privacy is important to us. Our collection, use, and protection of your personal information is governed by our <a href="/privacy-policy" className="text-green-600 hover:underline">Privacy Policy</a>.</p>
+                      <p>Your privacy is important to us. Our collection, use, and protection of your personal information is governed by our <a href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</a>.</p>
                       <p>By using the Service, you consent to the collection and use of your information as described in the Privacy Policy.</p>
                     </div>
                   </CardContent>
@@ -296,7 +296,7 @@ export default function TermsOfServicePage() {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3 text-gray-600">
-                      <p>To the maximum extent permitted by law, Lucky Pharmacy shall not be liable for:</p>
+                      <p>To the maximum extent permitted by law, PharmaCare shall not be liable for:</p>
                       <ul className="space-y-2 ml-6">
                         <li className="list-disc">Indirect, incidental, special, or consequential damages</li>
                         <li className="list-disc">Loss of profits, revenue, data, or business opportunities</li>
@@ -318,7 +318,7 @@ export default function TermsOfServicePage() {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3 text-gray-600">
-                      <p>You agree to indemnify, defend, and hold harmless Lucky Pharmacy, its affiliates, officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including legal fees) arising from:</p>
+                      <p>You agree to indemnify, defend, and hold harmless PharmaCare, its affiliates, officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including legal fees) arising from:</p>
                       <ul className="space-y-2 ml-6">
                         <li className="list-disc">Your use of the Service</li>
                         <li className="list-disc">Your violation of these Terms</li>
@@ -372,7 +372,7 @@ export default function TermsOfServicePage() {
                 <Card>
                   <CardContent className="p-6">
                     <div className="space-y-3 text-gray-600">
-                      <p><strong>Entire Agreement:</strong> These Terms constitute the entire agreement between you and Lucky Pharmacy regarding the Service.</p>
+                      <p><strong>Entire Agreement:</strong> These Terms constitute the entire agreement between you and PharmaCare regarding the Service.</p>
                       <p><strong>Severability:</strong> If any provision is found invalid, the remaining provisions shall continue in full force.</p>
                       <p><strong>Waiver:</strong> Our failure to enforce any right does not constitute a waiver of that right.</p>
                       <p><strong>Assignment:</strong> You may not assign these Terms. We may assign our rights and obligations to a successor entity.</p>
@@ -383,24 +383,24 @@ export default function TermsOfServicePage() {
             </div>
 
             {/* Contact */}
-            <Card className="bg-gradient-to-r from-green-600 to-green-700 text-white">
+            <Card className="bg-gradient-to-r from-primary to-primary/90 text-white">
               <CardContent className="p-8">
                 <div className="flex items-start gap-4">
                   <Scale className="h-8 w-8 flex-shrink-0 mt-1" />
                   <div>
                     <h2 className="text-2xl font-bold mb-4">Questions About These Terms?</h2>
-                    <p className="text-green-50 mb-6">
+                    <p className="text-primary-foreground/90 mb-6">
                       If you have any questions or concerns about these Terms of Service, please contact us:
                     </p>
-                    <div className="space-y-2 text-green-50">
-                      <p><strong>Email:</strong> legal@luckypharmacy.com</p>
+                    <div className="space-y-2 text-primary-foreground/90">
+                      <p><strong>Email:</strong> legal@pharmacare.com</p>
                       <p><strong>Phone:</strong> +231-XXX-XXX-XXX</p>
                       <p><strong>Address:</strong> Monrovia, Montserrado County, Liberia</p>
                     </div>
                     <div className="mt-6">
                       <a
                         href="/contact"
-                        className="inline-flex items-center justify-center px-6 py-3 bg-white text-green-600 rounded-lg font-medium hover:bg-green-50 transition-colors"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors"
                       >
                         Contact Us
                       </a>

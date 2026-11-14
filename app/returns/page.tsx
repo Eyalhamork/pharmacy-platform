@@ -11,8 +11,8 @@ import { Header } from '@/components/shared/header';
 import { Footer } from '@/components/shared/footer';
 
 export const metadata: Metadata = {
-  title: 'Returns & Refund Policy | Lucky Pharmacy',
-  description: 'Understand Lucky Pharmacy\'s returns and refund policy for medications and health products. Learn about eligible returns and our quality guarantee.',
+  title: 'Returns & Refund Policy | PharmaCare',
+  description: 'Understand PharmaCare\'s returns and refund policy for medications and health products. Learn about eligible returns and our quality guarantee.',
 };
 
 export default function ReturnsPolicyPage() {
@@ -21,7 +21,7 @@ export default function ReturnsPolicyPage() {
       <Header />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-white py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <div className="flex justify-center mb-6">
@@ -32,7 +32,7 @@ export default function ReturnsPolicyPage() {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Returns & Refund Policy
               </h1>
-              <p className="text-xl text-green-50">
+              <p className="text-xl text-primary-foreground/90">
                 Your satisfaction and safety are our top priorities
               </p>
             </div>
@@ -71,7 +71,7 @@ export default function ReturnsPolicyPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <CheckCircle className="h-5 w-5 text-primary" />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 mb-2">Wrong Item Delivered</h3>
@@ -89,7 +89,7 @@ export default function ReturnsPolicyPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <CheckCircle className="h-5 w-5 text-primary" />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 mb-2">Damaged or Defective Products</h3>
@@ -107,7 +107,7 @@ export default function ReturnsPolicyPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <CheckCircle className="h-5 w-5 text-primary" />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 mb-2">Expired Medications</h3>
@@ -125,7 +125,7 @@ export default function ReturnsPolicyPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <CheckCircle className="h-5 w-5 text-primary" />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 mb-2">Unopened Products with Sealed Packaging</h3>
@@ -303,14 +303,14 @@ export default function ReturnsPolicyPage() {
                       <h3 className="font-semibold text-gray-900 mb-2">Refund Method</h3>
                       <ul className="space-y-2 text-gray-600">
                         <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                           <span>
                             <strong>MTN Mobile Money:</strong> Refunds are sent back to the same
                             MoMo account used for payment
                           </span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                           <span>
                             <strong>Cash on Delivery:</strong> Refunds can be collected at our
                             pharmacy or sent via MTN Mobile Money (if you provide your number)
@@ -332,18 +332,18 @@ export default function ReturnsPolicyPage() {
             </div>
 
             {/* Quality Guarantee */}
-            <Card className="bg-gradient-to-r from-green-600 to-green-700 text-white">
+            <Card className="bg-gradient-to-r from-primary to-primary/90 text-white">
               <CardContent className="p-8">
                 <div className="flex items-start gap-4">
                   <Shield className="h-8 w-8 flex-shrink-0 mt-1" />
                   <div>
                     <h2 className="text-2xl font-bold mb-4">Our Quality Guarantee</h2>
-                    <p className="text-green-50 mb-4">
-                      At Lucky Pharmacy, we stand behind the quality of every product we sell. All
+                    <p className="text-primary-foreground/90 mb-4">
+                      At PharmaCare, we stand behind the quality of every product we sell. All
                       medications are sourced from licensed suppliers and verified by our
                       qualified pharmacists.
                     </p>
-                    <ul className="space-y-2 text-green-50">
+                    <ul className="space-y-2 text-primary-foreground/90">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
                         <span>100% genuine medications, never counterfeit</span>
@@ -384,7 +384,7 @@ export default function ReturnsPolicyPage() {
                   </a>
                   <a
                     href="/faq"
-                    className="inline-flex items-center justify-center px-6 py-3 border-2 border-green-600 text-green-600 rounded-lg font-medium hover:bg-green-50 transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 border-2 border-green-600 text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors"
                   >
                     View FAQs
                   </a>

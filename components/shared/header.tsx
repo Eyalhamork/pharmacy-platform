@@ -65,8 +65,8 @@ export function Header() {
               </div>
               <div className="hidden sm:block">
                 <div className="flex flex-col -space-y-1">
-                  <span className="text-xl font-bold text-accent tracking-wide uppercase leading-none">LUCKY</span>
-                  <span className="text-xl font-bold text-primary tracking-wide uppercase leading-none">PHARMACY</span>
+                  <span className="text-xl font-bold text-accent tracking-wide uppercase leading-none">PHARMA</span>
+                  <span className="text-xl font-bold text-primary tracking-wide uppercase leading-none">CARE</span>
                 </div>
               </div>
             </Link>

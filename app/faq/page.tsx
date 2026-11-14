@@ -11,8 +11,8 @@ import { Header } from '@/components/shared/header';
 import { Footer } from '@/components/shared/footer';
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions | Lucky Pharmacy',
-  description: 'Find answers to common questions about ordering, delivery, payments, prescriptions, and more at Lucky Pharmacy.',
+  title: 'Frequently Asked Questions | PharmaCare',
+  description: 'Find answers to common questions about ordering, delivery, payments, prescriptions, and more at PharmaCare.',
 };
 
 export default function FAQPage() {
@@ -21,7 +21,7 @@ export default function FAQPage() {
       <Header />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <div className="flex justify-center mb-6">
@@ -32,8 +32,8 @@ export default function FAQPage() {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Frequently Asked Questions
               </h1>
-              <p className="text-xl text-green-50">
-                Find quick answers to common questions about Lucky Pharmacy
+              <p className="text-xl text-primary-foreground/90">
+                Find quick answers to common questions about PharmaCare
               </p>
             </div>
           </div>
@@ -44,16 +44,16 @@ export default function FAQPage() {
             {/* General Questions */}
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <span className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm">1</span>
+                <span className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-sm">1</span>
                 General Questions
               </h2>
               <Accordion type="single" collapsible className="space-y-4">
                 <AccordionItem value="item-1" className="border rounded-lg px-6 bg-white">
                   <AccordionTrigger className="text-left hover:no-underline">
-                    What is Lucky Pharmacy?
+                    What is PharmaCare?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600">
-                    Lucky Pharmacy is Liberia's leading online pharmacy platform that allows you to
+                    PharmaCare is a leading online pharmacy and digital healthcare platform that allows you to
                     order medications and health products from the comfort of your home. We
                     provide convenient access to genuine medications with fast delivery across
                     Monrovia and beyond.
@@ -76,7 +76,7 @@ export default function FAQPage() {
                     Is it safe to buy medications online?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600">
-                    Absolutely! Lucky Pharmacy is a licensed pharmacy operating in full compliance with
+                    Absolutely! PharmaCare is a licensed pharmacy operating in full compliance with
                     Liberian pharmaceutical regulations. Our licensed pharmacists verify all
                     prescriptions, and we use secure payment methods to protect your information.
                   </AccordionContent>
@@ -109,7 +109,7 @@ export default function FAQPage() {
                   <AccordionContent className="text-gray-600">
                     Simply browse our catalog, add items to your cart, provide delivery details,
                     upload prescriptions if needed, and complete payment. Check out our
-                    <a href="/how-it-works" className="text-green-600 hover:underline ml-1">How It Works</a> page
+                    <a href="/how-it-works" className="text-primary hover:underline ml-1">How It Works</a> page
                     for a detailed step-by-step guide.
                   </AccordionContent>
                 </AccordionItem>
@@ -152,7 +152,7 @@ export default function FAQPage() {
             {/* Prescriptions */}
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <span className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm">3</span>
+                <span className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-sm">3</span>
                 Prescriptions
               </h2>
               <Accordion type="single" collapsible className="space-y-4">
@@ -227,7 +227,7 @@ export default function FAQPage() {
                   <AccordionContent className="text-gray-600">
                     Delivery fees vary based on your location within our delivery zones. The exact
                     fee will be calculated and displayed during checkout before you complete your
-                    order. See our <a href="/shipping-delivery" className="text-green-600 hover:underline">
+                    order. See our <a href="/shipping-delivery" className="text-primary hover:underline">
                       Shipping & Delivery</a> page for more details.
                   </AccordionContent>
                 </AccordionItem>
@@ -249,7 +249,7 @@ export default function FAQPage() {
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600">
                     You can track your order in your account under "My Orders" or use our
-                    <a href="/track-order" className="text-green-600 hover:underline ml-1">
+                    <a href="/track-order" className="text-primary hover:underline ml-1">
                       Track Order</a> page with your order number. You'll also receive WhatsApp
                     updates at each stage of your order.
                   </AccordionContent>
@@ -260,7 +260,7 @@ export default function FAQPage() {
             {/* Returns & Refunds */}
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <span className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm">5</span>
+                <span className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-sm">5</span>
                 Returns & Refunds
               </h2>
               <Accordion type="single" collapsible className="space-y-4">
@@ -313,7 +313,7 @@ export default function FAQPage() {
                   <AccordionContent className="text-gray-600">
                     Yes! We use industry-standard encryption to protect your personal and payment
                     information. We never share your data with third parties without your consent.
-                    Read our <a href="/privacy-policy" className="text-green-600 hover:underline">
+                    Read our <a href="/privacy-policy" className="text-primary hover:underline">
                       Privacy Policy</a> for full details.
                   </AccordionContent>
                 </AccordionItem>
@@ -342,18 +342,18 @@ export default function FAQPage() {
             </div>
 
             {/* Still Have Questions? */}
-            <Card className="bg-gradient-to-r from-green-600 to-green-700 text-white">
+            <Card className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground">
               <CardContent className="p-8 text-center">
                 <h2 className="text-2xl font-bold mb-4">
                   Still Have Questions?
                 </h2>
-                <p className="text-green-50 mb-6">
+                <p className="text-primary-foreground/90 mb-6">
                   Can't find what you're looking for? Our team is here to help!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a
                     href="/contact"
-                    className="inline-flex items-center justify-center px-6 py-3 bg-white text-green-600 rounded-lg font-medium hover:bg-green-50 transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors"
                   >
                     Contact Us
                   </a>

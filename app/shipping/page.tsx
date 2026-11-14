@@ -12,8 +12,8 @@ import { Header } from '@/components/shared/header';
 import { Footer } from '@/components/shared/footer';
 
 export const metadata: Metadata = {
-  title: 'Shipping & Delivery | Lucky Pharmacy',
-  description: 'Learn about Lucky Pharmacy\'s delivery options, zones, fees, and timelines. Fast, reliable delivery across Monrovia and beyond.',
+  title: 'Shipping & Delivery | PharmaCare',
+  description: 'Learn about PharmaCare\'s delivery options, zones, fees, and timelines. Fast, reliable delivery across Monrovia and beyond.',
 };
 
 export default function ShippingDeliveryPage() {
@@ -22,7 +22,7 @@ export default function ShippingDeliveryPage() {
       <Header />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <div className="flex justify-center mb-6">
@@ -33,7 +33,7 @@ export default function ShippingDeliveryPage() {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Shipping & Delivery
               </h1>
-              <p className="text-xl text-green-50">
+              <p className="text-xl text-primary-foreground/90">
                 Fast, reliable delivery to your doorstep or convenient pharmacy pickup
               </p>
             </div>
@@ -50,8 +50,8 @@ export default function ShippingDeliveryPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <Card>
                   <CardContent className="p-8">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                      <Truck className="h-6 w-6 text-green-600" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                      <Truck className="h-6 w-6 text-primary" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3">
                       Home Delivery
@@ -62,19 +62,19 @@ export default function ShippingDeliveryPage() {
                     </p>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Same-day delivery in Monrovia</span>
                       </li>
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Secure packaging for all items</span>
                       </li>
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>Real-time order tracking</span>
                       </li>
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <span>WhatsApp delivery updates</span>
                       </li>
                     </ul>
@@ -125,8 +125,8 @@ export default function ShippingDeliveryPage() {
                 <CardContent className="p-8">
                   <div className="space-y-6">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Clock className="h-6 w-6 text-green-600" />
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Clock className="h-6 w-6 text-primary" />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 mb-2">
@@ -156,8 +156,8 @@ export default function ShippingDeliveryPage() {
                     </div>
 
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Package className="h-6 w-6 text-green-600" />
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Package className="h-6 w-6 text-primary" />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 mb-2">
@@ -204,7 +204,7 @@ export default function ShippingDeliveryPage() {
                         <tr>
                           <td className="py-4 px-4">
                             <span className="inline-flex items-center gap-2">
-                              <MapPin className="h-4 w-4 text-green-600" />
+                              <MapPin className="h-4 w-4 text-primary" />
                               <span className="font-medium text-gray-900">Zone 1</span>
                             </span>
                           </td>
@@ -221,7 +221,7 @@ export default function ShippingDeliveryPage() {
                         <tr>
                           <td className="py-4 px-4">
                             <span className="inline-flex items-center gap-2">
-                              <MapPin className="h-4 w-4 text-orange-600" />
+                              <MapPin className="h-4 w-4 text-accent" />
                               <span className="font-medium text-gray-900">Zone 2</span>
                             </span>
                           </td>
@@ -238,7 +238,7 @@ export default function ShippingDeliveryPage() {
                         <tr>
                           <td className="py-4 px-4">
                             <span className="inline-flex items-center gap-2">
-                              <MapPin className="h-4 w-4 text-blue-600" />
+                              <MapPin className="h-4 w-4 text-primary" />
                               <span className="font-medium text-gray-900">Zone 3</span>
                             </span>
                           </td>
@@ -252,17 +252,17 @@ export default function ShippingDeliveryPage() {
                             1-2 days
                           </td>
                         </tr>
-                        <tr className="bg-green-50">
+                        <tr className="bg-primary/5">
                           <td className="py-4 px-4">
                             <span className="inline-flex items-center gap-2">
-                              <Package className="h-4 w-4 text-green-600" />
+                              <Package className="h-4 w-4 text-primary" />
                               <span className="font-medium text-gray-900">Pickup</span>
                             </span>
                           </td>
                           <td className="py-4 px-4 text-gray-600">
-                            Collect at Lucky Pharmacy location
+                            Collect at PharmaCare location
                           </td>
-                          <td className="py-4 px-4 text-right font-bold text-green-600">
+                          <td className="py-4 px-4 text-right font-bold text-primary">
                             FREE
                           </td>
                           <td className="py-4 px-4 text-right text-gray-600">
@@ -288,8 +288,8 @@ export default function ShippingDeliveryPage() {
               <div className="grid md:grid-cols-4 gap-6">
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-xl font-bold text-green-600">1</span>
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-xl font-bold text-primary">1</span>
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">Order Confirmed</h3>
                     <p className="text-sm text-gray-600">
@@ -300,8 +300,8 @@ export default function ShippingDeliveryPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-xl font-bold text-orange-600">2</span>
+                    <div className="w-12 h-12 bg-accent/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-xl font-bold text-accent">2</span>
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">Order Prepared</h3>
                     <p className="text-sm text-gray-600">
@@ -312,8 +312,8 @@ export default function ShippingDeliveryPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-xl font-bold text-green-600">3</span>
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-xl font-bold text-primary">3</span>
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">Out for Delivery</h3>
                     <p className="text-sm text-gray-600">
@@ -324,8 +324,8 @@ export default function ShippingDeliveryPage() {
 
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-xl font-bold text-orange-600">4</span>
+                    <div className="w-12 h-12 bg-accent/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-xl font-bold text-accent">4</span>
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">Delivered</h3>
                     <p className="text-sm text-gray-600">
@@ -337,44 +337,44 @@ export default function ShippingDeliveryPage() {
             </div>
 
             {/* Important Information */}
-            <Card className="bg-blue-50 border-blue-200">
+            <Card className="bg-primary/5 border-primary/20">
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Important Information
                 </h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <p className="text-gray-700">
                       <strong>Delivery Hours:</strong> Monday-Saturday (8 AM - 8 PM),
                       Sunday (9 AM - 6 PM)
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <p className="text-gray-700">
                       <strong>ID Verification:</strong> For certain medications, delivery
                       personnel may request ID verification upon delivery
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <p className="text-gray-700">
                       <strong>Packaging:</strong> All orders are packaged discreetly to
                       protect your privacy
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <p className="text-gray-700">
                       <strong>Tracking:</strong> Track your order anytime at{' '}
-                      <a href="/track-order" className="text-blue-600 hover:underline">
-                        luckypharmacy.com/track-order
+                      <a href="/track-order" className="text-primary hover:underline">
+                        /track-order
                       </a>
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <p className="text-gray-700">
                       <strong>Contact:</strong> For delivery inquiries, contact us via
                       WhatsApp or phone

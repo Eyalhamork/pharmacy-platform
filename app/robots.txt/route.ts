@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://luckypharmacy.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pharmacy-platform-rho.vercel.app';
 
 export async function GET() {
-  const robots = `# Lucky Pharmacy Robots.txt
+  const robots = `# PharmaCare Robots.txt
 # Allow all search engines to crawl the site
 
 User-agent: *

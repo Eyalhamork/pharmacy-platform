@@ -16,8 +16,8 @@ import { Header } from '@/components/shared/header';
 import { Footer } from '@/components/shared/footer';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Lucky Pharmacy',
-  description: 'Get in touch with Lucky Pharmacy. We\'re here to help with your questions, orders, and pharmaceutical needs.',
+  title: 'Contact Us | PharmaCare',
+  description: 'Get in touch with PharmaCare. We are here to help with your orders, prescription questions, and healthcare needs.',
 };
 
 export default function ContactPage() {
@@ -26,13 +26,13 @@ export default function ContactPage() {
       <Header />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Contact Us
               </h1>
-              <p className="text-xl text-green-50">
+              <p className="text-xl text-primary-foreground/90">
                 Have a question? Need help with your order? Our team is here
                 to assist you.
               </p>
@@ -60,13 +60,13 @@ export default function ContactPage() {
                   <Card>
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <MapPin className="h-6 w-6 text-green-600" />
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <MapPin className="h-6 w-6 text-primary" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900 mb-1">Visit Our Pharmacy</h3>
                           <p className="text-gray-600">
-                            Monrovia, Montserrado County<br />
+                            Tubman Boulevard, Sinkor, Monrovia<br />
                             Liberia
                           </p>
                         </div>
@@ -77,13 +77,13 @@ export default function ContactPage() {
                   <Card>
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Phone className="h-6 w-6 text-orange-600" />
+                        <div className="w-12 h-12 bg-accent/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Phone className="h-6 w-6 text-accent" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900 mb-1">Call Us</h3>
                           <p className="text-gray-600">
-                            Phone: +231-XXX-XXX-XXX<br />
+                            Phone: +231 777 000 000<br />
                             Mon-Sat: 8:00 AM - 8:00 PM<br />
                             Sun: 9:00 AM - 6:00 PM
                           </p>
@@ -95,8 +95,8 @@ export default function ContactPage() {
                   <Card>
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <MessageCircle className="h-6 w-6 text-green-600" />
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <MessageCircle className="h-6 w-6 text-primary" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900 mb-1">WhatsApp</h3>
@@ -104,7 +104,7 @@ export default function ContactPage() {
                             Get instant updates on your orders via WhatsApp
                           </p>
                           <p className="text-sm text-gray-500">
-                            (Available for order confirmations and updates)
+                            +231 777 000 000 (Available for order confirmations and updates)
                           </p>
                         </div>
                       </div>
@@ -114,14 +114,14 @@ export default function ContactPage() {
                   <Card>
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Mail className="h-6 w-6 text-orange-600" />
+                        <div className="w-12 h-12 bg-accent/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Mail className="h-6 w-6 text-accent" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900 mb-1">Email Us</h3>
                           <p className="text-gray-600">
-                            info@luckypharmacy.com<br />
-                            support@luckypharmacy.com
+                            info@pharmacare.com<br />
+                            support@pharmacare.com
                           </p>
                         </div>
                       </div>
@@ -131,8 +131,8 @@ export default function ContactPage() {
                   <Card>
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Clock className="h-6 w-6 text-green-600" />
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Clock className="h-6 w-6 text-primary" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900 mb-1">Operating Hours</h3>
@@ -141,7 +141,7 @@ export default function ContactPage() {
                             <strong>Sunday:</strong> 9:00 AM - 6:00 PM<br />
                             <strong>Public Holidays:</strong> 10:00 AM - 4:00 PM
                           </p>
-                          <p className="text-sm text-green-600 mt-2">
+                          <p className="text-sm text-primary mt-2">
                             Online ordering available 24/7
                           </p>
                         </div>
@@ -193,7 +193,7 @@ export default function ContactPage() {
                         <Input
                           id="phone"
                           type="tel"
-                          placeholder="+231-XXX-XXX-XXX"
+                          placeholder="+231-777-000-000"
                         />
                       </div>
 
@@ -219,7 +219,7 @@ export default function ContactPage() {
                       <Button
                         type="submit"
                         size="lg"
-                        className="w-full bg-green-600 hover:bg-green-700"
+                        className="w-full"
                       >
                         <Send className="mr-2 h-5 w-5" />
                         Send Message
@@ -240,16 +240,16 @@ export default function ContactPage() {
                     </h3>
                     <ul className="space-y-2 text-sm text-gray-600">
                       <li>
-                        • Check our <a href="/faq" className="text-green-600 hover:underline">FAQ page</a> for quick answers
+                        • Check our <a href="/faq" className="text-primary hover:underline">FAQ page</a> for quick answers
                       </li>
                       <li>
-                        • Track your order on the <a href="/track-order" className="text-green-600 hover:underline">Track Order</a> page
+                        • Track your order on the <a href="/track-order" className="text-primary hover:underline">Track Order</a> page
                       </li>
                       <li>
-                        • View our <a href="/how-it-works" className="text-green-600 hover:underline">How It Works</a> guide
+                        • View our <a href="/how-it-works" className="text-primary hover:underline">How It Works</a> guide
                       </li>
                       <li>
-                        • Review our <a href="/shipping-delivery" className="text-green-600 hover:underline">Shipping & Delivery</a> policy
+                        • Review our <a href="/shipping-delivery" className="text-primary hover:underline">Shipping & Delivery</a> policy
                       </li>
                     </ul>
                   </CardContent>
@@ -270,7 +270,7 @@ export default function ContactPage() {
                 <div className="text-center">
                   <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-2" />
                   <p className="text-gray-600">
-                    Monrovia, Montserrado County, Liberia
+                    Tubman Boulevard, Sinkor, Monrovia, Liberia
                   </p>
                   <p className="text-sm text-gray-500 mt-2">
                     Map integration coming soon

@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://luckypharmacy.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pharmacy-platform-rho.vercel.app';
 
 export async function GET() {
   try {

@@ -74,7 +74,7 @@ Good news! Your prescription for order #${order.order_number} has been verified 
 We're now processing your order and will notify you when it's ready for ${order.delivery_type === 'delivery' ? 'delivery' : 'pickup'
             }.
 
-Thank you for choosing Lucky Pharmacy!`;
+Thank you for choosing PharmaCare!`;
         } else {
           message = `Hello ${order.customer_name},
 
