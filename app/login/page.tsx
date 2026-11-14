@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { LogIn, ShoppingBag } from 'lucide-react';
+import { LogIn, ShoppingBag, ShieldCheck, KeyRound, ArrowRight } from 'lucide-react';
 import { AuthForm } from '@/components/auth/auth-form';
 import { signIn } from '@/lib/supabase/auth';
 import { useToast } from '@/lib/hooks/use-toast';
@@ -119,6 +119,66 @@ export default function LoginPage() {
             </p>
           </CardFooter>
         </Card>
+
+        {/* Staff & Admin Portal Banner */}
+        <div className="mt-4 p-4 rounded-2xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors shadow-sm">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-gray-900">Staff & Admin Portal</div>
+                <div className="text-xs text-muted-foreground">Fulfillment, inventory & reports</div>
+              </div>
+            </div>
+            <Link
+              href="/staff/login"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline shrink-0"
+            >
+              Sign In <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Demo Credentials Quick-Access Card */}
+        <div className="mt-4 p-4 rounded-2xl border border-gray-200/80 bg-white shadow-sm">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5">
+              <KeyRound className="h-4 w-4 text-primary" />
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-700">Demo Testing Logins</span>
+            </div>
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200/60">
+              Instant Fill
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 mb-3">
+            Click any staff role below to jump directly to the portal:
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            <Link
+              href="/staff/login?role=admin"
+              className="p-2.5 rounded-xl border border-gray-100 bg-gray-50 hover:bg-primary/5 hover:border-primary/30 transition-all text-center group"
+            >
+              <div className="font-semibold text-xs text-gray-900 group-hover:text-primary">Admin</div>
+              <div className="text-[10px] text-gray-500">Full Access</div>
+            </Link>
+            <Link
+              href="/staff/login?role=manager"
+              className="p-2.5 rounded-xl border border-gray-100 bg-gray-50 hover:bg-primary/5 hover:border-primary/30 transition-all text-center group"
+            >
+              <div className="font-semibold text-xs text-gray-900 group-hover:text-primary">Manager</div>
+              <div className="text-[10px] text-gray-500">Inventory & Rx</div>
+            </Link>
+            <Link
+              href="/staff/login?role=staff"
+              className="p-2.5 rounded-xl border border-gray-100 bg-gray-50 hover:bg-primary/5 hover:border-primary/30 transition-all text-center group"
+            >
+              <div className="font-semibold text-xs text-gray-900 group-hover:text-primary">Staff</div>
+              <div className="text-[10px] text-gray-500">Fulfillment</div>
+            </Link>
+          </div>
+        </div>
 
         {/* Back to Home */}
         <div className="mt-6 text-center">
