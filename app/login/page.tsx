@@ -1,16 +1,14 @@
 // File: app/login/page.tsx
-// Patient & Customer Care Login Portal with instant demo credentials autofill & sign-in
+// Patient & Customer Login Portal
 
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ShoppingBag,
   ShieldCheck,
-  KeyRound,
-  ArrowRight,
   HeartHandshake,
   Truck,
   FileText,
@@ -25,12 +23,10 @@ import { signIn } from '@/lib/supabase/auth';
 import { useToast } from '@/lib/hooks/use-toast';
 import { trackLogin } from '@/components/analytics';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { PortalSwitcher } from '@/components/auth/portal-switcher';
 
 function PatientLoginForm() {
   const [email, setEmail] = useState('');
@@ -38,7 +34,6 @@ function PatientLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [autoLogging, setAutoLogging] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -46,13 +41,13 @@ function PatientLoginForm() {
 
   const redirectUrl = searchParams.get('redirect') || '/account';
 
-  const handleLoginSubmit = async (e?: React.FormEvent, customEmail?: string, customPass?: string) => {
-    if (e) e.preventDefault();
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError(null);
     setLoading(true);
 
-    const loginEmail = (customEmail || email).trim();
-    const loginPassword = customPass || password;
+    const loginEmail = email.trim();
+    const loginPassword = password;
 
     if (!loginEmail || !loginPassword) {
       setError('Please enter both email and password.');
@@ -69,7 +64,6 @@ function PatientLoginForm() {
       if (signInError) {
         setError(signInError);
         setLoading(false);
-        setAutoLogging(false);
         return;
       }
 
@@ -77,25 +71,14 @@ function PatientLoginForm() {
         trackLogin('email');
         toast({
           title: 'Welcome Back!',
-          description: 'Signed in successfully to your patient account.',
+          description: 'Signed in successfully.',
         });
-
-        // Use window.location for clean cookie synchronization
         window.location.href = redirectUrl;
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
       setLoading(false);
-      setAutoLogging(false);
     }
-  };
-
-  const handleDemoClick = (demoEmail: string, demoPass: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setError(null);
-    setAutoLogging(true);
-    handleLoginSubmit(undefined, demoEmail, demoPass);
   };
 
   return (
@@ -119,13 +102,12 @@ function PatientLoginForm() {
         </Link>
       </div>
 
-      {/* Main Patient Card */}
+      {/* Main Login Card */}
       <Card className="border-primary/20 shadow-lg shadow-primary/5 rounded-3xl overflow-hidden backdrop-blur-sm bg-white/95">
-        {/* Card Top Accent Banner */}
         <div className="bg-gradient-to-r from-primary via-teal-700 to-secondary text-white px-6 py-4 text-center">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 text-white text-[11px] font-medium mb-1 backdrop-blur-sm">
             <HeartHandshake className="h-3.5 w-3.5" />
-            <span>Patient & Customer Care Portal</span>
+            <span>Patient & Customer Portal</span>
           </div>
           <h1 className="text-xl font-bold tracking-tight">Welcome Back</h1>
           <p className="text-xs text-white/80 mt-0.5">
@@ -200,12 +182,12 @@ function PatientLoginForm() {
               className="w-full h-11 rounded-xl font-medium"
               disabled={loading}
             >
-              {loading && !autoLogging ? (
+              {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...
                 </>
               ) : (
-                'Sign In to Account'
+                'Sign In'
               )}
             </Button>
           </form>
@@ -217,77 +199,40 @@ function PatientLoginForm() {
             >
               <Truck className="h-3.5 w-3.5" /> Track an Order
             </Link>
-            <Link href="/faq" className="hover:text-primary transition-colors">
-              Need Help?
+            <Link href="/products" className="hover:text-primary transition-colors flex items-center gap-1 font-medium">
+              <ShoppingBag className="h-3.5 w-3.5" /> Browse as Guest
             </Link>
           </div>
 
-          <div className="relative my-6">
-            <Separator />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-xs text-muted-foreground font-medium">
-              OR
-            </span>
-          </div>
-
-          {/* 1-Click Patient Demo Access */}
-          <div className="space-y-1.5 mb-4">
-            <div className="flex items-center justify-between text-xs px-0.5">
-              <span className="font-semibold text-gray-700 flex items-center gap-1">
-                <KeyRound className="h-3.5 w-3.5 text-teal-600" />
-                Demo Patient Account
-              </span>
-              <span className="text-[10px] text-teal-700 font-medium">Click to Auto-Sign In</span>
-            </div>
-
+          {/* Demo Access */}
+          <div className="mt-5 pt-4 border-t border-gray-200">
+            <p className="text-[11px] text-center text-muted-foreground mb-2">Portfolio Demo</p>
             <button
               type="button"
-              onClick={() => handleDemoClick('customer@pharmacy.com', 'Customer@123456')}
+              onClick={() => {
+                setEmail('customer@pharmacy.com');
+                setPassword('Customer@123456');
+                setError(null);
+                setLoading(true);
+                signIn({ email: 'customer@pharmacy.com', password: 'Customer@123456' }).then(({ user, error: err }) => {
+                  if (err) { setError(err); setLoading(false); return; }
+                  if (user) { trackLogin('email'); window.location.href = redirectUrl; }
+                }).catch(() => { setError('Demo login failed.'); setLoading(false); });
+              }}
               disabled={loading}
-              className="w-full flex items-center justify-between p-3 rounded-2xl border border-teal-200 bg-gradient-to-r from-teal-50/80 to-emerald-50/80 hover:from-teal-100 hover:to-emerald-100 text-teal-950 transition-all group shadow-2xs"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 hover:bg-teal-100 text-teal-800 text-xs font-semibold transition-colors disabled:opacity-50"
             >
-              <div className="flex items-center gap-2.5 text-left">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-600 text-white shadow-xs group-hover:scale-105 transition-transform">
-                  <KeyRound className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold flex items-center gap-1.5">
-                    <span>Patient: John Doe</span>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-teal-200 text-teal-900 font-semibold">
-                      1-Click Login
-                    </span>
-                  </div>
-                  <div className="text-[11px] text-teal-800/80 font-mono">customer@pharmacy.com</div>
-                </div>
-              </div>
-              <div className="flex items-center text-xs font-semibold text-teal-700">
-                {autoLogging ? (
-                  <Loader2 className="h-4 w-4 animate-spin text-teal-600" />
-                ) : (
-                  <span className="flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    Enter <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                )}
-              </div>
+              {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShoppingBag className="h-3.5 w-3.5" />}
+              Try Demo Patient Account
             </button>
           </div>
-
-          {/* Continue as Guest */}
-          <Link href="/products" className="block">
-            <button
-              type="button"
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-xs font-semibold text-gray-700"
-            >
-              <ShoppingBag className="h-4 w-4 text-muted-foreground" />
-              <span>Continue Shopping as Guest</span>
-            </button>
-          </Link>
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4 bg-gray-50/70 border-t border-gray-100 py-4">
           <p className="text-xs text-center text-muted-foreground">
             Don't have an account yet?{' '}
             <Link href="/signup" className="text-primary font-bold hover:underline">
-              Create Patient Account
+              Create Account
             </Link>
           </p>
 
@@ -342,9 +287,6 @@ function PatientLoginForm() {
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-primary/5 via-background to-teal-50/40 px-4 py-8">
-      {/* Top Portal Switcher */}
-      <PortalSwitcher currentPortal="patient" />
-
       <Suspense
         fallback={
           <div className="flex items-center justify-center p-12">

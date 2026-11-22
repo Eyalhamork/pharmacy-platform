@@ -1,53 +1,36 @@
 // File: app/staff/login/page.tsx
-// Pharmacy Staff & Dispensary Operations Portal with workstation theme and 1-click shift logins
+// Pharmacy Staff Login Portal — clean, simple
 
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { staffSignIn } from '@/lib/supabase/staff-auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   Lock,
   Mail,
   AlertCircle,
   Stethoscope,
-  KeyRound,
-  ArrowRight,
   Loader2,
-  PackageCheck,
-  ClipboardCheck,
-  Building2,
-  Activity,
-  ShieldCheck
+  ShieldCheck,
+  ArrowRight,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
-import { PortalSwitcher } from '@/components/auth/portal-switcher';
 
 function StaffLoginForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [autoLoggingRole, setAutoLoggingRole] = useState<string | null>(null);
-
-  // Auto-fill if ?role= is present in URL
-  useEffect(() => {
-    const roleParam = searchParams.get('role');
-    if (roleParam === 'manager') {
-      setEmail('manager@pharmacy.com');
-      setPassword('Manager@123456');
-    } else if (roleParam === 'staff') {
-      setEmail('staff@pharmacy.com');
-      setPassword('Staff@123456');
-    }
-  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +50,6 @@ function StaffLoginForm() {
       }
 
       if (staff) {
-        // If an admin logs in here, direct them to /admin/dashboard
         if (staff.role === 'admin') {
           window.location.href = '/admin/dashboard';
         } else {
@@ -77,57 +59,28 @@ function StaffLoginForm() {
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
       setLoading(false);
-    }
-  };
-
-  const instantLogin = async (demoEmail: string, demoPass: string, roleName: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setError('');
-    setLoading(true);
-    setAutoLoggingRole(roleName);
-
-    try {
-      const { staff, error: signInError } = await staffSignIn({
-        email: demoEmail.trim(),
-        password: demoPass,
-      });
-
-      if (signInError) {
-        setError(signInError);
-        setLoading(false);
-        setAutoLoggingRole(null);
-        return;
-      }
-
-      if (staff) {
-        if (staff.role === 'admin') {
-          window.location.href = '/admin/dashboard';
-        } else {
-          window.location.href = '/staff/dashboard';
-        }
-      }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
-      setLoading(false);
-      setAutoLoggingRole(null);
     }
   };
 
   return (
     <div className="w-full max-w-md space-y-4 my-2">
-      {/* Dispensary Workstation Status Pill */}
-      <div className="flex items-center justify-between px-3 py-2 rounded-2xl bg-teal-50 border border-teal-200/80 text-teal-800 text-xs">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-500"></span>
-          </span>
-          <span className="font-semibold">Dispensary Station #01</span>
-        </div>
-        <span className="text-[10px] font-mono bg-teal-100 text-teal-900 px-2 py-0.5 rounded-full font-medium">
-          Main Branch • Online
-        </span>
+      {/* Brand Header */}
+      <div className="text-center mb-2">
+        <Link href="/" className="inline-flex items-center justify-center gap-3 group">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-white shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
+            <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="4" className="text-white" fill="none" />
+              <path d="M20 10V30M10 20H30" stroke="currentColor" strokeWidth="6" strokeLinecap="square" className="text-white" />
+            </svg>
+          </div>
+          <div className="text-left">
+            <div className="flex flex-col -space-y-1">
+              <span className="text-lg font-bold text-accent tracking-wide uppercase leading-none">PHARMA</span>
+              <span className="text-lg font-bold text-primary tracking-wide uppercase leading-none">CARE</span>
+            </div>
+            <p className="text-[11px] font-medium text-muted-foreground mt-0.5">Online Pharmacy & Health</p>
+          </div>
+        </Link>
       </div>
 
       {/* Main Login Card */}
@@ -141,9 +94,9 @@ function StaffLoginForm() {
               Staff Portal
             </span>
           </div>
-          <h1 className="text-xl font-bold tracking-tight">Dispensary & Operations</h1>
+          <h1 className="text-xl font-bold tracking-tight">Staff Sign In</h1>
           <p className="text-xs text-teal-50/90 mt-0.5">
-            Sign in to process prescriptions, fulfillment & pharmacy stock
+            Sign in to process orders, verify prescriptions & manage inventory
           </p>
         </div>
 
@@ -158,14 +111,14 @@ function StaffLoginForm() {
 
             <div className="space-y-1.5">
               <Label htmlFor="email" className="text-xs font-semibold text-gray-700">
-                Staff Email Address
+                Staff Email
               </Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
-                  placeholder="pharmacist@pharmacy.com"
+                  placeholder="you@pharmacy.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10 h-10 text-sm rounded-xl border-gray-200 focus:border-teal-500"
@@ -180,25 +133,26 @@ function StaffLoginForm() {
                 <Label htmlFor="password" className="text-xs font-semibold text-gray-700">
                   Password
                 </Label>
-                <Link
-                  href="/staff/forgot-password"
-                  className="text-xs text-teal-700 hover:underline"
-                >
-                  Forgot password?
-                </Link>
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 h-10 text-sm rounded-xl border-gray-200 focus:border-teal-500"
+                  className="pl-10 pr-10 h-10 text-sm rounded-xl border-gray-200 focus:border-teal-500"
                   required
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
             </div>
 
@@ -207,19 +161,42 @@ function StaffLoginForm() {
               className="w-full h-11 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold transition-all shadow-sm"
               disabled={loading}
             >
-              {loading && !autoLoggingRole ? (
+              {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Verifying Credentials...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...
                 </>
               ) : (
-                'Sign In to Dispensary'
+                'Sign In'
               )}
             </Button>
           </form>
+
+          {/* Demo Access */}
+          <div className="mt-5 pt-4 border-t border-gray-200">
+            <p className="text-[11px] text-center text-muted-foreground mb-2">Portfolio Demo</p>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('staff@pharmacy.com');
+                setPassword('Staff@123456');
+                setError('');
+                setLoading(true);
+                staffSignIn({ email: 'staff@pharmacy.com', password: 'Staff@123456' }).then(({ staff: s, error: err }) => {
+                  if (err) { setError(err); setLoading(false); return; }
+                  if (s) { window.location.href = s.role === 'admin' ? '/admin/dashboard' : '/staff/dashboard'; }
+                }).catch(() => { setError('Demo login failed.'); setLoading(false); });
+              }}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 hover:bg-teal-100 text-teal-800 text-xs font-semibold transition-colors disabled:opacity-50"
+            >
+              {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Stethoscope className="h-3.5 w-3.5" />}
+              Try Demo Staff Account
+            </button>
+          </div>
         </CardContent>
 
-        <CardFooter className="flex flex-col space-y-2 bg-gray-50/70 border-t border-gray-100 py-3 px-6 text-xs text-muted-foreground">
-          <div className="flex items-center justify-between w-full">
+        <CardFooter className="flex flex-col space-y-3 bg-gray-50/70 border-t border-gray-100 py-4 px-6">
+          <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
             <Link href="/" className="hover:text-teal-700 transition-colors">
               ← Storefront
             </Link>
@@ -230,115 +207,15 @@ function StaffLoginForm() {
         </CardFooter>
       </Card>
 
-      {/* 1-Click Dispensary Shift Credentials */}
-      <Card className="border-teal-200/60 bg-gradient-to-b from-teal-50/50 via-white to-white shadow-sm rounded-3xl overflow-hidden">
-        <CardHeader className="pb-3 pt-4 px-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <KeyRound className="h-4 w-4 text-teal-700" />
-              <CardTitle className="text-xs font-bold text-gray-900 uppercase tracking-wider">
-                1-Click Dispensary Shift Sign-In
-              </CardTitle>
-            </div>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">
-              Testing Mode
-            </span>
-          </div>
-          <CardDescription className="text-xs text-gray-500">
-            Select a staff role below to auto-authenticate instantly:
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2.5 pb-4 px-5">
-          {/* Pharmacy Manager / Pharmacist */}
-          <button
-            type="button"
-            onClick={() => instantLogin('manager@pharmacy.com', 'Manager@123456', 'Manager')}
-            className="w-full text-left p-3 rounded-2xl border border-gray-200 bg-white hover:border-teal-500 hover:bg-teal-50/40 transition-all group shadow-2xs"
-            disabled={loading}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-100 text-teal-700 group-hover:bg-teal-600 group-hover:text-white transition-colors">
-                  <ClipboardCheck className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs text-gray-900 group-hover:text-teal-700">
-                      Pharmacy Manager / Pharmacist
-                    </span>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-blue-50 text-blue-700 font-semibold">
-                      Rx & Stock
-                    </span>
-                  </div>
-                  <div className="text-[11px] text-gray-500 font-mono mt-0.5">
-                    manager@pharmacy.com
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center text-xs font-semibold text-teal-700">
-                {autoLoggingRole === 'Manager' ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <span className="flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    Enter <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                )}
-              </div>
-            </div>
-          </button>
-
-          {/* Fulfillment Staff */}
-          <button
-            type="button"
-            onClick={() => instantLogin('staff@pharmacy.com', 'Staff@123456', 'Staff')}
-            className="w-full text-left p-3 rounded-2xl border border-gray-200 bg-white hover:border-teal-500 hover:bg-teal-50/40 transition-all group shadow-2xs"
-            disabled={loading}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-100 text-teal-700 group-hover:bg-teal-600 group-hover:text-white transition-colors">
-                  <PackageCheck className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs text-gray-900 group-hover:text-teal-700">
-                      Dispensary Tech / Fulfillment
-                    </span>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-50 text-emerald-700 font-semibold">
-                      Orders
-                    </span>
-                  </div>
-                  <div className="text-[11px] text-gray-500 font-mono mt-0.5">
-                    staff@pharmacy.com
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center text-xs font-semibold text-teal-700">
-                {autoLoggingRole === 'Staff' ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <span className="flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    Enter <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                )}
-              </div>
-            </div>
-          </button>
-        </CardContent>
-      </Card>
-
-      {/* Admin Command Center Notice */}
-      <div className="p-3.5 rounded-2xl border border-slate-200 bg-slate-900 text-white flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-2.5">
-          <ShieldCheck className="h-4 w-4 text-cyan-400 shrink-0" />
-          <div className="text-xs">
-            <div className="font-semibold text-slate-100">Executive & Admin Access?</div>
-            <div className="text-[11px] text-slate-400">Financials, roles & system settings</div>
-          </div>
-        </div>
+      {/* Admin Link */}
+      <div className="p-3 rounded-2xl border border-gray-200 bg-white flex items-center justify-between text-xs text-muted-foreground">
+        <span className="flex items-center gap-2">
+          <ShieldCheck className="h-4 w-4 text-primary" />
+          <span>Need admin access?</span>
+        </span>
         <Link
           href="/admin/login"
-          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 font-semibold text-xs border border-slate-700 transition-colors"
+          className="inline-flex items-center gap-1 text-primary font-semibold hover:underline"
         >
           Admin Portal <ArrowRight className="h-3 w-3" />
         </Link>
@@ -350,9 +227,6 @@ function StaffLoginForm() {
 export default function StaffLoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-900/10 via-background to-cyan-900/10 px-4 py-8">
-      {/* Top Portal Switcher */}
-      <PortalSwitcher currentPortal="staff" />
-
       <Suspense
         fallback={
           <div className="flex items-center justify-center p-12">
