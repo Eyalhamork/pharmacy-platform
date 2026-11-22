@@ -91,6 +91,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   query = query.range(from, to);
 
   const queryResult = await query;
+  if (queryResult.error) {
+    console.error('Products page query error:', queryResult.error);
+  }
   const products = queryResult.data as any;
   const count = queryResult.count;
 

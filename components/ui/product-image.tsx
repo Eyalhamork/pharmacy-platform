@@ -6,7 +6,7 @@
 import { useState, useCallback, memo } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { getOptimizedImageUrl, type ImageTransformType } from '@/lib/cloudinary/config';
+import { resolveProductImageUrl } from '@/lib/supabase/storage';
 import {
   getCategoryStyle,
   getCategoryGradientStyle,
@@ -23,8 +23,8 @@ export interface ProductImageProps {
   category?: string | null;
   /** Size variant for the image */
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  /** Image transform preset for Cloudinary */
-  transform?: ImageTransformType;
+  /** Image transform preset */
+  transform?: string;
   /** Whether to use priority loading */
   priority?: boolean;
   /** Additional className for container */
@@ -128,8 +128,8 @@ export const ProductImage = memo(function ProductImage({
   // Use provided image or fallback to high-quality curated demo stock photo
   const effectiveImageUrl = imageUrl || getCategoryDemoImage(category, productName);
 
-  // Get optimized image URL
-  const optimizedUrl = getOptimizedImageUrl(effectiveImageUrl, transform);
+  // Resolve direct image URL (Unsplash, Supabase Storage, or external CDN)
+  const optimizedUrl = resolveProductImageUrl(effectiveImageUrl);
   const shouldShowImage = optimizedUrl && !hasError;
 
   const handleError = useCallback(() => {

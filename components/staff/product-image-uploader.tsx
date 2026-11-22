@@ -1,5 +1,5 @@
 // components/staff/product-image-uploader.tsx
-// Drag-and-drop image upload widget for product management
+// Drag-and-drop image upload widget powered by Supabase Storage
 
 'use client';
 
@@ -9,17 +9,10 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import {
-  uploadToCloudinary,
-  generatePreview,
-  type UploadProgress,
-  type UploadResult,
-} from '@/lib/cloudinary/upload';
-import {
-  validateImageFile,
-  ALLOWED_IMAGE_TYPES,
-  MAX_FILE_SIZE,
-  isCloudinaryConfigured,
-} from '@/lib/cloudinary/config';
+  uploadProductImage,
+  deleteProductImage,
+  resolveProductImageUrl,
+} from '@/lib/supabase/storage';
 import {
   Upload,
   X,
@@ -60,18 +53,15 @@ export function ProductImageUploader({
   const [preview, setPreview] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [displayUrl, setDisplayUrl] = useState<string | null>(currentImageUrl || null);
+  const [displayUrl, setDisplayUrl] = useState<string | null>(currentImageUrl ? resolveProductImageUrl(currentImageUrl) : null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
-  // Check if Cloudinary is configured
-  const isConfigured = isCloudinaryConfigured();
-
   // Update display URL when currentImageUrl changes
   useEffect(() => {
     if (currentImageUrl) {
-      setDisplayUrl(currentImageUrl);
+      setDisplayUrl(resolveProductImageUrl(currentImageUrl));
       setState('success');
     }
   }, [currentImageUrl]);
@@ -87,10 +77,16 @@ export function ProductImageUploader({
   }, []);
 
   const handleFile = useCallback(async (file: File) => {
-    // Validate file
-    const validation = validateImageFile(file);
-    if (!validation.valid) {
-      setErrorMessage(validation.error || 'Invalid file');
+    // Basic validation
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
+    if (!validTypes.includes(file.type)) {
+      setErrorMessage('Please upload a valid image file (JPEG, PNG, WEBP, GIF, SVG).');
+      setState('error');
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setErrorMessage('Image size must be less than 10MB.');
       setState('error');
       return;
     }
@@ -99,22 +95,18 @@ export function ProductImageUploader({
     setState('previewing');
 
     try {
-      // Generate preview
-      const previewUrl = await generatePreview(file);
-      setPreview(previewUrl);
+      // Local preview
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
       setState('uploading');
-      setUploadProgress(0);
+      setUploadProgress(10);
 
-      // Upload to Cloudinary
-      const result = await uploadToCloudinary(file, {
-        folder: 'pharmacy/products',
-        tags: category ? [category] : [],
-        onProgress: (progress: UploadProgress) => {
-          setUploadProgress(progress.percentage);
-        },
+      // Upload directly to Supabase Storage
+      const result = await uploadProductImage(file, (progress) => {
+        setUploadProgress(progress);
       });
 
-      if (result.success && result.url) {
+      if (result.url) {
         setDisplayUrl(result.url);
         setState('success');
         onImageUploaded(result.url);
@@ -124,12 +116,12 @@ export function ProductImageUploader({
     } catch (error) {
       console.error('Upload error:', error);
       setErrorMessage(
-        error instanceof Error ? error.message : 'Failed to upload image'
+        error instanceof Error ? error.message : 'Failed to upload image to Supabase Storage'
       );
       setState('error');
       setPreview(null);
     }
-  }, [category, onImageUploaded]);
+  }, [onImageUploaded]);
 
   // Drag and drop handlers
   const handleDragEnter = useCallback((e: React.DragEvent) => {
@@ -143,7 +135,6 @@ export function ProductImageUploader({
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Only reset if leaving the drop zone (not entering a child)
     if (dropZoneRef.current && !dropZoneRef.current.contains(e.relatedTarget as Node)) {
       setState(displayUrl ? 'success' : 'idle');
     }
@@ -168,7 +159,6 @@ export function ProductImageUploader({
     }
   }, [disabled, displayUrl, handleFile]);
 
-  // Click to upload handler
   const handleClick = useCallback(() => {
     if (!disabled && fileInputRef.current) {
       fileInputRef.current.click();
@@ -182,39 +172,20 @@ export function ProductImageUploader({
     }
   }, [handleFile]);
 
-  // Remove image handler
-  const handleRemove = useCallback(() => {
+  const handleRemove = useCallback(async () => {
+    if (displayUrl && displayUrl.includes('supabase.co')) {
+      await deleteProductImage(displayUrl);
+    }
     setDisplayUrl(null);
     resetState();
     onImageRemoved?.();
-  }, [onImageRemoved, resetState]);
+  }, [displayUrl, onImageRemoved, resetState]);
 
-  // Replace image handler
   const handleReplace = useCallback(() => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   }, []);
-
-  // Show warning if Cloudinary is not configured
-  if (!isConfigured) {
-    return (
-      <div className={cn('p-4 border border-amber-200 bg-amber-50 rounded-lg', className)}>
-        <div className="flex items-start gap-3">
-          <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-medium text-amber-800">
-              Image uploads not configured
-            </p>
-            <p className="text-sm text-amber-700 mt-1">
-              Set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-              in your environment variables.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={cn('space-y-3', className)}>
@@ -222,154 +193,134 @@ export function ProductImageUploader({
       <input
         ref={fileInputRef}
         type="file"
-        accept={ALLOWED_IMAGE_TYPES.join(',')}
-        onChange={handleFileInputChange}
+        accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
         className="hidden"
+        onChange={handleFileInputChange}
         disabled={disabled}
       />
 
-      {/* Upload Zone */}
+      {/* Main drop zone / preview area */}
       <div
         ref={dropZoneRef}
+        onClick={state !== 'uploading' && !displayUrl ? handleClick : undefined}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         className={cn(
-          'relative border-2 border-dashed rounded-lg transition-all duration-200',
-          'min-h-[200px] flex flex-col items-center justify-center',
-          state === 'dragging' && 'border-primary bg-primary/5',
-          state === 'idle' && 'border-gray-300 hover:border-gray-400 cursor-pointer',
-          state === 'error' && 'border-red-300 bg-red-50',
-          state === 'success' && 'border-green-300',
-          (state === 'uploading' || state === 'previewing') && 'border-blue-300 bg-blue-50',
-          disabled && 'opacity-50 cursor-not-allowed'
+          'relative border-2 border-dashed rounded-2xl transition-all duration-200 overflow-hidden',
+          'min-h-[200px] flex flex-col items-center justify-center p-6 text-center',
+          !disabled && !displayUrl && 'cursor-pointer hover:border-teal-500 hover:bg-teal-50/20',
+          state === 'dragging' && 'border-teal-500 bg-teal-50/40 scale-[1.01]',
+          state === 'error' && 'border-red-400 bg-red-50/30',
+          displayUrl ? 'border-gray-200 bg-gray-50/50' : 'border-gray-300 bg-white',
+          disabled && 'opacity-60 cursor-not-allowed'
         )}
       >
-        {/* Idle State */}
-        {state === 'idle' && (
-          <div
-            className="flex flex-col items-center justify-center p-6 text-center cursor-pointer"
-            onClick={handleClick}
-          >
-            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-              <Upload className="h-6 w-6 text-gray-400" />
-            </div>
-            <p className="text-sm font-medium text-gray-700 mb-1">
-              Drop image here or click to upload
-            </p>
-            <p className="text-xs text-gray-500">
-              JPG, PNG, or WebP • Max {MAX_FILE_SIZE / (1024 * 1024)}MB
-            </p>
-          </div>
-        )}
-
-        {/* Dragging State */}
-        {state === 'dragging' && (
-          <div className="flex flex-col items-center justify-center p-6 text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <ImageIcon className="h-6 w-6 text-primary" />
-            </div>
-            <p className="text-sm font-medium text-primary">
-              Drop your image here
-            </p>
-          </div>
-        )}
-
-        {/* Uploading State */}
-        {(state === 'uploading' || state === 'previewing') && (
-          <div className="flex flex-col items-center justify-center p-6 w-full">
+        {/* State: Uploading */}
+        {state === 'uploading' && (
+          <div className="w-full max-w-xs space-y-4">
             {preview && (
-              <div className="relative w-24 h-24 rounded-lg overflow-hidden mb-4">
+              <div className="relative w-20 h-20 mx-auto rounded-xl overflow-hidden border border-gray-200 shadow-sm">
                 <Image
                   src={preview}
-                  alt="Preview"
+                  alt="Upload preview"
                   fill
-                  className="object-cover"
+                  className="object-cover opacity-60"
+                  unoptimized
                 />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Loader2 className="h-6 w-6 animate-spin text-teal-600" />
+                </div>
               </div>
             )}
-            <div className="w-full max-w-xs space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Uploading...</span>
-                <span className="text-gray-600">{uploadProgress}%</span>
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>Uploading to Supabase Storage...</span>
+                <span>{Math.round(uploadProgress)}%</span>
               </div>
               <Progress value={uploadProgress} className="h-2" />
             </div>
           </div>
         )}
 
-        {/* Success State */}
-        {state === 'success' && displayUrl && (
-          <div className="relative w-full h-full min-h-[200px]">
-            <Image
-              src={displayUrl}
-              alt="Product image"
-              fill
-              className="object-contain p-2"
-            />
-            {/* Overlay with actions */}
-            <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-              <Button
-                type="button"
-                size="sm"
-                variant="secondary"
-                onClick={handleReplace}
-                disabled={disabled}
-              >
-                <Replace className="h-4 w-4 mr-1" />
-                Replace
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="destructive"
-                onClick={handleRemove}
-                disabled={disabled}
-              >
-                <Trash2 className="h-4 w-4 mr-1" />
-                Remove
-              </Button>
+        {/* State: Has Image (Displaying) */}
+        {displayUrl && state !== 'uploading' && (
+          <div className="relative group w-full h-full min-h-[180px] flex items-center justify-center">
+            <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-white">
+              <Image
+                src={displayUrl}
+                alt="Product preview"
+                fill
+                className="object-cover"
+                unoptimized
+              />
             </div>
-            {/* Success badge */}
-            <div className="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
-              <CheckCircle2 className="h-4 w-4" />
-            </div>
+
+            {/* Hover Actions Overlay */}
+            {!disabled && (
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-3">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleReplace}
+                  className="gap-1.5 bg-white/90 hover:bg-white text-gray-800 text-xs shadow-md"
+                >
+                  <Replace className="h-3.5 w-3.5" />
+                  Replace
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleRemove}
+                  className="gap-1.5 text-xs shadow-md"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Remove
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Error State */}
-        {state === 'error' && (
-          <div className="flex flex-col items-center justify-center p-6 text-center">
-            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
-              <AlertCircle className="h-6 w-6 text-red-500" />
+        {/* State: Idle / Empty */}
+        {!displayUrl && state !== 'uploading' && (
+          <div className="space-y-3">
+            <div className="flex h-12 w-12 mx-auto items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
+              <Upload className="h-6 w-6" />
             </div>
-            <p className="text-sm font-medium text-red-700 mb-1">
-              Upload failed
-            </p>
-            <p className="text-xs text-red-600 mb-3">
-              {errorMessage || 'Please try again'}
-            </p>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              onClick={resetState}
-            >
-              Try Again
-            </Button>
+            <div>
+              <p className="text-sm font-semibold text-gray-800">
+                Click to upload or drag & drop image
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                PNG, JPG, WEBP, or SVG up to 10MB
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-50 text-teal-800 text-[10px] font-medium border border-teal-200/60">
+              <CheckCircle2 className="h-3 w-3 text-teal-600" />
+              <span>Powered by Supabase Storage</span>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Help text */}
-      {state === 'idle' && (
-        <p className="text-xs text-gray-500 text-center">
-          Recommended: Square images (1:1 ratio) work best
-        </p>
+      {/* Error Message Display */}
+      {errorMessage && (
+        <div className="flex items-center gap-2 p-3 text-xs text-red-700 bg-red-50 border border-red-200 rounded-xl">
+          <AlertCircle className="h-4 w-4 shrink-0 text-red-500" />
+          <span className="flex-1">{errorMessage}</span>
+          <button
+            type="button"
+            onClick={() => setErrorMessage(null)}
+            className="text-red-500 hover:text-red-700"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
       )}
     </div>
   );
 }
-
-export default ProductImageUploader;

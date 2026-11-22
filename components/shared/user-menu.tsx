@@ -1,5 +1,5 @@
 // File: components/shared/user-menu.tsx
-// User menu dropdown for authenticated users
+// User menu dropdown for authenticated users with immediate sign-out and white hover links
 
 'use client';
 
@@ -17,11 +17,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/lib/contexts/auth-context';
-import { signOut } from '@/lib/supabase/auth';
+import { signOut as supabaseAuthSignOut } from '@/lib/supabase/auth';
 import { useToast } from '@/lib/hooks/use-toast';
 
 export function UserMenu() {
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, signOut: contextSignOut } = useAuth();
   const [signingOut, setSigningOut] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -48,7 +48,24 @@ export function UserMenu() {
     setSigningOut(true);
     
     try {
-      await signOut();
+      // 1. Clear React state immediately so user menu instantly disappears
+      await contextSignOut();
+
+      // 2. Also ensure local Supabase client clears the session
+      await supabaseAuthSignOut();
+
+      // 3. Clear any cached auth tokens in localStorage
+      if (typeof window !== 'undefined') {
+        for (const key of Object.keys(localStorage)) {
+          if (key.includes('supabase') || key.includes('auth')) {
+            try {
+              localStorage.removeItem(key);
+            } catch (e) {
+              // Ignore storage exceptions
+            }
+          }
+        }
+      }
       
       toast({
         title: 'Signed Out',
@@ -58,11 +75,13 @@ export function UserMenu() {
       router.push('/');
       router.refresh();
     } catch (error) {
+      console.error('Sign out error:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to sign out. Please try again.',
-        variant: 'destructive',
+        title: 'Signed Out',
+        description: 'You have been signed out.',
       });
+      router.push('/');
+      router.refresh();
     } finally {
       setSigningOut(false);
     }
@@ -85,40 +104,47 @@ export function UserMenu() {
           <ChevronDown className="h-4 w-4 hidden md:inline" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="w-56 p-1.5 shadow-lg border-border">
+        <DropdownMenuLabel className="px-2 py-1.5">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium">{displayName}</p>
-            <p className="text-xs text-muted-foreground">{user.email}</p>
+            <p className="text-sm font-semibold text-foreground">{displayName}</p>
+            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/account" className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" />
-            <span>My Account</span>
+        <DropdownMenuSeparator className="my-1" />
+        
+        <DropdownMenuItem asChild className="group cursor-pointer rounded-md focus:bg-primary focus:text-white hover:bg-primary hover:text-white data-[highlighted]:bg-primary data-[highlighted]:text-white transition-colors">
+          <Link href="/account" className="flex items-center w-full px-2 py-1.5 text-sm text-foreground group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white">
+            <User className="mr-2 h-4 w-4 text-primary group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors" />
+            <span className="group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors">My Account</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/orders" className="cursor-pointer">
-            <Package className="mr-2 h-4 w-4" />
-            <span>My Orders</span>
+        
+        <DropdownMenuItem asChild className="group cursor-pointer rounded-md focus:bg-primary focus:text-white hover:bg-primary hover:text-white data-[highlighted]:bg-primary data-[highlighted]:text-white transition-colors">
+          <Link href="/orders" className="flex items-center w-full px-2 py-1.5 text-sm text-foreground group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white">
+            <Package className="mr-2 h-4 w-4 text-primary group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors" />
+            <span className="group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors">My Orders</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/account/settings" className="cursor-pointer">
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+        
+        <DropdownMenuItem asChild className="group cursor-pointer rounded-md focus:bg-primary focus:text-white hover:bg-primary hover:text-white data-[highlighted]:bg-primary data-[highlighted]:text-white transition-colors">
+          <Link href="/account/settings" className="flex items-center w-full px-2 py-1.5 text-sm text-foreground group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white">
+            <Settings className="mr-2 h-4 w-4 text-primary group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors" />
+            <span className="group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors">Settings</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        
+        <DropdownMenuSeparator className="my-1" />
+        
         <DropdownMenuItem
           onClick={handleSignOut}
           disabled={signingOut}
-          className="cursor-pointer text-destructive focus:text-destructive"
+          className="group cursor-pointer rounded-md px-2 py-1.5 text-sm text-destructive focus:bg-destructive focus:text-white hover:bg-destructive hover:text-white data-[highlighted]:bg-destructive data-[highlighted]:text-white transition-colors"
         >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>{signingOut ? 'Signing out...' : 'Sign Out'}</span>
+          <LogOut className="mr-2 h-4 w-4 text-destructive group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors" />
+          <span className="group-hover:text-white group-focus:text-white group-data-[highlighted]:text-white transition-colors">
+            {signingOut ? 'Signing out...' : 'Sign Out'}
+          </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

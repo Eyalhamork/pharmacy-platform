@@ -59,13 +59,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Sign out
   const handleSignOut = async () => {
+    // Clear user state immediately so UI updates synchronously
+    setUser(null);
+    setSession(null);
+    setProfile(null);
+
     try {
       await supabase.auth.signOut();
+    } catch (error) {
+      console.error('Error signing out from Supabase:', error);
+    } finally {
       setUser(null);
       setSession(null);
       setProfile(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
     }
   };
 

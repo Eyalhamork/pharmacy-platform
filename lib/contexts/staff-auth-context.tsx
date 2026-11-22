@@ -59,13 +59,19 @@ export function StaffAuthProvider({ children }: { children: React.ReactNode }) {
 
   // Sign out
   const handleSignOut = async () => {
+    // Clear state immediately so UI updates synchronously
+    setUser(null);
+    setSession(null);
+    setStaff(null);
+
     try {
       await supabase.auth.signOut();
+    } catch (error) {
+      console.error('Error signing out staff from Supabase:', error);
+    } finally {
       setUser(null);
       setSession(null);
       setStaff(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
     }
   };
 

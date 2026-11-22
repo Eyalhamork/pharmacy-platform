@@ -23,8 +23,17 @@ export function StaffHeader() {
 
   const handleSignOut = async () => {
     await signOut();
-    router.push('/staff/login');
-    router.refresh();
+    if (typeof window !== 'undefined') {
+      for (const key of Object.keys(localStorage)) {
+        if (key.includes('supabase') || key.includes('auth')) {
+          try { localStorage.removeItem(key); } catch (e) {}
+        }
+      }
+      window.location.href = '/staff/login';
+    } else {
+      router.push('/staff/login');
+      router.refresh();
+    }
   };
 
   return (

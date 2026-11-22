@@ -13,42 +13,21 @@ export async function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
+        getAll() {
+          return request.cookies.getAll();
         },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          });
+        setAll(cookiesToSet: Array<{ name: string; value: string; options: CookieOptions }>) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
           response = NextResponse.next({
             request: {
               headers: request.headers,
             },
           });
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set({ name, value, ...options })
+          );
         },
       },
     }
@@ -58,18 +37,38 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protected routes for authenticated users
-  if (request.nextUrl.pathname.startsWith('/account') && !user) {
-    return NextResponse.redirect(new URL('/auth/login', request.url));
+  const pathname = request.nextUrl.pathname;
+
+  // 1. Protected routes for regular users (account, orders, checkout)
+  const isCustomerProtectedRoute =
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/orders') ||
+    pathname.startsWith('/checkout');
+
+  if (isCustomerProtectedRoute && !user) {
+    const redirectUrl = new URL('/login', request.url);
+    redirectUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(redirectUrl);
   }
 
-  // Protected routes for staff
-  if (request.nextUrl.pathname.startsWith('/staff')) {
+  // 2. Redirect to account if accessing customer auth pages while authenticated
+  const isCustomerAuthRoute = pathname === '/login' || pathname === '/signup';
+  if (isCustomerAuthRoute && user) {
+    return NextResponse.redirect(new URL('/account', request.url));
+  }
+
+  // 3. Protected routes for staff
+  const isStaffRoute = pathname.startsWith('/staff');
+  const isStaffAuthRoute =
+    pathname === '/staff/login' ||
+    pathname === '/staff/forgot-password';
+
+  if (isStaffRoute && !isStaffAuthRoute) {
     if (!user) {
-      return NextResponse.redirect(new URL('/auth/staff-login', request.url));
+      return NextResponse.redirect(new URL('/staff/login', request.url));
     }
 
-    // Check if user is staff
+    // Check if user has active staff credentials
     const { data: staffData } = await supabase
       .from('staff')
       .select('role, is_active')
@@ -77,40 +76,20 @@ export async function middleware(request: NextRequest) {
       .single();
 
     if (!staffData || !staffData.is_active) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/staff/login', request.url));
     }
   }
 
-  // Protected routes that require authentication
-const protectedRoutes = ['/account', '/orders', '/checkout'];
-const isProtectedRoute = protectedRoutes.some((route) =>
-  request.nextUrl.pathname.startsWith(route)
-);
+  // 4. Protected routes for admin
+  const isAdminRoute = pathname.startsWith('/admin');
+  const isAdminAuthRoute = pathname === '/admin/login';
 
-// Redirect to login if accessing protected route without authentication
-if (isProtectedRoute && !user) {
-  const redirectUrl = new URL('/login', request.url);
-  redirectUrl.searchParams.set('redirect', request.nextUrl.pathname);
-  return NextResponse.redirect(redirectUrl);
-}
-
-// Redirect to account if accessing auth pages while authenticated
-const authRoutes = ['/login', '/signup'];
-const isAuthRoute = authRoutes.some((route) =>
-  request.nextUrl.pathname.startsWith(route)
-);
-
-if (isAuthRoute && user) {
-  return NextResponse.redirect(new URL('/account', request.url));
-}
-
-  // Protected routes for admin
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  if (isAdminRoute && !isAdminAuthRoute) {
     if (!user) {
-      return NextResponse.redirect(new URL('/auth/staff-login', request.url));
+      return NextResponse.redirect(new URL('/admin/login', request.url));
     }
 
-    // Check if user is admin
+    // Check if user is active admin
     const { data: staffData } = await supabase
       .from('staff')
       .select('role, is_active')
@@ -118,7 +97,7 @@ if (isAuthRoute && user) {
       .single();
 
     if (!staffData || !staffData.is_active || staffData.role !== 'admin') {
-      return NextResponse.redirect(new URL('/staff/dashboard', request.url));
+      return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }
 
@@ -127,7 +106,11 @@ if (isAuthRoute && user) {
 
 export const config = {
   matcher: [
+    '/login',
+    '/signup',
     '/account/:path*',
+    '/orders/:path*',
+    '/checkout/:path*',
     '/staff/:path*',
     '/admin/:path*',
   ],
