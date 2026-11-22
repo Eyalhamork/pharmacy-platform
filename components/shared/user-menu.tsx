@@ -48,42 +48,24 @@ export function UserMenu() {
     setSigningOut(true);
     
     try {
-      // 1. Clear React state immediately so user menu instantly disappears
+      // Clear React state immediately
       await contextSignOut();
-
-      // 2. Also ensure local Supabase client clears the session
       await supabaseAuthSignOut();
 
-      // 3. Clear any cached auth tokens in localStorage
+      // Clear any cached auth tokens in localStorage
       if (typeof window !== 'undefined') {
         for (const key of Object.keys(localStorage)) {
           if (key.includes('supabase') || key.includes('auth')) {
-            try {
-              localStorage.removeItem(key);
-            } catch (e) {
-              // Ignore storage exceptions
-            }
+            try { localStorage.removeItem(key); } catch (e) {}
           }
         }
       }
-      
-      toast({
-        title: 'Signed Out',
-        description: 'You have been successfully signed out.',
-      });
 
-      router.push('/');
-      router.refresh();
+      // Hard redirect to clear all server-side cookie state
+      window.location.href = '/login';
     } catch (error) {
       console.error('Sign out error:', error);
-      toast({
-        title: 'Signed Out',
-        description: 'You have been signed out.',
-      });
-      router.push('/');
-      router.refresh();
-    } finally {
-      setSigningOut(false);
+      window.location.href = '/login';
     }
   };
 

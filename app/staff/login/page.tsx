@@ -38,6 +38,9 @@ function StaffLoginForm() {
     setLoading(true);
 
     try {
+      // Ensure demo staff records exist (safe to call every time, idempotent)
+      await fetch('/api/admin/seed-staff', { method: 'POST' }).catch(() => {});
+
       const { staff, error: signInError } = await staffSignIn({
         email: email.trim(),
         password,
@@ -176,15 +179,18 @@ function StaffLoginForm() {
             <p className="text-[11px] text-center text-muted-foreground mb-2">Portfolio Demo</p>
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
                 setEmail('staff@pharmacy.com');
                 setPassword('Staff@123456');
                 setError('');
                 setLoading(true);
-                staffSignIn({ email: 'staff@pharmacy.com', password: 'Staff@123456' }).then(({ staff: s, error: err }) => {
+                try {
+                  // Ensure demo staff records exist in the database
+                  await fetch('/api/admin/seed-staff', { method: 'POST' }).catch(() => {});
+                  const { staff: s, error: err } = await staffSignIn({ email: 'staff@pharmacy.com', password: 'Staff@123456' });
                   if (err) { setError(err); setLoading(false); return; }
                   if (s) { window.location.href = s.role === 'admin' ? '/admin/dashboard' : '/staff/dashboard'; }
-                }).catch(() => { setError('Demo login failed.'); setLoading(false); });
+                } catch { setError('Demo login failed.'); setLoading(false); }
               }}
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 hover:bg-teal-100 text-teal-800 text-xs font-semibold transition-colors disabled:opacity-50"

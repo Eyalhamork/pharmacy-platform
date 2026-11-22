@@ -31,9 +31,6 @@ function StaffDashboardHeader() {
         }
       }
       window.location.href = '/staff/login';
-    } else {
-      router.push('/staff/login');
-      router.refresh();
     }
   };
 

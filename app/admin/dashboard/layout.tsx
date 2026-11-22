@@ -24,9 +24,6 @@ function AdminDashboardHeader() {
         }
       }
       window.location.href = '/admin/login';
-    } else {
-      router.push('/admin/login');
-      router.refresh();
     }
   };
 

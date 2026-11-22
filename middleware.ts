@@ -101,6 +101,21 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Add cache-control headers for all protected dashboard routes
+  // This prevents the browser back button from showing stale pages after logout
+  const isDashboardRoute =
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/staff/dashboard') ||
+    pathname.startsWith('/admin/dashboard') ||
+    pathname.startsWith('/orders') ||
+    pathname.startsWith('/checkout');
+
+  if (isDashboardRoute) {
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+  }
+
   return response;
 }
 

@@ -38,6 +38,9 @@ function AdminLoginForm() {
     setLoading(true);
 
     try {
+      // Ensure demo staff records exist (safe to call every time, idempotent)
+      await fetch('/api/admin/seed-staff', { method: 'POST' }).catch(() => {});
+
       const { staff, error: signInError } = await staffSignIn({
         email: email.trim(),
         password,
@@ -177,18 +180,21 @@ function AdminLoginForm() {
             <p className="text-[11px] text-center text-muted-foreground mb-2">Portfolio Demo</p>
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
                 setEmail('admin@pharmacy.com');
                 setPassword('Admin@123456');
                 setError('');
                 setLoading(true);
-                staffSignIn({ email: 'admin@pharmacy.com', password: 'Admin@123456' }).then(({ staff: s, error: err }) => {
+                try {
+                  // Ensure demo staff records exist in the database
+                  await fetch('/api/admin/seed-staff', { method: 'POST' }).catch(() => {});
+                  const { staff: s, error: err } = await staffSignIn({ email: 'admin@pharmacy.com', password: 'Admin@123456' });
                   if (err) { setError(err); setLoading(false); return; }
                   if (s) {
                     if (s.role !== 'admin') { setError('Access denied.'); setLoading(false); return; }
                     window.location.href = '/admin/dashboard';
                   }
-                }).catch(() => { setError('Demo login failed.'); setLoading(false); });
+                } catch { setError('Demo login failed.'); setLoading(false); }
               }}
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-colors disabled:opacity-50"
