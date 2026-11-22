@@ -1,29 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-// This endpoint seeds the staff table with demo accounts.
-// It uses the service role key to query auth.users and link them to staff records.
-// Safe to call multiple times — uses upsert (ON CONFLICT DO UPDATE).
+// Seeds the staff table with demo accounts. Idempotent — safe to call repeatedly.
+// Uses service role key to bypass RLS.
 
-const DEMO_STAFF = [
-  {
-    email: 'admin@pharmacy.com',
-    full_name: 'System Administrator',
-    role: 'admin',
-    phone: '+231-000-0001',
-  },
-  {
-    email: 'manager@pharmacy.com',
-    full_name: 'Pharmacy Manager',
-    role: 'manager',
-    phone: '+231-000-0002',
-  },
-  {
-    email: 'staff@pharmacy.com',
-    full_name: 'Staff Member',
-    role: 'staff',
-    phone: '+231-000-0003',
-  },
+const DEMO_ACCOUNTS = [
+  { email: 'admin@pharmacy.com', password: 'Admin@123456', full_name: 'System Administrator', role: 'admin' },
+  { email: 'manager@pharmacy.com', password: 'Manager@123456', full_name: 'Pharmacy Manager', role: 'manager' },
+  { email: 'staff@pharmacy.com', password: 'Staff@123456', full_name: 'Staff Member', role: 'staff' },
 ];
 
 export async function POST() {
@@ -31,90 +15,82 @@ export async function POST() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
   if (!serviceRoleKey || !supabaseUrl) {
-    return NextResponse.json(
-      { error: 'Missing Supabase service role key or URL' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Server config missing' }, { status: 500 });
   }
 
-  // Use service role client to access auth.users
-  const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
+  const admin = createClient(supabaseUrl, serviceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  const results: Array<{ email: string; status: string; error?: string }> = [];
+  const results: Array<{ email: string; status: string; detail?: string }> = [];
 
-  for (const demo of DEMO_STAFF) {
-    // Look up the auth user by email
-    const { data: authData, error: authError } =
-      await supabaseAdmin.auth.admin.listUsers();
+  for (const acct of DEMO_ACCOUNTS) {
+    try {
+      // 1. Find or create the auth user
+      let userId: string | null = null;
 
-    if (authError) {
-      results.push({ email: demo.email, status: 'error', error: authError.message });
-      continue;
-    }
+      // Try to find existing user by email
+      const { data: listData } = await admin.auth.admin.listUsers({ perPage: 1000 });
+      const existing = listData?.users?.find((u) => u.email === acct.email);
 
-    const authUser = authData.users.find((u) => u.email === demo.email);
-
-    if (!authUser) {
-      // Create the auth user if it doesn't exist
-      const { data: newUser, error: createError } =
-        await supabaseAdmin.auth.admin.createUser({
-          email: demo.email,
-          password: demo.email === 'admin@pharmacy.com'
-            ? 'Admin@123456'
-            : demo.email === 'manager@pharmacy.com'
-              ? 'Manager@123456'
-              : 'Staff@123456',
+      if (existing) {
+        userId = existing.id;
+      } else {
+        // Create auth user
+        const { data: created, error: createErr } = await admin.auth.admin.createUser({
+          email: acct.email,
+          password: acct.password,
           email_confirm: true,
         });
+        if (createErr) {
+          results.push({ email: acct.email, status: 'error', detail: `auth create: ${createErr.message}` });
+          continue;
+        }
+        userId = created.user.id;
+      }
 
-      if (createError) {
-        results.push({ email: demo.email, status: 'error', error: createError.message });
+      if (!userId) {
+        results.push({ email: acct.email, status: 'error', detail: 'no user id' });
         continue;
       }
 
-      // Insert into staff table
-      const { error: insertError } = await supabaseAdmin
+      // 2. Check if staff record already exists
+      const { data: existingStaff } = await admin
         .from('staff')
-        .upsert(
-          {
-            id: newUser.user.id,
-            email: demo.email,
-            full_name: demo.full_name,
-            role: demo.role,
-            phone: demo.phone,
-            is_active: true,
-          },
-          { onConflict: 'email' }
-        );
+        .select('id')
+        .eq('id', userId)
+        .maybeSingle();
 
-      if (insertError) {
-        results.push({ email: demo.email, status: 'error', error: insertError.message });
-      } else {
-        results.push({ email: demo.email, status: 'created_and_linked' });
+      if (existingStaff) {
+        results.push({ email: acct.email, status: 'already_exists' });
+        continue;
       }
-    } else {
-      // Auth user exists — upsert staff record
-      const { error: upsertError } = await supabaseAdmin
+
+      // 3. Insert staff record (no upsert, just plain insert)
+      const { error: insertErr } = await admin
         .from('staff')
-        .upsert(
-          {
-            id: authUser.id,
-            email: demo.email,
-            full_name: demo.full_name,
-            role: demo.role,
-            phone: demo.phone,
-            is_active: true,
-          },
-          { onConflict: 'email' }
-        );
+        .insert({
+          id: userId,
+          email: acct.email,
+          full_name: acct.full_name,
+          role: acct.role,
+          phone: '+231-000-0000',
+          is_active: true,
+          created_at: new Date().toISOString(),
+        });
 
-      if (upsertError) {
-        results.push({ email: demo.email, status: 'error', error: upsertError.message });
+      if (insertErr) {
+        // If duplicate, that's fine
+        if (insertErr.code === '23505') {
+          results.push({ email: acct.email, status: 'already_exists' });
+        } else {
+          results.push({ email: acct.email, status: 'error', detail: `insert: ${insertErr.message} (${insertErr.code})` });
+        }
       } else {
-        results.push({ email: demo.email, status: 'linked' });
+        results.push({ email: acct.email, status: 'created' });
       }
+    } catch (e: any) {
+      results.push({ email: acct.email, status: 'error', detail: e?.message || 'unknown' });
     }
   }
 

@@ -1,4 +1,5 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
@@ -57,7 +58,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/account', request.url));
   }
 
-  // 3. Protected routes for staff
+  // 3. Protected routes for staff — use service role to bypass RLS
   const isStaffRoute = pathname.startsWith('/staff');
   const isStaffAuthRoute =
     pathname === '/staff/login' ||
@@ -68,8 +69,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/staff/login', request.url));
     }
 
-    // Check if user has active staff credentials
-    const { data: staffData } = await supabase
+    // Use service role key to bypass the recursive RLS policy on staff table
+    const adminClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    );
+
+    const { data: staffData } = await adminClient
       .from('staff')
       .select('role, is_active')
       .eq('id', user.id)
@@ -80,7 +87,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 4. Protected routes for admin
+  // 4. Protected routes for admin — use service role to bypass RLS
   const isAdminRoute = pathname.startsWith('/admin');
   const isAdminAuthRoute = pathname === '/admin/login';
 
@@ -89,8 +96,13 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
 
-    // Check if user is active admin
-    const { data: staffData } = await supabase
+    const adminClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    );
+
+    const { data: staffData } = await adminClient
       .from('staff')
       .select('role, is_active')
       .eq('id', user.id)
@@ -102,7 +114,6 @@ export async function middleware(request: NextRequest) {
   }
 
   // Add cache-control headers for all protected dashboard routes
-  // This prevents the browser back button from showing stale pages after logout
   const isDashboardRoute =
     pathname.startsWith('/account') ||
     pathname.startsWith('/staff/dashboard') ||

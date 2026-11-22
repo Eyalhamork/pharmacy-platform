@@ -41,41 +41,32 @@ export async function staffSignIn(data: StaffSignInData) {
     return { staff: null, session: null, error: 'Authentication failed' };
   }
 
-  // Check if user is staff
-  const staffResult = await supabase
-    .from('staff')
-    .select('*')
-    .eq('id', authData.user.id)
-    .single();
+  // Verify staff record via server-side API (bypasses RLS policy)
+  // The staff table has an RLS policy with infinite recursion that blocks
+  // client-side reads, so we use a server endpoint with the service role key.
+  try {
+    const res = await fetch('/api/auth/staff-verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: authData.user.id }),
+    });
 
-  const staffData = staffResult.data as StaffUser | null;
-  const staffError = staffResult.error;
+    const result = await res.json();
 
-  if (staffError || !staffData) {
-    // Not a staff member, sign them out
+    if (!res.ok || !result.staff) {
+      await supabase.auth.signOut();
+      return { staff: null, session: null, error: result.error || 'Access denied. Staff credentials required.' };
+    }
+
+    return {
+      staff: result.staff as StaffUser,
+      session: authData.session,
+      error: null,
+    };
+  } catch (err) {
     await supabase.auth.signOut();
-    return { staff: null, session: null, error: 'Access denied. Staff credentials required.' };
+    return { staff: null, session: null, error: 'Failed to verify staff credentials. Please try again.' };
   }
-
-  if (!staffData.is_active) {
-    // Staff account is inactive
-    await supabase.auth.signOut();
-    return { staff: null, session: null, error: 'Your staff account has been deactivated.' };
-  }
-
-  // Update last login time
-  // @ts-ignore - Supabase type inference issue with generic Database type
-  await supabase
-    .from('staff')
-    // @ts-ignore - Supabase type inference issue with generic Database type
-    .update({ last_login_at: new Date().toISOString() })
-    .eq('id', authData.user.id);
-
-  return {
-    staff: staffData as StaffUser,
-    session: authData.session,
-    error: null,
-  };
 }
 
 /**
@@ -108,25 +99,24 @@ export async function getCurrentStaff() {
     return { staff: null, error: userError?.message || 'Not authenticated' };
   }
 
-  // Get staff data
-  const staffResult = await supabase
-    .from('staff')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+  // Get staff data via server-side API (bypasses RLS)
+  try {
+    const res = await fetch('/api/auth/staff-verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.id }),
+    });
 
-  const staffData = staffResult.data as StaffUser | null;
-  const staffError = staffResult.error;
+    const result = await res.json();
 
-  if (staffError || !staffData) {
-    return { staff: null, error: 'Staff profile not found' };
+    if (!res.ok || !result.staff) {
+      return { staff: null, error: result.error || 'Staff profile not found' };
+    }
+
+    return { staff: result.staff as StaffUser, error: null };
+  } catch {
+    return { staff: null, error: 'Failed to fetch staff profile' };
   }
-
-  if (!staffData.is_active) {
-    return { staff: null, error: 'Staff account is inactive' };
-  }
-
-  return { staff: staffData as StaffUser, error: null };
 }
 
 /**

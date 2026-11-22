@@ -26,15 +26,7 @@ export function UserMenu() {
   const router = useRouter();
   const { toast } = useToast();
 
-  if (loading) {
-    return (
-      <Button variant="ghost" size="icon" disabled>
-        <User className="h-5 w-5" />
-      </Button>
-    );
-  }
-
-  if (!user) {
+  if (loading || !user) {
     return (
       <Link href="/login">
         <Button variant="ghost" size="icon">
