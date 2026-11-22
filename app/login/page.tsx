@@ -17,8 +17,11 @@ import {
   Eye,
   EyeOff,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Stethoscope,
+  ArrowRight,
 } from 'lucide-react';
+import { staffSignIn } from '@/lib/supabase/staff-auth';
 import { signIn } from '@/lib/supabase/auth';
 import { useToast } from '@/lib/hooks/use-toast';
 import { trackLogin } from '@/components/analytics';
@@ -204,27 +207,67 @@ function PatientLoginForm() {
             </Link>
           </div>
 
-          {/* Demo Access */}
+          {/* Demo Access — All Roles */}
           <div className="mt-5 pt-4 border-t border-gray-200">
-            <p className="text-[11px] text-center text-muted-foreground mb-2">Portfolio Demo</p>
-            <button
-              type="button"
-              onClick={() => {
-                setEmail('customer@pharmacy.com');
-                setPassword('Customer@123456');
-                setError(null);
-                setLoading(true);
-                signIn({ email: 'customer@pharmacy.com', password: 'Customer@123456' }).then(({ user, error: err }) => {
-                  if (err) { setError(err); setLoading(false); return; }
-                  if (user) { trackLogin('email'); window.location.href = redirectUrl; }
-                }).catch(() => { setError('Demo login failed.'); setLoading(false); });
-              }}
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 hover:bg-teal-100 text-teal-800 text-xs font-semibold transition-colors disabled:opacity-50"
-            >
-              {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShoppingBag className="h-3.5 w-3.5" />}
-              Try Demo Patient Account
-            </button>
+            <p className="text-[11px] text-center text-muted-foreground mb-2.5">Portfolio Demo — Quick Login</p>
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('customer@pharmacy.com');
+                  setPassword('Customer@123456');
+                  setError(null);
+                  setLoading(true);
+                  signIn({ email: 'customer@pharmacy.com', password: 'Customer@123456' }).then(({ user, error: err }) => {
+                    if (err) { setError(err); setLoading(false); return; }
+                    if (user) { trackLogin('email'); window.location.href = redirectUrl; }
+                  }).catch(() => { setError('Demo login failed.'); setLoading(false); });
+                }}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 hover:bg-teal-100 text-teal-800 text-xs font-semibold transition-colors disabled:opacity-50"
+              >
+                {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShoppingBag className="h-3.5 w-3.5" />}
+                Patient Account
+              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setError(null);
+                    setLoading(true);
+                    try {
+                      await fetch('/api/admin/seed-staff', { method: 'POST' }).catch(() => {});
+                      const { staff: s, error: err } = await staffSignIn({ email: 'staff@pharmacy.com', password: 'Staff@123456' });
+                      if (err) { setError(err); setLoading(false); return; }
+                      if (s) { window.location.href = '/staff/dashboard'; }
+                    } catch { setError('Demo login failed.'); setLoading(false); }
+                  }}
+                  disabled={loading}
+                  className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-cyan-50 border border-cyan-200 hover:bg-cyan-100 text-cyan-800 text-xs font-semibold transition-colors disabled:opacity-50"
+                >
+                  {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Stethoscope className="h-3.5 w-3.5" />}
+                  Staff
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setError(null);
+                    setLoading(true);
+                    try {
+                      await fetch('/api/admin/seed-staff', { method: 'POST' }).catch(() => {});
+                      const { staff: s, error: err } = await staffSignIn({ email: 'admin@pharmacy.com', password: 'Admin@123456' });
+                      if (err) { setError(err); setLoading(false); return; }
+                      if (s) { window.location.href = '/admin/dashboard'; }
+                    } catch { setError('Demo login failed.'); setLoading(false); }
+                  }}
+                  disabled={loading}
+                  className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-colors disabled:opacity-50"
+                >
+                  {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShieldCheck className="h-3.5 w-3.5" />}
+                  Admin
+                </button>
+              </div>
+            </div>
           </div>
         </CardContent>
 

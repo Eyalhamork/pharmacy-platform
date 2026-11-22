@@ -3,7 +3,7 @@
 
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 import type { Database } from '@/lib/types/database';
@@ -26,10 +26,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+
+  // Stable supabase reference — only create once
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
 
   // Fetch user profile
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = useCallback(async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from('user_profiles')
@@ -47,18 +50,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Error fetching profile:', error);
       return null;
     }
-  };
+  }, [supabase]);
 
   // Refresh profile data
-  const refreshProfile = async () => {
+  const refreshProfile = useCallback(async () => {
     if (user) {
       const profileData = await fetchProfile(user.id);
       setProfile(profileData);
     }
-  };
+  }, [user, fetchProfile]);
 
   // Sign out
-  const handleSignOut = async () => {
+  const handleSignOut = useCallback(async () => {
     // Clear user state immediately so UI updates synchronously
     setUser(null);
     setSession(null);
@@ -68,33 +71,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await supabase.auth.signOut();
     } catch (error) {
       console.error('Error signing out from Supabase:', error);
-    } finally {
-      setUser(null);
-      setSession(null);
-      setProfile(null);
     }
-  };
+  }, [supabase]);
 
-  // Initialize auth state
+  // Initialize auth state — runs once
   useEffect(() => {
-    // Get initial session
+    let mounted = true;
+
     const initializeAuth = async () => {
       try {
         const {
           data: { session: initialSession },
         } = await supabase.auth.getSession();
 
+        if (!mounted) return;
+
         setSession(initialSession);
         setUser(initialSession?.user ?? null);
 
         if (initialSession?.user) {
           const profileData = await fetchProfile(initialSession.user.id);
-          setProfile(profileData);
+          if (mounted) setProfile(profileData);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
 
@@ -104,23 +106,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+      if (!mounted) return;
+
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
 
       if (currentSession?.user) {
         const profileData = await fetchProfile(currentSession.user.id);
-        setProfile(profileData);
+        if (mounted) setProfile(profileData);
       } else {
         setProfile(null);
       }
 
+      // Always ensure loading is false after any auth event
       setLoading(false);
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
-  }, [supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = {
     user,
